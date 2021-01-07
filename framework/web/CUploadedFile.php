@@ -104,7 +104,7 @@ class CUploadedFile extends CComponent
 		$len=strlen($name);
 		$results=array();
 		foreach(array_keys(self::$_files) as $key)
-			if(0===strncmp($key, $name, $len) && self::$_files[$key]->getError()!=UPLOAD_ERR_NO_FILE)
+			if(0===strncmp($key, $name.'[', $len+1) && self::$_files[$key]->getError()!=UPLOAD_ERR_NO_FILE)
 				$results[] = self::$_files[$key];
 		return $results;
 	}
@@ -189,6 +189,9 @@ class CUploadedFile extends CComponent
 	 * @param boolean $deleteTempFile whether to delete the temporary file after saving.
 	 * If true, you will not be able to save the uploaded file again in the current request.
 	 * @return boolean true whether the file is saved successfully
+	 * 
+	 * In some exceptional cases such as not enough permissions to write to the path specified
+	 * PHP warning is triggered.
 	 */
 	public function saveAs($file,$deleteTempFile=true)
 	{
@@ -267,9 +270,6 @@ class CUploadedFile extends CComponent
 	 */
 	public function getExtensionName()
 	{
-		if(($pos=strrpos($this->_name,'.'))!==false)
-			return (string)substr($this->_name,$pos+1);
-		else
-			return '';
+		return CFileHelper::getExtension($this->_name);
 	}
 }

@@ -3,7 +3,10 @@ Yii Web Programming Framework
 
 Thank you for choosing Yii - a high-performance component-based PHP framework.
 
-[![Build Status](https://secure.travis-ci.org/yiisoft/yii.png)](http://travis-ci.org/yiisoft/yii)
+[![Build Status](https://github.com/yiisoft/yii/workflows/build/badge.svg)](https://github.com/yiisoft/yii/actions)
+
+> Note that Yii 1.1 [has reached end of life](http://www.yiiframework.com/news/90/update-on-yii-1-1-support-and-end-of-life/)
+  and won't receive updates except security fixes. Please start new projects using [Yii 2](https://github.com/yiisoft/yii2).
 
 INSTALLATION
 ------------
@@ -53,7 +56,7 @@ You can access it with the following URL:
         http://hostname/YiiPath/testdrive/index.php
 
 
-WHAT's NEXT
+WHAT'S NEXT
 -----------
 
 Please visit the project website for tutorials, class reference

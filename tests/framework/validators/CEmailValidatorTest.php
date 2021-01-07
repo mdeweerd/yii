@@ -5,9 +5,14 @@ class CEmailValidatorTest extends CTestCase
 {
 	public function testEmpty()
 	{
-		$model = new ValidatorTestModel('CEmailValidatorTest');
-		$model->validate(array('email'));
-		$this->assertArrayHasKey('email', $model->getErrors());
+		$emailValidator = new CEmailValidator();
+		$emailValidator->allowEmpty = true;
+		$this->assertTrue($emailValidator->validateValue('test@example.com'));
+		$this->assertFalse($emailValidator->validateValue(''));
+		
+		$emailValidator->allowEmpty = false;
+		$this->assertTrue($emailValidator->validateValue('test@example.com'));
+		$this->assertFalse($emailValidator->validateValue(''));
 	}
 
 	public function testNumericEmail()
@@ -24,7 +29,7 @@ class CEmailValidatorTest extends CTestCase
 			array('test@президент.рф', true, true),
 			array('test@bücher.de', true, true),
 			array('test@检查域.cn', true, true),
-			array('☃-⌘@mañana.com', true, true),
+			array('☃-⌘@mañana.com', true, false),
 			array('test@google.com', true, true),
 			array('test@yiiframework.com', true, true),
 			array('bad-email', true, false),
@@ -71,5 +76,27 @@ class CEmailValidatorTest extends CTestCase
 		$model->validate(array('email'));
 		$this->assertTrue($model->hasErrors('email'));
 		$this->assertEquals(array('Email is not a valid email address.'),$model->getErrors('email'));
+	}
+
+	public function testMxPortDomainWithNoMXRecord()
+	{
+		if (getenv('TRAVIS')==='true' || getenv('GITHUB_ACTIONS')==='true')
+			$this->markTestSkipped('MX connections are disabled in travis.');
+
+		$emailValidator = new CEmailValidator();
+		$emailValidator->checkPort = true;
+		$result = $emailValidator->validateValue('user@example.com');
+		$this->assertFalse($result);
+	}
+
+	public function testMxPortDomainWithMXRecord()
+	{
+		if (getenv('TRAVIS')==='true')
+			$this->markTestSkipped('MX connections are disabled in travis.');
+
+		$emailValidator = new CEmailValidator();
+		$emailValidator->checkPort = true;
+		$result = $emailValidator->validateValue('user@hotmail.com');
+		$this->assertTrue($result);
 	}
 }

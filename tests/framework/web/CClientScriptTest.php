@@ -91,6 +91,12 @@ class CClientScriptTest extends CTestCase
 		);
 	}
 
+	public function testHasPackage()
+    {
+        $this->assertTrue($this->_clientScript->hasPackage('jquery'));
+        $this->assertFalse($this->_clientScript->hasPackage('nonexisting'));
+    }
+
 	/**
 	 * @dataProvider providerScriptFiles
 	 *
@@ -415,5 +421,67 @@ class CClientScriptTest extends CTestCase
 		$output = '<head></head>';
 		$returnedClientScript->render($output);
 		$this->assertContains($assertion, $output);
+	}
+
+	public function providerRenderScriptsBatch()
+	{
+		return array(
+			array(
+				array(
+					array(
+						'id' => 'js_id_1',
+						'script' => "function() {alert('script1')}",
+						'position' => CClientScript::POS_HEAD,
+						'htmlOptions' => array(),
+					),
+					array(
+						'id' => 'js_id_2',
+						'script' => "function() {alert('script2')}",
+						'position' => CClientScript::POS_HEAD,
+						'htmlOptions' => array(),
+					),
+				),
+				1
+			),
+			array(
+				array(
+					array(
+						'id' => 'js_id_1',
+						'script' => "function() {alert('script1')}",
+						'position' => CClientScript::POS_HEAD,
+						'htmlOptions' => array(),
+					),
+					array(
+						'id' => 'js_id_2',
+						'script' => "function() {alert('script2')}",
+						'position' => CClientScript::POS_HEAD,
+						'htmlOptions' => array(
+							'defer' => true
+						),
+					),
+				),
+				2
+			),
+		);
+	}
+
+	/**
+	 * @depends testRenderScripts
+	 *
+	 * @dataProvider providerRenderScriptsBatch
+	 *
+	 * @param array $scriptBatch
+	 * @param integer $expectedScriptTagCount
+	 *
+	 * @see https://github.com/yiisoft/yii/issues/2770
+	 */
+	public function testRenderScriptsBatch(array $scriptBatch, $expectedScriptTagCount)
+	{
+		$this->_clientScript->reset();
+		foreach($scriptBatch as $scriptParams)
+			$this->_clientScript->registerScript($scriptParams['id'], $scriptParams['script'], $scriptParams['position'], $scriptParams['htmlOptions']);
+		$output = '<head></head>';
+		$this->_clientScript->render($output);
+		$this->assertEquals($expectedScriptTagCount, substr_count($output, '<script'));
 	}
 }

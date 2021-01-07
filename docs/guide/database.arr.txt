@@ -299,6 +299,13 @@ For more details, see the section "Relational Query Performance".
    - `join`: the extra `JOIN` clause. It defaults to empty. This option
 has been available since version 1.1.3.
 
+   - `joinOptions`: the property for setting post-`JOIN` operations such as
+`USE INDEX`. String typed value can be used with `JOIN`s for `HAS_MANY` and `MANY_MANY`
+relations, while array typed value designed to be used only with `MANY_MANY` relations.
+First array element will be used for junction table `JOIN` and second array element
+will be used for target table `JOIN`. This option has been available since version
+1.1.15.
+
    - `group`: the `GROUP BY` clause. It defaults to empty. Column names
 referenced in this option should be disambiguated.
 
@@ -325,8 +332,9 @@ to `BELONGS_TO` relation.
 apply to `BELONGS_TO` relation.
 
    - `through`: name of the model's relation that will be used as a bridge when
-   getting related data. Can be set only for `HAS_ONE` and `HAS_MANY`.
-   This option has been available since version 1.1.7.
+   getting related data. This option has been available since version 1.1.7
+   where it can be used for `HAS_ONE` and `HAS_MANY`. Since 1.1.14 it can be used
+   for `BELONGS_TO` as well.
 
 Below we modify the `posts` relationship declaration in the `User` by
 including some of the above options:
@@ -350,6 +358,10 @@ class User extends CActiveRecord
 Now if we access `$author->posts`, we would obtain the author's posts
 sorted according to their creation time in descending order. Each post
 instance also has its categories loaded.
+
+> Note: when using eager loading such relation options as 'order', 'group',
+> 'having', 'limit' and 'offset' will be ignored. You should setup such parameters
+> at the main model criteria level if you wish them to be applied.
 
 
 Disambiguating Column Names
@@ -399,10 +411,10 @@ $posts=Post::model()->with('comments')->findAll(array(
 >
 > ~~~
 > [php]
-> $comments=Comment::model()->with(
+> $comments=Comment::model()->with(array(
 > 	'author',
 > 	'post',
-> 	'post.author'=>array('alias'=>'p_author'))->findAll(array(
+> 	'post.author'=>array('alias'=>'p_author')))->findAll(array(
 > 	'order'=>'author.name, p_author.name, post.title'
 > ));
 > ~~~
@@ -578,11 +590,11 @@ The above query will bring back all posts together with their approved comments.
 
 Occasionally you may need to retrieve a scoped relationship using a lazy-loading approach, instead of the normal eager loading method shown above.  In that case, the following syntax will do what you need:
 
-~~
+~~~
 [php]
 // note the repetition of the relationship name, which is necessary
 $approvedComments = $post->comments('comments:approved');
-~~
+~~~
 
 Named scopes can also be specified in the `with` option of the relational rules declared in [CActiveRecord::relations()]. In the following example, if we access `$user->posts`, it would bring back all *approved* comments of the posts.
 
@@ -668,7 +680,7 @@ In the above `array('key1'=>'key2')`:
   - `key1` is a key defined in relation specified in `through` (`posts` is this case).
   - `key2` is a key defined in a model relation points to (`Comment` in this case).
 
-`through` can be used with both `HAS_ONE` and `HAS_MANY` relations.
+`through` can be used with `HAS_ONE`, `BELONGS_TO` and `HAS_MANY` relations.
 
 
 ### `HAS_MANY` through
@@ -798,4 +810,134 @@ $teacher=User::model()->findByPk(1);
 $students=$teacher->students;
 ~~~
 
-<div class="revision">$Id$</div>
+Post-JOIN operations
+--------------------
+
+Since 1.1.15 additional post-JOIN operations could be set.
+`CBaseActiveRelation::$joinOptions` has been added.
+Consider we have the following models and relations:
+
+~~~
+[php]
+class User extends CActiveRecord
+{
+	public function relations()
+	{
+		return array(
+			'posts' => array(self::HAS_MANY, 'Post', 'user_id'),
+		);
+	}
+}
+
+class Post extends CActiveRecord
+{
+	public function relations()
+	{
+		return array(
+			'user' => array(self::BELONGS_TO, 'User', 'user_id'),
+			'tags' => array(self::MANY_MANY, 'Tag', '{{post_tag}}(post_id, tag_id)'),
+		);
+	}
+}
+
+class Tag extends CActiveRecord
+{
+	public function relations()
+	{
+		return array(
+			'posts' => array(self::MANY_MANY, 'Post', '{{post_tag}}(tag_id, post_id)'),
+		);
+	}
+}
+~~~
+
+Query code examples with `USE INDEX` clauses:
+
+~~~
+[php]
+$users=User::model()->findAll(array(
+	'select'=>'t.id,t.name',
+	'with'=>array(
+		'posts'=>array(
+			'alias'=>'p',
+			'select'=>'p.id,p.title',
+			'joinOptions'=>'USE INDEX(post__user)',
+		),
+	),
+));
+
+$posts=Post::model()->findAll(array(
+	'select'=>'t.id,t.title',
+	'with'=>array(
+		'tags'=>array(
+			'alias'=>'a',
+			'select'=>'a.id,a.name',
+			'joinOptions'=>'USE INDEX(post_tag__tag) USE INDEX(post_tag__post)',
+		),
+	),
+));
+
+$posts=Post::model()->findAll(array(
+	'select'=>'t.id,t.title',
+	'with'=>array(
+		'tags'=>array(
+			'alias'=>'a',
+			'select'=>'a.id,a.name',
+			'joinOptions'=>array(
+				'USE INDEX(post_tag__tag) USE INDEX(post_tag__post)',
+				'USE INDEX(tag__name)',
+			),
+		),
+	),
+));
+~~~
+
+Code above should generate following MySQL queries respectively:
+
+~~~
+[sql]
+SELECT
+	`t`.`id` AS `t0_c0`, `t`.`name` AS `t0_c1`,
+	`p`.`id` AS `t1_c0`, `p`.`title` AS `t1_c2`
+FROM `tbl_user` `t`
+LEFT OUTER JOIN `tbl_post` `p`
+	USE INDEX(post__user) ON (`p`.`user_id`=`t`.`id`);
+
+SELECT
+	`t`.`id` AS `t0_c0`, `t`.`title` AS `t0_c2`,
+	`a`.`id` AS `t1_c0`, `a`.`name` AS `t1_c1`
+FROM `tbl_post` `t`
+LEFT OUTER JOIN `tbl_post_tag` `tags_a`
+	USE INDEX(post_tag__tag) USE INDEX(post_tag__post) ON (`t`.`id`=`tags_a`.`post_id`)
+LEFT OUTER JOIN `tbl_tag` `a` ON (`a`.`id`=`tags_a`.`tag_id`);
+
+SELECT
+	`t`.`id` AS `t0_c0`, `t`.`title` AS `t0_c2`,
+	`a`.`id` AS `t1_c0`, `a`.`name` AS `t1_c1`
+FROM `tbl_post` `t`
+LEFT OUTER JOIN `tbl_post_tag` `tags_a`
+	USE INDEX(post_tag__tag) USE INDEX(post_tag__post) ON (`t`.`id`=`tags_a`.`post_id`)
+LEFT OUTER JOIN `tbl_tag` `a`
+	USE INDEX(tag__name) ON (`a`.`id`=`tags_a`.`tag_id`);
+~~~
+
+The `$joinOptions` query option could also be set in relation declarations as follows:
+
+~~~
+[php]
+class Post extends CActiveRecord
+{
+	public function relations()
+	{
+		return array(
+			'user' => array(self::BELONGS_TO, 'User', 'user_id'),
+			'tags' => array(self::MANY_MANY, 'Tag', '{{post_tag}}(post_id, tag_id)',
+				'joinOptions' => array(
+					'USE INDEX(post_tag__tag) USE INDEX(post_tag__post)',
+					'USE INDEX(tag__name)',
+				),
+			),
+		);
+	}
+}
+~~~

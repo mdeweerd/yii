@@ -27,10 +27,14 @@ class CJavaScript
 	 */
 	public static function quote($js,$forUrl=false)
 	{
+		$js = (string)$js;
+
+		Yii::import('system.vendors.zend-escaper.Escaper');
+		$escaper=new Escaper(Yii::app()->charset);
 		if($forUrl)
-			return strtr($js,array('%'=>'%25',"\t"=>'\t',"\n"=>'\n',"\r"=>'\r','"'=>'\"','\''=>'\\\'','\\'=>'\\\\','</'=>'<\/'));
+			return $escaper->escapeUrl($js);
 		else
-			return strtr($js,array("\t"=>'\t',"\n"=>'\n',"\r"=>'\r','"'=>'\"','\''=>'\\\'','\\'=>'\\\\','</'=>'<\/'));
+			return $escaper->escapeJs($js);
 	}
 
 	/**
@@ -78,7 +82,7 @@ class CJavaScript
 			elseif($value===INF)
 				return 'Number.POSITIVE_INFINITY';
 			else
-				return rtrim(sprintf('%.16F',$value),'0');  // locale-independent representation
+				return str_replace(',','.',(float)$value);  // locale-independent representation
 		}
 		elseif($value instanceof CJavaScriptExpression)
 			return $value->__toString();

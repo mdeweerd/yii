@@ -205,9 +205,9 @@ translated message:
 
 ~~~
 [php]
-Yii::t('app', 'n==1#one book|n>1#many books', array(1)));
+Yii::t('app', 'n==1#one book|n>1#many books', array(1));
 //or since 1.1.6
-Yii::t('app', 'n==1#one book|n>1#many books', 1));
+Yii::t('app', 'n==1#one book|n>1#many books', 1);
 ~~~
 
 As a shortcut notation, if an expression is a number, it will be treated as
@@ -301,7 +301,7 @@ which will produce:
 
 > Info: to learn about how many expressions you should supply and in which
  order they should be, please refer to CLDR
- [Language Plural Rules page](http://unicode.org/repos/cldr-tmp/trunk/diff/supplemental/language_plural_rules.html).
+ [Language Plural Rules page](http://www.unicode.org/cldr/charts/latest/supplemental/language_plural_rules.html).
 
 ### File Translation
 
@@ -381,4 +381,4 @@ predefined in the target locale data.
 formats the given number using the percentage pattern predefined in the
 target locale data.
 
-<div class="revision">$Id$</div>
+

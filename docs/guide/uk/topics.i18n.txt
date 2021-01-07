@@ -154,9 +154,9 @@ Yii підтримує [формат вибору|CChoiceFormat], відомий
 
 ~~~
 [php]
-Yii::t('app', 'n==1#one book|n>1#many books', array(1)));
+Yii::t('app', 'n==1#one book|n>1#many books', array(1));
 //or since 1.1.6
-Yii::t('app', 'n==1#one book|n>1#many books', 1));
+Yii::t('app', 'n==1#one book|n>1#many books', 1);
 ~~~
 
 Якщо перевіряється відповідність певному числу, можна використовувати скорочену запис, який буде розглядатися як `n==Number`:
@@ -248,7 +248,7 @@ Yii::t('app', '{n} cucumber|{n} cucumbers', 7);
 
 
 > Info|Інформація: число і порядок виразів можна дізнатися у розділі
- [Language Plural Rules](http://unicode.org/repos/cldr-tmp/trunk/diff/supplemental/language_plural_rules.html)
+ [Language Plural Rules](http://www.unicode.org/cldr/charts/latest/supplemental/language_plural_rules.html#uk)
  на сайті CLDR.
 
 ### Переклад файлів
@@ -264,7 +264,7 @@ Yii::t('app', '{n} cucumber|{n} cucumbers', 7);
 а [вихідна мова|CApplication::sourceLanguage] як `en_us`
  — при відображенні представлення `edit` буде проведений пошук представлення
 `protected/views/ControllerID/zh_cn/edit.php`. 
-Якщо воно знайдено — ббуде використана перекладена версія, якщо немає — вихідна,
+Якщо воно знайдено — буде використана перекладена версія, якщо немає — вихідна,
 що розташована у `protected/views/ControllerID/edit.php`.
 
 Переклад файлом можна використовувати і для інших цілей. 

@@ -98,10 +98,10 @@ class CHtmlTest extends CTestCase
 		return array(
 				array("index", "get", array(), '<form action="index" method="get">'),
 				array("index", "post", array(), '<form action="index" method="post">'),
-				array("index?myFirstParam=3&mySecondParam=true", "get", array(),
-"<form action=\"index?myFirstParam=3&amp;mySecondParam=true\" method=\"get\">\n".
-"<div style=\"display:none\"><input type=\"hidden\" value=\"3\" name=\"myFirstParam\" />\n".
-"<input type=\"hidden\" value=\"true\" name=\"mySecondParam\" /></div>"),
+				array("index?myFirstParam=3&mySecondParam=true#anchor", "get", array(),
+"<form action=\"index?myFirstParam=3&amp;mySecondParam=true#anchor\" method=\"get\">\n".
+"<input type=\"hidden\" value=\"3\" name=\"myFirstParam\" />\n".
+"<input type=\"hidden\" value=\"true\" name=\"mySecondParam\" />"),
 
 			);
 	}
@@ -342,6 +342,11 @@ class CHtmlTest extends CTestCase
 				array('async'=>true),
 				"<script type=\"text/javascript\" async=\"async\">\n/*<![CDATA[*/\nvar a = 10;\n/*]]>*/\n</script>"
 			),
+            array(
+                'var a = 10;',
+                array('async'=>false),
+                "<script type=\"text/javascript\" async=\"false\">\n/*<![CDATA[*/\nvar a = 10;\n/*]]>*/\n</script>"
+            ),
 		);
 	}
 
@@ -537,10 +542,6 @@ class CHtmlTest extends CTestCase
 			array(array('k1'=>'v1','k2'=>'v2','v3','v4'),array('CHtmlTest','helperTestValue'),null,'v2'),
 			array((object)array('k1'=>'v1','k2'=>'v2','v3','v4'),array('CHtmlTest','helperTestValue'),null,'v2'),
 
-			// create_function is not supported by CHtml::value(), we're just testing this feature/property
-			array(array('k1'=>'v1','k2'=>'v2','v3','v4'),create_function('$model','return $model["k2"];'),null,null),
-			array((object)array('k1'=>'v1','k2'=>'v2','v3','v4'),create_function('$model','return $model->k2;'),null,null),
-
 			// standard PHP functions should not be treated as callables
 			array(array('array_filter'=>'array_filter','sort'=>'sort'),'sort',null,'sort'),
 			array(array('array_filter'=>'array_filter','sort'=>'sort'),'array_map','defaultValue','defaultValue'),
@@ -569,6 +570,15 @@ class CHtmlTest extends CTestCase
 			array(array('v1'),0,'defaultValue','v1'),
 			array(array('v1'),0.0,'defaultValue','v1'),
 		);
+
+		// create_function is not supported by CHtml::value(), we're just testing this feature/property
+		if(version_compare(PHP_VERSION,'8.0','<')) {
+			$result=array_merge($result, array(
+				array(array('k1' => 'v1', 'k2' => 'v2', 'v3', 'v4'), create_function('$model', 'return $model["k2"];'), null, null),
+				array((object)array('k1' => 'v1', 'k2' => 'v2', 'v3', 'v4'), create_function('$model', 'return $model->k2;'), null, null),
+			));
+		}
+
 		if(class_exists('Closure',false))
 		{
 			// anonymous function
@@ -793,6 +803,7 @@ class CHtmlTest extends CTestCase
 			array(true, 'userName', array('for'=>'someTestingInput'), '<label class="error" for="someTestingInput">User Name</label>'),
 			array(true, 'firstName', array('label'=>'Custom Label'), '<label for="CHtmlTestActiveModel_firstName">Custom Label</label>'),
 			array(true, 'userName', array('label'=>false), ''),
+			array(false, '[1]userName', array('for'=>'customFor'), '<label for="customFor">User Name</label>'),
 		);
 	}
 
@@ -1017,7 +1028,7 @@ class CHtmlTest extends CTestCase
 			array('link-button', array(), '<a href="#" id="yt0">link-button</a>',
 				"jQuery('body').on('click','#yt0',function(){jQuery.yii.submitForm(this,'',{});return false;});"),
 			array('link-button', array('href'=>'http://yiiframework.com/'), '<a href="#" id="yt0">link-button</a>',
-				"jQuery('body').on('click','#yt0',function(){jQuery.yii.submitForm(this,'http://yiiframework.com/',{});return false;});"),
+				"jQuery('body').on('click','#yt0',function(){jQuery.yii.submitForm(this,'http\\x3A\\x2F\\x2Fyiiframework.com\\x2F',{});return false;});"),
 		);
 	}
 
@@ -1035,7 +1046,7 @@ class CHtmlTest extends CTestCase
 
 		$output='';
 		Yii::app()->getClientScript()->renderBodyEnd($output);
-		$this->assertTrue(mb_strpos($output, $clientScriptOutput)!==false);
+		$this->assertContains($clientScriptOutput, $output);
 	}
 
 	public function testAjaxCallbacks()
@@ -1082,18 +1093,6 @@ class CHtmlTestModel extends CModel
 	 * @property mixed $attr4
 	 */
 	public $attr4;
-
-	public function __constructor(array $properties)
-	{
-		foreach($properties as $property=>$value)
-		{
-			if(!property_exists($this, $property))
-			{
-				throw new Exception("$property is not a property of this class, and I'm not allowing you to add it!");
-			}
-			$this->{$property} = $value;
-		}
-	}
 
     /**
 	 * Returns the list of attribute names.

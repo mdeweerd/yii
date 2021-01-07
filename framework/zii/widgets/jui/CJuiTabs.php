@@ -39,6 +39,20 @@ Yii::import('zii.widgets.jui.CJuiWidget');
  * {@link http://jqueryui.com/tabs/ JUI Tabs page} for general
  * description and demo.
  *
+ * Note, in case you're using &lt;base/&gt; HTML tag you may run into the
+ * issue when jQuery UI uses altered base URL to load content, but not
+ * the base URL content was loaded from. (Developer may expect both behavior
+ * in different cases.) For this occasion consider using absolute URL
+ * generation as follows:
+ *
+ * <pre>
+ * $this->widget('zii.widgets.jui.CJuiTabs',array(
+ *     'tabs'=>array(
+ *         'Dynamic Tab'=>array('ajax'=>$this->createAbsoluteUrl('tab/content/route')),
+ *     ),
+ * ));
+ * </pre>
+ *
  * @author Sebastian Thierer <sebathi@gmail.com>
  * @package zii.widgets.jui
  * @since 1.1
@@ -68,7 +82,7 @@ class CJuiTabs extends CJuiWidget
 	 * The token "{title}" in the template will be replaced with the panel title and
 	 * the token "{url}" will be replaced with "#TabID" or with the url of the ajax request.
 	 */
-	public $headerTemplate='<li><a href="{url}" title="{id}">{title}</a></li>';
+	public $headerTemplate='<li><a href="{url}" title="{title}">{title}</a></li>';
 	/**
 	 * @var string the template that is used to generated every tab content.
 	 * The token "{content}" in the template will be replaced with the panel content
@@ -120,16 +134,5 @@ class CJuiTabs extends CJuiWidget
 
 		$options=CJavaScript::encode($this->options);
 		Yii::app()->getClientScript()->registerScript(__CLASS__.'#'.$id,"jQuery('#{$id}').tabs($options);");
-	}
-
-	/**
-	 * Registers the core script files.
-	 * This method overrides the parent implementation by registering the cookie plugin when cookie option is used.
-	 */
-	protected function registerCoreScripts()
-	{
-		parent::registerCoreScripts();
-		if(isset($this->options['cookie']))
-			Yii::app()->getClientScript()->registerCoreScript('cookie');
 	}
 }

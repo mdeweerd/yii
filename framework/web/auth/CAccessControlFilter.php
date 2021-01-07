@@ -173,6 +173,7 @@ class CAccessControlFilter extends CFilter
 	 * This method is invoked when access check fails.
 	 * @param IWebUser $user the current user
 	 * @param string $message the error message to be displayed
+	 * @throws CHttpException
 	 */
 	protected function accessDenied($user,$message)
 	{
@@ -306,7 +307,7 @@ class CAccessRule extends CComponent
 	 */
 	protected function isControllerMatched($controller)
 	{
-		return empty($this->controllers) || in_array(strtolower($controller->getId()),$this->controllers);
+		return empty($this->controllers) || in_array(strtolower($controller->getUniqueId()),$this->controllers);
 	}
 
 	/**

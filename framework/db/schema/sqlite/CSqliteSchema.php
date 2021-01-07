@@ -21,47 +21,53 @@ class CSqliteSchema extends CDbSchema
 	 * @var array the abstract column types mapped to physical column types.
 	 * @since 1.1.6
 	 */
-    public $columnTypes=array(
-        'pk' => 'integer PRIMARY KEY AUTOINCREMENT NOT NULL',
-        'string' => 'varchar(255)',
-        'text' => 'text',
-        'integer' => 'integer',
-        'float' => 'float',
-        'decimal' => 'decimal',
-        'datetime' => 'datetime',
-        'timestamp' => 'timestamp',
-        'time' => 'time',
-        'date' => 'date',
-        'binary' => 'blob',
-        'boolean' => 'tinyint(1)',
+	public $columnTypes=array(
+		'pk' => 'integer PRIMARY KEY AUTOINCREMENT NOT NULL',
+		'bigpk' => 'integer PRIMARY KEY AUTOINCREMENT NOT NULL',
+		'string' => 'varchar(255)',
+		'text' => 'text',
+		'integer' => 'integer',
+		'bigint' => 'integer',
+		'float' => 'float',
+		'decimal' => 'decimal',
+		'datetime' => 'datetime',
+		'timestamp' => 'timestamp',
+		'time' => 'time',
+		'date' => 'date',
+		'binary' => 'blob',
+		'boolean' => 'tinyint(1)',
 		'money' => 'decimal(19,4)',
 	);
 
 	/**
 	 * Resets the sequence value of a table's primary key.
 	 * The sequence will be reset such that the primary key of the next new row inserted
-	 * will have the specified value or 1.
+	 * will have the specified value or max value of a primary key plus one (i.e. sequence trimming).
 	 * @param CDbTableSchema $table the table schema whose primary key sequence will be reset
-	 * @param mixed $value the value for the primary key of the next new row inserted. If this is not set,
-	 * the next new row's primary key will have a value 1.
+	 * @param integer|null $value the value for the primary key of the next new row inserted.
+	 * If this is not set, the next new row's primary key will have the max value of a primary
+	 * key plus one (i.e. sequence trimming).
 	 * @since 1.1
 	 */
 	public function resetSequence($table,$value=null)
 	{
-		if($table->sequenceName!==null)
+		if($table->sequenceName===null)
+			return;
+		if($value!==null)
+			$value=(int)($value)-1;
+		else
+			$value=(int)$this->getDbConnection()
+				->createCommand("SELECT MAX(`{$table->primaryKey}`) FROM {$table->rawName}")
+				->queryScalar();
+		try
 		{
-			if($value===null)
-				$value=$this->getDbConnection()->createCommand("SELECT MAX(`{$table->primaryKey}`) FROM {$table->rawName}")->queryScalar();
-			else
-				$value=(int)$value-1;
-			try
-			{
-				// it's possible sqlite_sequence does not exist
-				$this->getDbConnection()->createCommand("UPDATE sqlite_sequence SET seq='$value' WHERE name='{$table->name}'")->execute();
-			}
-			catch(Exception $e)
-			{
-			}
+			// it's possible that 'sqlite_sequence' does not exist
+			$this->getDbConnection()
+				->createCommand("UPDATE sqlite_sequence SET seq='$value' WHERE name='{$table->name}'")
+				->execute();
+		}
+		catch(Exception $e)
+		{
 		}
 	}
 
@@ -219,6 +225,7 @@ class CSqliteSchema extends CDbSchema
 	 * @param string $column the name of the column to be dropped. The name will be properly quoted by the method.
 	 * @return string the SQL statement for dropping a DB column.
 	 * @since 1.1.6
+	 * @throws CDbException
 	 */
 	public function dropColumn($table, $column)
 	{
@@ -233,6 +240,7 @@ class CSqliteSchema extends CDbSchema
 	 * @param string $newName the new name of the column. The name will be properly quoted by the method.
 	 * @return string the SQL statement for renaming a DB column.
 	 * @since 1.1.6
+	 * @throws CDbException
 	 */
 	public function renameColumn($table, $name, $newName)
 	{
@@ -251,6 +259,7 @@ class CSqliteSchema extends CDbSchema
 	 * @param string $update the ON UPDATE option. Most DBMS support these options: RESTRICT, CASCADE, NO ACTION, SET DEFAULT, SET NULL
 	 * @return string the SQL statement for adding a foreign key constraint to an existing table.
 	 * @since 1.1.6
+	 * @throws CDbException
 	 */
 	public function addForeignKey($name, $table, $columns, $refTable, $refColumns, $delete=null, $update=null)
 	{
@@ -264,6 +273,7 @@ class CSqliteSchema extends CDbSchema
 	 * @param string $table the table whose foreign is to be dropped. The name will be properly quoted by the method.
 	 * @return string the SQL statement for dropping a foreign key constraint.
 	 * @since 1.1.6
+	 * @throws CDbException
 	 */
 	public function dropForeignKey($name, $table)
 	{
@@ -280,6 +290,7 @@ class CSqliteSchema extends CDbSchema
 	 * For example, 'string' will be turned into 'varchar(255)', while 'string not null' will become 'varchar(255) not null'.
 	 * @return string the SQL statement for changing the definition of a column.
 	 * @since 1.1.6
+	 * @throws CDbException
 	 */
 	public function alterColumn($table, $column, $type)
 	{
@@ -306,6 +317,7 @@ class CSqliteSchema extends CDbSchema
 	 * @param string|array $columns comma separated string or array of columns that the primary key will consist of.
 	 * @return string the SQL statement for adding a primary key constraint to an existing table.
 	 * @since 1.1.13
+	 * @throws CDbException
 	 */
 	public function addPrimaryKey($name,$table,$columns)
 	{
@@ -320,6 +332,7 @@ class CSqliteSchema extends CDbSchema
 	 * @param string $table the table that the primary key constraint will be removed from.
 	 * @return string the SQL statement for removing a primary key constraint from an existing table.
 	 * @since 1.1.13
+	 * @throws CDbException
 	 */
 	public function dropPrimaryKey($name,$table)
 	{

@@ -39,6 +39,8 @@
  *
  * By default, {@link CApplication} registers {@link CFormatter} as an application component whose ID is 'format'.
  * Therefore, one may call <code>Yii::app()->format->boolean(1)</code>.
+ * You might want to replace this component with {@link CLocalizedFormatter} to enable formatting based on the
+ * current locale settings.
  *
  * @property CHtmlPurifier $htmlPurifier The HTML purifier instance.
  *
@@ -166,7 +168,7 @@ class CFormatter extends CApplicationComponent
 		{
 			$value='<p>'.str_replace(array("\r\n", "\n", "\r"), '</p><p>',$value).'</p>';
 			if($removeEmptyParagraphs)
-     			$value=preg_replace('/(<\/p><p>){2,}/i','</p><p>',$value);
+				$value=preg_replace('/(<\/p><p>){2,}/i','</p><p>',$value);
 			return $value;
 		}
 		else
@@ -221,18 +223,21 @@ class CFormatter extends CApplicationComponent
 	/**
 	 * Normalizes an expression as a timestamp.
 	 * @param mixed $time the time expression to be normalized
-	 * @return int the normalized result
+	 * @return int the normalized result as a UNIX timestamp
 	 */
 	protected function normalizeDateValue($time)
 	{
 		if(is_string($time))
 		{
-			if(ctype_digit($time) || ($time{0}=='-' && ctype_digit(substr($time, 1))))
+			if(ctype_digit($time) || ($time[0]=='-' && ctype_digit(substr($time, 1))))
 				return (int)$time;
 			else
 				return strtotime($time);
 		}
-		return (int)$time;
+		elseif (class_exists('DateTime', false) && $time instanceof DateTime)
+			return $time->getTimestamp();
+		else
+			return (int)$time;
 	}
 
 	/**

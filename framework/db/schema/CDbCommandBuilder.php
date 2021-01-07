@@ -137,11 +137,11 @@ class CDbCommandBuilder extends CComponent
 				{
 					$pk=array();
 					foreach($table->primaryKey as $key)
-						$pk[]=$alias.'.'.$key;
+						$pk[]=$alias.'.'.$this->_schema->quoteColumnName($key);
 					$pk=implode(', ',$pk);
 				}
 				else
-					$pk=$alias.'.'.$table->primaryKey;
+					$pk=$alias.'.'.$this->_schema->quoteColumnName($table->primaryKey);
 				$sql="SELECT COUNT(DISTINCT $pk)";
 			}
 			else
@@ -237,7 +237,7 @@ class CDbCommandBuilder extends CComponent
 			foreach($pks as $pk)
 			{
 				$fields[]=$table->getColumn($pk)->rawName;
-				$placeholders[]='NULL';
+				$placeholders[]=$this->getIntegerPrimaryKeyDefaultValue();
 			}
 		}
 		$sql="INSERT INTO {$table->rawName} (".implode(', ',$fields).') VALUES ('.implode(', ',$placeholders).')';
@@ -273,9 +273,12 @@ class CDbCommandBuilder extends CComponent
 	 * If a key is not a valid column name, the corresponding value will be ignored.
 	 * @param array $templates templates for the SQL parts.
 	 * @return CDbCommand multiple insert command
+	 * @throws CDbException if $data is empty.
 	 */
 	protected function composeMultipleInsertCommand($table,array $data,array $templates=array())
 	{
+		if (empty($data))
+			throw new CDbException(Yii::t('yii','Can not generate multiple insert command with empty data set.'));
 		$templates=array_merge(
 			array(
 				'main'=>'INSERT INTO {{tableName}} ({{columnInsertNames}}) VALUES {{rowInsertValues}}',
@@ -288,7 +291,7 @@ class CDbCommandBuilder extends CComponent
 			$templates
 		);
 		$this->ensureTable($table);
-		$tableName=$this->getDbConnection()->quoteTableName($table->name);
+		$tableName=$table->rawName;
 		$params=array();
 		$columnInsertNames=array();
 		$rowInsertValues=array();
@@ -499,7 +502,7 @@ class CDbCommandBuilder extends CComponent
 
 	/**
 	 * Alters the SQL to apply LIMIT and OFFSET.
-	 * Default implementation is applicable for PostgreSQL, MySQL and SQLite.
+	 * Default implementation is applicable for PostgreSQL, MySQL, MariaDB and SQLite.
 	 * @param string $sql SQL query string without LIMIT and OFFSET.
 	 * @param integer $limit maximum number of rows, -1 to ignore limit.
 	 * @param integer $offset row offset, -1 to ignore offset.
@@ -736,11 +739,11 @@ class CDbCommandBuilder extends CComponent
 			$condition=array();
 			foreach($keywords as $keyword)
 			{
-				$keyword='%'.strtr($keyword,array('%'=>'\%', '_'=>'\_')).'%';
+				$keyword='%'.strtr($keyword,array('%'=>'\%', '_'=>'\_', '\\'=>'\\\\')).'%';
 				if($caseSensitive)
-					$condition[]=$prefix.$column->rawName.' LIKE '.$this->_connection->quoteValue('%'.$keyword.'%');
+					$condition[]=$prefix.$column->rawName.' LIKE '.$this->_connection->quoteValue($keyword);
 				else
-					$condition[]='LOWER('.$prefix.$column->rawName.') LIKE LOWER('.$this->_connection->quoteValue('%'.$keyword.'%').')';
+					$condition[]='LOWER('.$prefix.$column->rawName.') LIKE LOWER('.$this->_connection->quoteValue($keyword).')';
 			}
 			$conditions[]=implode(' AND ',$condition);
 		}
@@ -858,5 +861,16 @@ class CDbCommandBuilder extends CComponent
 		if(is_string($table) && ($table=$this->_schema->getTable($tableName=$table))===null)
 			throw new CDbException(Yii::t('yii','Table "{table}" does not exist.',
 				array('{table}'=>$tableName)));
+	}
+
+	/**
+	 * Returns default value of the integer/serial primary key. Default value means that the next
+	 * autoincrement/sequence value would be used.
+	 * @return string default value of the integer/serial primary key.
+	 * @since 1.1.14
+	 */
+	protected function getIntegerPrimaryKeyDefaultValue()
+	{
+		return 'NULL';
 	}
 }
