@@ -298,7 +298,7 @@ class CMysqlSchema extends CDbSchema
 			$row=array_values($row);
 			$sql=$row[1];
 		}
-		if(preg_match_all('/^\s*[`"](.*?)[`"]\s+(.*?),?$/m',$sql,$matches))
+		if(preg_match_all('/^\s*[`"](.*?)[`"]\s+(.*?),?$/m',$sql,/* @var string[] $matches */ $matches))
 		{
 			foreach($matches[1] as $i=>$c)
 			{
@@ -342,7 +342,7 @@ class CMysqlSchema extends CDbSchema
 		return 'ALTER TABLE ' . $this->quoteTableName($table) . ' DROP PRIMARY KEY';
 
 	}
-	
+
 	/**
 	 * Builds a SQL statement for adding a primary key constraint to a table.
 	 * @param string $name not used in the MySQL syntax, the primary key is always called PRIMARY and is reserved.

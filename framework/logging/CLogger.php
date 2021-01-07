@@ -89,7 +89,7 @@ class CLogger extends CComponent
 	 * @param string $message message to be logged
 	 * @param string $level level of the message (e.g. 'Trace', 'Warning', 'Error'). It is case-insensitive.
 	 * @param string $category category of the message (e.g. 'system.web'). It is case-insensitive.
-	 * @see getLogs
+	 * @see self::getLogs
 	 */
 	public function log($message,$level='info',$category='application')
 	{

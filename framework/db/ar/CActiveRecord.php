@@ -48,7 +48,7 @@ abstract class CActiveRecord extends CModel
 	/**
 	 * @var CDbConnection the default database connection for all active record classes.
 	 * By default, this is the 'db' application component.
-	 * @see getDbConnection
+	 * @see self::getDbConnection
 	 */
 	public static $db;
 
@@ -65,7 +65,7 @@ abstract class CActiveRecord extends CModel
 
 	/**
 	 * Constructor.
-	 * @param string $scenario scenario name. See {@link CModel::scenario} for more details about this parameter.
+	 * @param ?string $scenario scenario name. See {@link CModel::scenario} for more details about this parameter.
 	 * Note: in order to setup initial model parameters use {@link init()} or {@link afterConstruct()}.
 	 * Do NOT override the constructor unless it is absolutely necessary!
 	 */
@@ -129,7 +129,7 @@ abstract class CActiveRecord extends CModel
 	 * This method is overridden so that AR attributes can be accessed like properties.
 	 * @param string $name property name
 	 * @return mixed property value
-	 * @see getAttribute
+	 * @see self::getAttribute
 	 */
 	public function __get($name)
 	{
@@ -356,7 +356,7 @@ abstract class CActiveRecord extends CModel
 	}
 
 	/**
-	 * Resets all scopes and criterias applied.
+	 * Resets all scopes and criteria applied.
 	 *
 	 * @param boolean $resetDefault including default scope. This parameter available since 1.1.12
 	 * @return static the AR instance itself
@@ -535,7 +535,7 @@ abstract class CActiveRecord extends CModel
 	 * );
 	 * </pre>
 	 *
-	 * @return array list of related object declarations. Defaults to empty array.
+	 * @return array<string,mixed[]> list of related object declarations. Defaults to empty array.
 	 */
 	public function relations()
 	{
@@ -596,7 +596,7 @@ abstract class CActiveRecord extends CModel
 	 * then this method will derive the label from the "author" relation's "name" attribute.
 	 * @param string $attribute the attribute name
 	 * @return string the attribute label
-	 * @see generateAttributeLabel
+	 * @see CModel::generateAttributeLabel()
 	 * @since 1.1.4
 	 */
 	public function getAttributeLabel($attribute)
@@ -691,7 +691,7 @@ abstract class CActiveRecord extends CModel
 	 * You may also use $this->AttributeName to obtain the attribute value.
 	 * @param string $name the attribute name
 	 * @return mixed the attribute value. Null if the attribute is not set or does not exist.
-	 * @see hasAttribute
+	 * @see self::hasAttribute
 	 */
 	public function getAttribute($name)
 	{
@@ -707,7 +707,7 @@ abstract class CActiveRecord extends CModel
 	 * @param string $name the attribute name
 	 * @param mixed $value the attribute value.
 	 * @return boolean whether the attribute exists and the assignment is conducted successfully
-	 * @see hasAttribute
+	 * @see self::hasAttribute
 	 */
 	public function setAttribute($name,$value)
 	{
@@ -759,7 +759,7 @@ abstract class CActiveRecord extends CModel
 	public function getAttributes($names=true)
 	{
 		$attributes=$this->_attributes;
-		foreach($this->getMetaData()->columns as $name=>$column)
+		foreach(array_keys($this->getMetaData()->columns) as $name)
 		{
 			if(property_exists($this,$name))
 				$attributes[$name]=$this->$name;
@@ -801,7 +801,7 @@ abstract class CActiveRecord extends CModel
 	 *
 	 * @param boolean $runValidation whether to perform validation before saving the record.
 	 * If the validation fails, the record will not be saved to database.
-	 * @param array $attributes list of attributes that need to be saved. Defaults to null,
+	 * @param ?array $attributes list of attributes that need to be saved. Defaults to null,
 	 * meaning all attributes that are loaded from DB will be saved.
 	 * @return boolean whether the saving succeeds
 	 */
@@ -829,7 +829,7 @@ abstract class CActiveRecord extends CModel
 	/**
 	 * Sets if the record is new.
 	 * @param boolean $value whether the record is new and should be inserted when calling {@link save}.
-	 * @see getIsNewRecord
+	 * @see self::getIsNewRecord
 	 */
 	public function setIsNewRecord($value)
 	{
@@ -886,7 +886,7 @@ abstract class CActiveRecord extends CModel
 	 * Please note that modification of criteria is fully supported as of version 1.1.13.
 	 * Earlier versions had some problems with relational context and applying changes correctly.
 	 * @param CModelEvent $event the event parameter
-	 * @see beforeFind
+	 * @see CActiveRecord::beforeFind()
 	 */
 	public function onBeforeFind($event)
 	{
@@ -923,7 +923,7 @@ abstract class CActiveRecord extends CModel
 	 * table alias which is different on normal count and relational call.
 	 * You can use {@link getTableAlias()} to get the alias used for the upcoming count call.
 	 * @param CModelEvent $event the event parameter
-	 * @see beforeCount
+	 * @see CActiveRecord::beforeCount()
 	 * @since 1.1.14
 	 */
 	public function onBeforeCount($event)
@@ -1113,7 +1113,7 @@ abstract class CActiveRecord extends CModel
 	 * Updates the row represented by this active record.
 	 * All loaded attributes will be saved to the database.
 	 * Note, validation is not performed in this method. You may call {@link validate} to perform the validation.
-	 * @param array $attributes list of attributes that need to be saved. Defaults to null,
+	 * @param ?array $attributes list of attributes that need to be saved. Defaults to null,
 	 * meaning all attributes that are loaded from DB will be saved.
 	 * @return boolean whether the update is successful
 	 * @throws CDbException if the record is new
@@ -1195,7 +1195,7 @@ abstract class CActiveRecord extends CModel
 	 * Use negative values if you want to decrease the counters.
 	 * @param array $counters the counters to be updated (column name=>increment value)
 	 * @return boolean whether the saving is successful
-	 * @see updateCounters
+	 * @see self::updateCounters
 	 * @since 1.1.8
 	 */
 	public function saveCounters($counters)
@@ -1249,7 +1249,7 @@ abstract class CActiveRecord extends CModel
 		{
 			$this->_attributes=array();
 			$this->_related=array();
-			foreach($this->getMetaData()->columns as $name=>$column)
+			foreach(array_keys($this->getMetaData()->columns) as $name)
 			{
 				if(property_exists($this,$name))
 					$this->$name=$record->$name;
@@ -1595,7 +1595,7 @@ abstract class CActiveRecord extends CModel
 	 * See {@link find()} for detailed explanation about $condition and $params.
 	 * @param mixed $condition query condition or criteria.
 	 * @param array $params parameters to be bound to an SQL statement.
-	 * @return string the number of rows satisfying the specified query condition. Note: type is string to keep max. precision.
+	 * @return int the number of rows satisfying the specified query condition. Note: type is string to keep max. precision.
 	 */
 	public function count($condition='',$params=array())
 	{
@@ -1782,7 +1782,7 @@ abstract class CActiveRecord extends CModel
 	 * @param mixed $condition query condition or criteria.
 	 * @param array $params parameters to be bound to an SQL statement.
 	 * @return integer the number of rows being updated
-	 * @see saveCounters
+	 * @see self::saveCounters
 	 */
 	public function updateCounters($counters,$condition='',$params=array())
 	{
@@ -1848,7 +1848,7 @@ abstract class CActiveRecord extends CModel
 	/**
 	 * Creates an active record with the given attributes.
 	 * This method is internally used by the find methods.
-	 * @param array $attributes attribute values (column name=>column value)
+	 * @param array|false $attributes attribute values (column name=>column value)
 	 * @param boolean $callAfterFind whether to call {@link afterFind} after the record is populated.
 	 * @return static|null the newly created active record. The class of the object is the same as the model class.
 	 * Null is returned if the input data is false.
@@ -2339,7 +2339,7 @@ class CManyManyRelation extends CHasManyRelation
 	 */
 	private function initJunctionData()
 	{
-		if(!preg_match('/^\s*(.*?)\((.*)\)\s*$/',$this->foreignKey,$matches))
+		if(!preg_match('/^\s*(.*?)\((.*)\)\s*$/',$this->foreignKey,/* @var string[] $matches */ $matches))
 			throw new CDbException(Yii::t('yii','The relation "{relation}" in active record class "{class}" is specified with an invalid foreign key. The format of the foreign key must be "joinTable(fk1,fk2,...)".',
 				array('{class}'=>$this->className,'{relation}'=>$this->name)));
 		$this->_junctionTableName=$matches[1];
@@ -2389,7 +2389,7 @@ class CActiveRecordMetaData
 		if(($table=$model->getDbConnection()->getSchema()->getTable($tableName))===null)
 			throw new CDbException(Yii::t('yii','The table "{table}" for active record class "{class}" cannot be found in the database.',
 				array('{class}'=>$this->_modelClassName,'{table}'=>$tableName)));
-				
+
 		if(($modelPk=$model->primaryKey())!==null || $table->primaryKey===null)
 		{
 			$table->primaryKey=$modelPk;

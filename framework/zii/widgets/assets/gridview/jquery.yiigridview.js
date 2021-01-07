@@ -88,6 +88,7 @@
 				gridSettings[id] = settings;
 
 				if (settings.ajaxUpdate.length > 0) {
+					$(document).off('click.yiiGridView', settings.updateSelector);
 					$(document).on('click.yiiGridView', settings.updateSelector, function () {
 						// Check to see if History.js is enabled for our Browser
 						if (settings.enableHistory && window.History.enabled) {
@@ -109,6 +110,7 @@
 					});
 				}
 
+				$(document).off('change.yiiGridView keydown.yiiGridView', settings.filterSelector);
 				$(document).on('change.yiiGridView keydown.yiiGridView', settings.filterSelector, function (event) {
 					if (event.type === 'keydown') {
 						if (event.keyCode !== 13) {
@@ -156,6 +158,7 @@
 
 				if (settings.selectableRows > 0) {
 					selectCheckedRows(this.id);
+					$(document).off('click.yiiGridView', '#' + id + ' .' + settings.tableClass + ' > tbody > tr');
 					$(document).on('click.yiiGridView', '#' + id + ' .' + settings.tableClass + ' > tbody > tr', function (e) {
 						var $currentGrid, $row, isRowSelected, $checks,
 							$target = $(e.target);
@@ -181,6 +184,7 @@
 						}
 					});
 					if (settings.selectableRows > 1) {
+						$(document).off('click.yiiGridView', '#' + id + ' .select-on-check-all');
 						$(document).on('click.yiiGridView', '#' + id + ' .select-on-check-all', function () {
 							var $currentGrid = $('#' + id),
 								$checks = $('input.select-on-check', $currentGrid),
@@ -201,6 +205,7 @@
 						});
 					}
 				} else {
+					$(document).off('click.yiiGridView', '#' + id + ' .select-on-check');
 					$(document).on('click.yiiGridView', '#' + id + ' .select-on-check', false);
 				}
 			});

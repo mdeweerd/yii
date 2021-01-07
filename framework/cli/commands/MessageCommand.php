@@ -138,7 +138,7 @@ EOD;
 
 		foreach ($translator as $currentTranslator)
 		{
-			$n=preg_match_all('/\b'.$currentTranslator.'\s*\(\s*(\'[\w.\/]*?(?<!\.)\'|"[\w.]*?(?<!\.)")\s*,\s*(\'.*?(?<!\\\\)\'|".*?(?<!\\\\)")\s*[,\)]/s',$subject,$matches,PREG_SET_ORDER);
+			$n=preg_match_all('/\b'.$currentTranslator.'\s*\(\s*(\'[\w.\/]*?(?<!\.)\'|"[\w.]*?(?<!\.)")\s*,\s*(\'.*?(?<!\\\\)\'|".*?(?<!\\\\)")\s*[,\)]/s',$subject,/* @var string[] $matches */ $matches,PREG_SET_ORDER);
 
 			for($i=0;$i<$n;++$i)
 			{
@@ -178,7 +178,8 @@ EOD;
 			$untranslated=array();
 			foreach($messages as $message)
 			{
-				if(array_key_exists($message,$translated) && strlen($translated[$message])>0)
+                                if(!is_string($message)) continue;
+				if(is_array($translated)&&array_key_exists($message,$translated) && strlen($translated[$message])>0)
 					$merged[$message]=$translated[$message];
 				else
 					$untranslated[]=$message;

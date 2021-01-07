@@ -67,7 +67,7 @@ class Text_Diff_Engine_shell {
         // 1,2c4,6
         // 1,5d6
         preg_match_all('#^(\d+)(?:,(\d+))?([adc])(\d+)(?:,(\d+))?$#m', $diff,
-            $matches, PREG_SET_ORDER);
+            /* @var string[] $matches */ $matches, PREG_SET_ORDER);
 
         foreach ($matches as $match) {
             if (!isset($match[5])) {

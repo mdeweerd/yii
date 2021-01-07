@@ -91,6 +91,8 @@ class CComponent
 	private $_e;
 	private $_m;
 
+	private $_behaviorsToAttach=null; // Behaviors not actually attached.
+
 	/**
 	 * Returns a property value, an event handler list or a behavior based on its name.
 	 * Do not call this method. This is a PHP magic method that we override
@@ -102,14 +104,15 @@ class CComponent
 	 * @param string $name the property name or event name
 	 * @return mixed the property value, event handlers attached to the event, or the named behavior
 	 * @throws CException if the property or event is not defined
-	 * @see __set
+	 * @see self::__set
 	 */
 	public function __get($name)
 	{
 		$getter='get'.$name;
 		if(method_exists($this,$getter))
 			return $this->$getter();
-		elseif(strncasecmp($name,'on',2)===0 && method_exists($this,$name))
+		$this->ensureBehaviors();
+		if(strncasecmp($name,'on',2)===0 && method_exists($this,$name))
 		{
 			// duplicating getEventHandlers() here for performance
 			$name=strtolower($name);
@@ -141,37 +144,44 @@ class CComponent
 	 * </pre>
 	 * @param string $name the property name or the event name
 	 * @param mixed $value the property value or callback
-	 * @return mixed
+	 * @return void (was mixed)
 	 * @throws CException if the property/event is not defined or the property is read only.
-	 * @see __get
+	 * @see self::__get
 	 */
 	public function __set($name,$value)
 	{
 		$setter='set'.$name;
-		if(method_exists($this,$setter))
-			return $this->$setter($value);
-		elseif(strncasecmp($name,'on',2)===0 && method_exists($this,$name))
+		if(method_exists($this,$setter)) {
+			$this->$setter($value);
+			return;
+		}
+		$this->ensureBehaviors();
+		if(strncasecmp($name,'on',2)===0 && method_exists($this,$name))
 		{
 			// duplicating getEventHandlers() here for performance
 			$name=strtolower($name);
 			if(!isset($this->_e[$name]))
 				$this->_e[$name]=new CList;
-			return $this->_e[$name]->add($value);
+			$this->_e[$name]->add($value);
+                        return;
 		}
 		elseif(is_array($this->_m))
 		{
 			foreach($this->_m as $object)
 			{
-				if($object->getEnabled() && (property_exists($object,$name) || $object->canSetProperty($name)))
-					return $object->$name=$value;
+				if($object->getEnabled() && (property_exists($object,$name) || $object->canSetProperty($name))) {
+					$object->$name=$value;
+					return;
+				}
 			}
 		}
-		if(method_exists($this,'get'.$name))
+		if(method_exists($this,'get'.$name)) {
 			throw new CException(Yii::t('yii','Property "{class}.{property}" is read only.',
 				array('{class}'=>get_class($this), '{property}'=>$name)));
-		else
+		} else {
 			throw new CException(Yii::t('yii','Property "{class}.{property}" is not defined.',
 				array('{class}'=>get_class($this), '{property}'=>$name)));
+                }
 	}
 
 	/**
@@ -186,7 +196,8 @@ class CComponent
 		$getter='get'.$name;
 		if(method_exists($this,$getter))
 			return $this->$getter()!==null;
-		elseif(strncasecmp($name,'on',2)===0 && method_exists($this,$name))
+		$this->ensureBehaviors();
+		if(strncasecmp($name,'on',2)===0 && method_exists($this,$name))
 		{
 			$name=strtolower($name);
 			return isset($this->_e[$name]) && $this->_e[$name]->getCount();
@@ -210,14 +221,15 @@ class CComponent
 	 * to allow using unset() to set a component property to be null.
 	 * @param string $name the property name or the event name
 	 * @throws CException if the property is read only.
-	 * @return mixed
+	 * @return void
 	 */
 	public function __unset($name)
 	{
 		$setter='set'.$name;
 		if(method_exists($this,$setter))
 			$this->$setter(null);
-		elseif(strncasecmp($name,'on',2)===0 && method_exists($this,$name))
+		$this->ensureBehaviors();
+		if(strncasecmp($name,'on',2)===0 && method_exists($this,$name))
 			unset($this->_e[strtolower($name)]);
 		elseif(is_array($this->_m))
 		{
@@ -230,9 +242,10 @@ class CComponent
 					if($object->getEnabled())
 					{
 						if(property_exists($object,$name))
-							return $object->$name=null;
+							$object->$name=null;
 						elseif($object->canSetProperty($name))
-							return $object->$setter(null);
+							$object->$setter(null);
+						return;
 					}
 				}
 			}
@@ -253,6 +266,7 @@ class CComponent
 	 */
 	public function __call($name,$parameters)
 	{
+		if($this->_behaviorsToAttach!==null) $this->ensureBehaviors();
 		if($this->_m!==null)
 		{
 			foreach($this->_m as $object)
@@ -275,6 +289,7 @@ class CComponent
 	 */
 	public function asa($behavior)
 	{
+		$this->ensureBehaviors();
 		return isset($this->_m[$behavior]) ? $this->_m[$behavior] : null;
 	}
 
@@ -294,8 +309,11 @@ class CComponent
 	 */
 	public function attachBehaviors($behaviors)
 	{
-		foreach($behaviors as $name=>$behavior)
-			$this->attachBehavior($name,$behavior);
+		if($this->_behaviorsToAttach===null) {
+	        $this->_behaviorsToAttach=$behaviors;
+	    } else {
+	        $this->_behaviorsToAttach=array_merge($this->_behaviorsToAttach,$behaviors);
+	    }
 	}
 
 	/**
@@ -303,9 +321,10 @@ class CComponent
 	 */
 	public function detachBehaviors()
 	{
+		$this->ensureBehaviors();
 		if($this->_m!==null)
 		{
-			foreach($this->_m as $name=>$behavior)
+			foreach(array_keys($this->_m) as $name)
 				$this->detachBehavior($name);
 			$this->_m=null;
 		}
@@ -325,6 +344,10 @@ class CComponent
 	 */
 	public function attachBehavior($name,$behavior)
 	{
+		return $this->_internalAttachBehavior($name,$behavior);
+	}
+
+	private function _internalAttachBehavior($name,$behavior) {
 		if(!($behavior instanceof IBehavior))
 			$behavior=Yii::createComponent($behavior);
 		$behavior->setEnabled(true);
@@ -340,6 +363,7 @@ class CComponent
 	 */
 	public function detachBehavior($name)
 	{
+		$this->ensureBehaviors();
 		if(isset($this->_m[$name]))
 		{
 			$this->_m[$name]->detach($this);
@@ -354,6 +378,7 @@ class CComponent
 	 */
 	public function enableBehaviors()
 	{
+		$this->ensureBehaviors();
 		if($this->_m!==null)
 		{
 			foreach($this->_m as $behavior)
@@ -366,6 +391,7 @@ class CComponent
 	 */
 	public function disableBehaviors()
 	{
+		$this->ensureBehaviors();
 		if($this->_m!==null)
 		{
 			foreach($this->_m as $behavior)
@@ -381,6 +407,7 @@ class CComponent
 	 */
 	public function enableBehavior($name)
 	{
+		$this->ensureBehaviors();
 		if(isset($this->_m[$name]))
 			$this->_m[$name]->setEnabled(true);
 	}
@@ -392,8 +419,27 @@ class CComponent
 	 */
 	public function disableBehavior($name)
 	{
+		$this->ensureBehaviors();
 		if(isset($this->_m[$name]))
 			$this->_m[$name]->setEnabled(false);
+	}
+
+	private $_isAttachingBehaviors = false;
+	/**
+	 * Makes sure that the behaviors are actually attached.
+	 */
+	private function ensureBehaviors()
+	{
+		if ($this->_behaviorsToAttach !== null && !$this->_isAttachingBehaviors) {
+			$tmp=$this->_behaviorsToAttach;  // Local copy
+			$this->_behaviorsToAttach = null;  // Makes sure that test returns false faster + allows new attachments.
+			$this->_isAttachingBehaviors=true; // Ensure that order is respected.
+			foreach ($tmp as $name => $behavior) {
+				$this->_internalAttachBehavior($name, $behavior);
+			}
+			$this->_isAttachingBehaviors=false;
+			if($this->_behaviorsToAttach!==null) $this->ensureBehaviors(); // Run again if other behaviors to attach.
+		}
 	}
 
 	/**
@@ -402,8 +448,8 @@ class CComponent
 	 * defined in the class. Note, property names are case-insensitive.
 	 * @param string $name the property name
 	 * @return boolean whether the property is defined
-	 * @see canGetProperty
-	 * @see canSetProperty
+	 * @see self::canGetProperty
+	 * @see self::canSetProperty
 	 */
 	public function hasProperty($name)
 	{
@@ -416,7 +462,7 @@ class CComponent
 	 * for the property name. Note, property name is case-insensitive.
 	 * @param string $name the property name
 	 * @return boolean whether the property can be read
-	 * @see canSetProperty
+	 * @see self::canSetProperty
 	 */
 	public function canGetProperty($name)
 	{
@@ -429,7 +475,7 @@ class CComponent
 	 * for the property name. Note, property name is case-insensitive.
 	 * @param string $name the property name
 	 * @return boolean whether the property can be written
-	 * @see canGetProperty
+	 * @see self::canGetProperty
 	 */
 	public function canSetProperty($name)
 	{
@@ -455,6 +501,7 @@ class CComponent
 	 */
 	public function hasEventHandler($name)
 	{
+		$this->ensureBehaviors();
 		$name=strtolower($name);
 		return isset($this->_e[$name]) && $this->_e[$name]->getCount()>0;
 	}
@@ -467,13 +514,13 @@ class CComponent
 	 */
 	public function getEventHandlers($name)
 	{
-		if($this->hasEvent($name))
-		{
-			$name=strtolower($name);
-			if(!isset($this->_e[$name]))
-				$this->_e[$name]=new CList;
-			return $this->_e[$name];
-		}
+		$this->ensureBehaviors();
+	    $iname=strtolower($name);
+	    if(isset($this->_e[$iname])) {
+	        return $this->_e[$iname];
+	    } elseif ($this->hasEvent($iname)) {
+	        return $this->_e[$iname]=new CList;
+	    }
 		else
 			throw new CException(Yii::t('yii','Event "{class}.{event}" is not defined.',
 				array('{class}'=>get_class($this), '{event}'=>$name)));
@@ -509,7 +556,7 @@ class CComponent
 	 * @param string $name the event name
 	 * @param callback $handler the event handler
 	 * @throws CException if the event is not defined
-	 * @see detachEventHandler
+	 * @see self::detachEventHandler
 	 */
 	public function attachEventHandler($name,$handler)
 	{
@@ -522,7 +569,7 @@ class CComponent
 	 * @param string $name event name
 	 * @param callback $handler the event handler to be removed
 	 * @return boolean if the detachment process is successful
-	 * @see attachEventHandler
+	 * @see self::attachEventHandler
 	 */
 	public function detachEventHandler($name,$handler)
 	{
@@ -542,6 +589,7 @@ class CComponent
 	 */
 	public function raiseEvent($name,$event)
 	{
+		$this->ensureBehaviors();
 		$name=strtolower($name);
 		if(isset($this->_e[$name]))
 		{

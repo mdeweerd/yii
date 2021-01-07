@@ -274,7 +274,7 @@ class CWsdlGenerator extends CComponent
 		$params=$method->getParameters();
 		$message=array();
 		$headers=array();
-		$n=preg_match_all('/^@param\s+([\w\.]+(\[\s*\])?)\s*?(.*)$/im',$comment,$matches);
+		$n=preg_match_all('/^@param\s+([\w\.]+(\[\s*\])?)\s*?(.*)$/im',$comment,/* @var string[] $matches */ $matches);
 		if($n>count($params))
 			$n=count($params);
 		if ($this->bindingStyle == self::STYLE_RPC)
@@ -559,7 +559,7 @@ class CWsdlGenerator extends CComponent
 					$attribute=$dom->createElement('xsd:attribute');
 					$attribute->setAttribute('ref','soap-enc:arrayType');
 					$attribute->setAttribute('wsdl:arrayType',(isset(self::$typeMap[$arrayType]) ? 'xsd:' : 'tns:') .$arrayType.'[]');
-					
+
 					$restriction->appendChild($attribute);
 					$complexContent->appendChild($restriction);
 					$complexType->appendChild($complexContent);

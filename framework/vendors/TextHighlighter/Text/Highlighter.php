@@ -95,7 +95,7 @@ if (!defined('HL_INFINITY')) {
 class Text_Highlighter
 {
     // {{{ members
-    
+
     /**
      * Syntax highlighting rules.
      * Auto-generated classes set this var
@@ -148,7 +148,7 @@ class Text_Highlighter
 
     // }}}
     // {{{ _checkDefines
-    
+
     /**
      * Called by subclssses' constructors to enable/disable
      * optional highlighter rules
@@ -181,16 +181,16 @@ class Text_Highlighter
 
     // }}}
     // {{{ factory
-    
+
     /**
      * Create a new Highlighter object for specified language
      *
      * @param string $lang    language, for example "SQL"
      * @param array  $options Rendering options. This
-     * parameter is only keeped for BC reasons, use 
+     * parameter is only keeped for BC reasons, use
      * {@link Text_Highlighter::setRenderer()} instead
      *
-     * @return mixed a newly created Highlighter object, or 
+     * @return mixed a newly created Highlighter object, or
      * a PEAR error object on error
      *
      * @static
@@ -215,7 +215,7 @@ class Text_Highlighter
 
     // }}}
     // {{{ setRenderer
-    
+
     /**
      * Set renderer object
      *
@@ -241,8 +241,8 @@ class Text_Highlighter
     }
 
 
-    
-    
+
+
     function _getToken()
     {
         if (!empty($this->_tokenStack)) {
@@ -252,7 +252,7 @@ class Text_Highlighter
             return NULL;
         }
 
-        if ($this->_state != -1 && preg_match($this->_endpattern, $this->_str, $m, PREG_OFFSET_CAPTURE, $this->_pos)) {
+        if ($this->_state != -1 && preg_match($this->_endpattern, $this->_str, /* @var string[] $m */ $m, PREG_OFFSET_CAPTURE, $this->_pos)) {
             $endpos = $m[0][1];
             $endmatch = $m[0][0];
         } else {
@@ -260,8 +260,8 @@ class Text_Highlighter
         }
         preg_match ($this->_regs[$this->_state], $this->_str, $m, PREG_OFFSET_CAPTURE, $this->_pos);
         $n = 1;
- 
- 
+
+
          foreach ($this->_counts[$this->_state] as $i=>$count) {
             if (!isset($m[$n])) {
                 break;
@@ -343,10 +343,10 @@ class Text_Highlighter
         $this->_pos = HL_INFINITY;
         return array($this->_lastinner, substr($this->_str, $p));
     }
-    
-    
-    
-    
+
+
+
+
     // {{{ highlight
 
     /**
@@ -381,9 +381,9 @@ class Text_Highlighter
         $this->_renderer->finalize();
         return $this->_renderer->getOutput();
     }
-    
+
     // }}}
-    
+
 }
 
 // }}}

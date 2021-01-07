@@ -401,7 +401,7 @@ class CUrlManager extends CApplicationComponent
 			$key=$segs[$i];
 			if($key==='') continue;
 			$value=$segs[$i+1];
-			if(($pos=strpos($key,'['))!==false && ($m=preg_match_all('/\[(.*?)\]/',$key,$matches))>0)
+			if(($pos=strpos($key,'['))!==false && ($m=preg_match_all('/\[(.*?)\]/',$key,/* @var string[] $matches */ $matches))>0)
 			{
 				$name=substr($key,0,$pos);
 				for($j=$m-1;$j>=0;--$j)
@@ -671,7 +671,7 @@ class CUrlRule extends CBaseUrlRule
 
 		$tr2['/']=$tr['/']='\\/';
 
-		if(strpos($route,'<')!==false && preg_match_all('/<(\w+)>/',$route,$matches2))
+		if(strpos($route,'<')!==false && preg_match_all('/<(\w+)>/',$route,/* @var string[] $matches2 */ $matches2))
 		{
 			foreach($matches2[1] as $name)
 				$this->references[$name]="<$name>";

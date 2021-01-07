@@ -226,13 +226,13 @@ class CNumberFormatter extends CComponent
 		// find out prefix and suffix for positive and negative patterns
 		$patterns=explode(';',$pattern);
 		$format['positivePrefix']=$format['positiveSuffix']=$format['negativePrefix']=$format['negativeSuffix']='';
-		if(preg_match('/^(.*?)[#,\.0]+(.*?)$/',$patterns[0],$matches))
+		if(preg_match('/^(.*?)[#,\.0]+(.*?)$/',$patterns[0],/* @var string[] $matches */ $matches))
 		{
 			$format['positivePrefix']=$matches[1];
 			$format['positiveSuffix']=$matches[2];
 		}
 
-		if(isset($patterns[1]) && preg_match('/^(.*?)[#,\.0]+(.*?)$/',$patterns[1],$matches))  // with a negative pattern
+		if(isset($patterns[1]) && preg_match('/^(.*?)[#,\.0]+(.*?)$/',$patterns[1],/* @var string[] $matches */ $matches))  // with a negative pattern
 		{
 			$format['negativePrefix']=$matches[1];
 			$format['negativeSuffix']=$matches[2];

@@ -230,7 +230,7 @@ abstract class CConsoleCommand extends CComponent
 		$params=array();	// unnamed parameters
 		foreach($args as $arg)
 		{
-			if(preg_match('/^--(\w+)(=(.*))?$/',$arg,$matches))  // an option
+			if(preg_match('/^--(\w+)(=(.*))?$/',$arg,/* @var string[] $matches */ $matches))  // an option
 			{
 				$name=$matches[1];
 				$value=isset($matches[3]) ? $matches[3] : true;
@@ -362,7 +362,7 @@ abstract class CConsoleCommand extends CComponent
 	 * <li>params: optional, the parameters to be passed to the callback</li>
 	 * </ul>
 	 * @param boolean $overwriteAll whether to overwrite all files.
-	 * @see buildFileList
+	 * @see self::buildFileList
 	 */
 	public function copyFiles($fileList,$overwriteAll=false)
 	{

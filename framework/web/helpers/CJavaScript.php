@@ -81,6 +81,8 @@ class CJavaScript
 				return 'Number.NEGATIVE_INFINITY';
 			elseif($value===INF)
 				return 'Number.POSITIVE_INFINITY';
+			elseif(is_nan($value))
+				return 'Number.NaN';
 			else
 				return str_replace(',','.',(float)$value);  // locale-independent representation
 		}

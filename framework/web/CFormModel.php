@@ -31,7 +31,7 @@ class CFormModel extends CModel
 	 * Constructor.
 	 * @param string $scenario name of the scenario that this model is used in.
 	 * See {@link CModel::scenario} on how scenario is used by models.
-	 * @see getScenario
+	 * @see CModel::getScenario()
 	 */
 	public function __construct($scenario='')
 	{

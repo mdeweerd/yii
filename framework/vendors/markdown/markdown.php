@@ -3,11 +3,11 @@
 # Markdown Extra  -  A text-to-HTML conversion tool for web writers
 #
 # PHP Markdown & Extra
-# Copyright (c) 2004-2012 Michel Fortin  
+# Copyright (c) 2004-2012 Michel Fortin
 # <http://michelf.com/projects/php-markdown/>
 #
 # Original Markdown
-# Copyright (c) 2004-2006 John Gruber  
+# Copyright (c) 2004-2006 John Gruber
 # <http://daringfireball.net/projects/markdown/>
 #
 
@@ -809,21 +809,21 @@ class Markdown_Parser {
 
 		return $text;
 	}
-	
+
 	public function _doLists_callback($matches) {
 		# Re-usable patterns to match list item bullets and number markers:
 		$marker_ul_re  = '[*+-]';
 		$marker_ol_re  = '\d+[\.]';
 		$marker_any_re = "(?:$marker_ul_re|$marker_ol_re)";
-		
+
 		$list = $matches[1];
 		$list_type = preg_match("/$marker_ul_re/", $matches[4]) ? "ul" : "ol";
-		
+
 		$marker_any_re = ( $list_type == "ul" ? $marker_ul_re : $marker_ol_re );
-		
+
 		$list .= "\n";
 		$result = $this->processListItems($list, $marker_any_re);
-		
+
 		$result = $this->hashBlock("<$list_type>\n" . $result . "</$list_type>");
 		return "\n". $result ."\n\n";
 	}
@@ -958,7 +958,7 @@ class Markdown_Parser {
 		'___' => '(?<=\S|^)(?<!_)___(?!_)',
 		);
 	public $em_strong_prepared_relist;
-	
+
 	public function prepareItalicsAndBold() {
 	#
 	# Prepare regular expressions for searching emphasis tokens in any
@@ -973,37 +973,37 @@ class Markdown_Parser {
 				}
 				$token_relist[] = $em_re;
 				$token_relist[] = $strong_re;
-				
+
 				# Construct master expression from list.
 				$token_re = '{('. implode('|', $token_relist) .')}';
 				$this->em_strong_prepared_relist["$em$strong"] = $token_re;
 			}
 		}
 	}
-	
+
 	public function doItalicsAndBold($text) {
 		$token_stack = array('');
 		$text_stack = array('');
 		$em = '';
 		$strong = '';
 		$tree_char_em = false;
-		
+
 		while (1) {
 			#
 			# Get prepared regular expression for seraching emphasis tokens
 			# in current context.
 			#
 			$token_re = $this->em_strong_prepared_relist["$em$strong"];
-			
+
 			#
-			# Each loop iteration search for the next emphasis token. 
+			# Each loop iteration search for the next emphasis token.
 			# Each token is then passed to handleSpanToken.
 			#
 			$parts = preg_split($token_re, $text, 2, PREG_SPLIT_DELIM_CAPTURE);
 			$text_stack[0] .= $parts[0];
 			$token =& $parts[1];
 			$text =& $parts[2];
-			
+
 			if (empty($token)) {
 				# Reached end of text span: empty stack without emitting.
 				# any more emphasis.
@@ -1119,7 +1119,7 @@ class Markdown_Parser {
 
 		return $text;
 	}
-	
+
 	public function _doBlockQuotes_callback($matches) {
 		$bq = $matches[1];
 		# trim one level of quoting - trim whitespace-only lines
@@ -1127,14 +1127,14 @@ class Markdown_Parser {
 		$bq = $this->runBlockGamut($bq);		# recurse
 
 		$bq = preg_replace('/^/m', "  ", $bq);
-		# These leading spaces cause problem with <pre> content, 
+		# These leading spaces cause problem with <pre> content,
 		# so we need to fix that:
-		$bq = preg_replace_callback('{(\s*<pre>.+?</pre>)}sx', 
+		$bq = preg_replace_callback('{(\s*<pre>.+?</pre>)}sx',
 			array(&$this, '_doBlockQuotes_callback2'), $bq);
 
 		return "\n". $this->hashBlock("<blockquote>\n$bq\n</blockquote>")."\n\n";
 	}
-	
+
 	public function _doBlockQuotes_callback2($matches) {
 		$pre = $matches[1];
 		$pre = preg_replace('/^  /m', '', $pre);
@@ -1391,7 +1391,7 @@ class Markdown_Parser {
 			case "`":
 				# Search for end marker in remaining text.
 				if (preg_match('/^(.*?[^`])'.preg_quote($token).'(?!`)(.*)$/sm',
-					$str, $matches))
+					$str, /* @var string[] $matches */ $matches))
 				{
 					$str = $matches[2];
 					$codespan = $this->makeCodeSpan($matches[1]);
@@ -1749,8 +1749,8 @@ class MarkdownExtra_Parser extends Markdown_Parser {
 			else if (preg_match('{^\n?[ ]{0,'.($indent+3).'}~}', $tag)) {
 				# Fenced code block marker: find matching end marker.
 				$tag_re = preg_quote(trim($tag));
-				if (preg_match('{^(?>.*\n)+?[ ]{0,'.($indent).'}'.$tag_re.'[ ]*\n}', $text, 
-					$matches)) 
+				if (preg_match('{^(?>.*\n)+?[ ]{0,'.($indent).'}'.$tag_re.'[ ]*\n}', $text,
+					$matches))
 				{
 					# End marker found: pass text unchanged until marker.
 					$parsed .= $tag . $matches[0];
@@ -1765,7 +1765,7 @@ class MarkdownExtra_Parser extends Markdown_Parser {
 			# Check for: Indented code block.
 			#
 			else if ($tag[0] == "\n" || $tag[0] == " ") {
-				# Indented code block: pass it unchanged, will be handled 
+				# Indented code block: pass it unchanged, will be handled
 				# later.
 				$parsed .= $tag;
 			}
@@ -2407,7 +2407,7 @@ class MarkdownExtra_Parser extends Markdown_Parser {
 	#
 		# Strip leading and trailing lines:
 		$text = preg_replace('/\A\n+|\n+\z/', '', $text);
-		
+
 		$grafs = preg_split('/\n{2,}/', $text, -1, PREG_SPLIT_NO_EMPTY);
 
 		#
@@ -2483,20 +2483,20 @@ class MarkdownExtra_Parser extends Markdown_Parser {
 		return $text;
 	}
 
-	
+
 	public function appendFootnotes($text) {
 	#
 	# Append footnote list to text.
 	#
-		$text = preg_replace_callback('{F\x1Afn:(.*?)\x1A:}', 
+		$text = preg_replace_callback('{F\x1Afn:(.*?)\x1A:}',
 			array(&$this, '_appendFootnotes_callback'), $text);
-	
+
 		if (!empty($this->footnotes_ordered)) {
 			$text .= "\n\n";
 			$text .= "<div class=\"footnotes\">\n";
 			$text .= "<hr". $this->empty_element_suffix ."\n";
 			$text .= "<ol>\n\n";
-			
+
 			$attr = " rev=\"footnote\"";
 			if ($this->fn_backlink_class != "") {
 				$class = $this->fn_backlink_class;

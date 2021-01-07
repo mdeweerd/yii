@@ -56,7 +56,7 @@ class CMysqlColumnSchema extends CDbColumnSchema
 	 */
 	protected function extractLimit($dbType)
 	{
-		if (strncmp($dbType, 'enum', 4)===0 && preg_match('/\(([\'"])(.*)\\1\)/',$dbType,$matches))
+		if (strncmp($dbType, 'enum', 4)===0 && preg_match('/\(([\'"])(.*)\\1\)/',$dbType,/* @var string[] $matches */ $matches))
 		{
 			// explode by (single or double) quote and comma (ENUM values may contain commas)
 			$values = explode($matches[1].','.$matches[1], $matches[2]);

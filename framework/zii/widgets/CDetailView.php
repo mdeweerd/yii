@@ -98,14 +98,14 @@ class CDetailView extends CWidget
 	/**
 	 * @var string the name of the tag for rendering the detail view. Defaults to 'table'.
 	 * If set to null, no tag will be rendered.
-	 * @see itemTemplate
+	 * @see self::itemTemplate
 	 */
 	public $tagName='table';
 	/**
 	 * @var string the template used to render a single attribute. Defaults to a table row.
 	 * These tokens are recognized: "{class}", "{label}" and "{value}". They will be replaced
 	 * with the CSS class name for the item, the label and the attribute value, respectively.
-	 * @see itemCssClass
+	 * @see self:itemCssClass
 	 */
 	public $itemTemplate="<tr class=\"{class}\"><th>{label}</th><td>{value}</td></tr>\n";
 	/**
@@ -181,7 +181,7 @@ class CDetailView extends CWidget
 		{
 			if(is_string($attribute))
 			{
-				if(!preg_match('/^([\w\.]+)(:(\w*))?(:(.*))?$/',$attribute,$matches))
+				if(!preg_match('/^([\w\.]+)(:(\w*))?(:(.*))?$/',$attribute,/* @var string[] $matches */ $matches))
 					throw new CException(Yii::t('zii','The attribute must be specified in the format of "Name:Type:Label", where "Type" and "Label" are optional.'));
 				$attribute=array(
 					'name'=>$matches[1],
@@ -232,7 +232,7 @@ class CDetailView extends CWidget
 	 * This method is used by run() to render item row
 	 *
 	 * @param array $options config options for this item/attribute from {@link attributes}
-	 * @param string $templateData data that will be inserted into {@link itemTemplate}
+	 * @param array<string,string> $templateData data that will be inserted into {@link itemTemplate}
 	 * @since 1.1.11
 	 */
 	protected function renderItem($options,$templateData)

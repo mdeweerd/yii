@@ -1708,7 +1708,7 @@ class HTMLPurifier_CSSDefinition extends HTMLPurifier_Definition
             "support forums) ";
         $allowed_properties = $config->get('CSS.AllowedProperties');
         if ($allowed_properties !== null) {
-            foreach ($this->info as $name => $d) {
+            foreach (array_keys($this->info) as $name) {
                 if (!isset($allowed_properties[$name])) {
                     unset($this->info[$name]);
                 }
@@ -4855,6 +4855,7 @@ class HTMLPurifier_ErrorCollector
             unset($args[0]);
         }
 
+        $cssprop=null;
         $token = $this->context->get('CurrentToken', true);
         $line  = $token ? $token->line : $this->context->get('CurrentLine', true);
         $col   = $token ? $token->col  : $this->context->get('CurrentCol', true);
@@ -10173,7 +10174,7 @@ class HTMLPurifier_Zipper
      * Creates a zipper from an array, with a hole in the
      * 0-index position.
      * @param Array to zipper-ify.
-     * @return Tuple of zipper and element of first position.
+     * @return array Tuple of zipper and element of first position.
      */
     static public function fromArray($array) {
         $z = new self(array(), array_reverse($array));
@@ -10197,8 +10198,8 @@ class HTMLPurifier_Zipper
 
     /**
      * Move hole to the next element.
-     * @param $t Element to fill hole with
-     * @return Original contents of new hole.
+     * @param $t HTMLPurifier Element to fill hole with
+     * @return HTMLPurifier Original contents of new hole.
      */
     public function next($t) {
         if ($t !== NULL) array_push($this->front, $t);
@@ -10207,9 +10208,9 @@ class HTMLPurifier_Zipper
 
     /**
      * Iterated hole advancement.
-     * @param $t Element to fill hole with
-     * @param $i How many forward to advance hole
-     * @return Original contents of new hole, i away
+     * @param $t HTMLPurifier Element to fill hole with
+     * @param $i int How many forward to advance hole
+     * @return HTMLPurifier Original contents of new hole, i away
      */
     public function advance($t, $n) {
         for ($i = 0; $i < $n; $i++) {
@@ -10220,8 +10221,8 @@ class HTMLPurifier_Zipper
 
     /**
      * Move hole to the previous element
-     * @param $t Element to fill hole with
-     * @return Original contents of new hole.
+     * @param $t HTMLPurifier Element to fill hole with
+     * @return HTMLPurifier Original contents of new hole.
      */
     public function prev($t) {
         if ($t !== NULL) array_push($this->back, $t);
@@ -10231,7 +10232,7 @@ class HTMLPurifier_Zipper
     /**
      * Delete contents of current hole, shifting hole to
      * next element.
-     * @return Original contents of new hole.
+     * @return HTMLPurifier Original contents of new hole.
      */
     public function delete() {
         return empty($this->back) ? NULL : array_pop($this->back);
@@ -11415,7 +11416,7 @@ class HTMLPurifier_AttrDef_CSS_Color extends HTMLPurifier_AttrDef
             return $colors[$lower];
         }
 
-        if (preg_match('#(rgb|rgba|hsl|hsla)\(#', $color, $matches) === 1) {
+        if (preg_match('#(rgb|rgba|hsl|hsla)\(#', $color, /* @var string[] $matches */ $matches) === 1) {
             $length = strlen($color);
             if (strpos($color, ')') !== $length - 1) {
                 return false;
@@ -14624,7 +14625,7 @@ class HTMLPurifier_ChildDef_Custom extends HTMLPurifier_ChildDef
     private $_pcre_regex;
 
     /**
-     * @param $dtd_regex Allowed child pattern from the DTD
+     * @param $dtd_regex string Allowed child pattern from the DTD
      */
     public function __construct($dtd_regex)
     {

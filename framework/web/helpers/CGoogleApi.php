@@ -69,6 +69,6 @@ class CGoogleApi
 		$cs->registerScriptFile($url,CClientScript::POS_HEAD);
 
 		$js=self::load($name,$version,$options);
-		$cs->registerScript($name,$js,CClientScript::POS_HEAD);
+		$cs->registerScript(Yii::app()->getController()->getAction()->getId().'#'.$name,$js,CClientScript::POS_HEAD);
 	}
 }

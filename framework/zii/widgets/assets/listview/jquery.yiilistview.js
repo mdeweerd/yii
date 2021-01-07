@@ -33,6 +33,7 @@
 			$.fn.yiiListView.settings[id] = settings;
 
 			if(settings.ajaxUpdate.length > 0) {
+				$(document).off('click.yiiListView', settings.updateSelector);
 				$(document).on('click.yiiListView', settings.updateSelector,function(){
 					if(settings.enableHistory && window.History.enabled) {
 						var href = $(this).attr('href');

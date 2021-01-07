@@ -65,7 +65,7 @@ class CHttpRequest extends CApplicationComponent
 {
 	/**
 	 * @var boolean whether the parsing of JSON REST requests should return associative arrays for object data.
-	 * @see getRestParams
+	 * @see self::getRestParams
 	 * @since 1.1.17
 	 */
 	public $jsonAsArray = true;
@@ -174,8 +174,8 @@ class CHttpRequest extends CApplicationComponent
 	 * @param string $name the GET parameter name
 	 * @param mixed $defaultValue the default parameter value if the GET parameter does not exist.
 	 * @return mixed the GET parameter value
-	 * @see getQuery
-	 * @see getPost
+	 * @see self::getQuery
+	 * @see self::getPost
 	 */
 	public function getParam($name,$defaultValue=null)
 	{
@@ -188,8 +188,8 @@ class CHttpRequest extends CApplicationComponent
 	 * @param string $name the GET parameter name
 	 * @param mixed $defaultValue the default parameter value if the GET parameter does not exist.
 	 * @return mixed the GET parameter value
-	 * @see getPost
-	 * @see getParam
+	 * @see self::getPost
+	 * @see self::getParam
 	 */
 	public function getQuery($name,$defaultValue=null)
 	{
@@ -202,8 +202,8 @@ class CHttpRequest extends CApplicationComponent
 	 * @param string $name the POST parameter name
 	 * @param mixed $defaultValue the default parameter value if the POST parameter does not exist.
 	 * @return mixed the POST parameter value
-	 * @see getParam
-	 * @see getQuery
+	 * @see self::getParam
+	 * @see self::getQuery
 	 */
 	public function getPost($name,$defaultValue=null)
 	{
@@ -214,7 +214,7 @@ class CHttpRequest extends CApplicationComponent
 	 * Returns the named DELETE parameter value.
 	 * If the DELETE parameter does not exist or if the current request is not a DELETE request,
 	 * the second parameter to this method will be returned.
-	 * If the DELETE request was tunneled through POST via _method parameter, the POST parameter
+	 * If the DELETE request was tunnelled through POST via _method parameter, the POST parameter
 	 * will be returned instead (available since version 1.1.11).
 	 * @param string $name the DELETE parameter name
 	 * @param mixed $defaultValue the default parameter value if the DELETE parameter does not exist.
@@ -264,7 +264,7 @@ class CHttpRequest extends CApplicationComponent
 	 * Returns the named PATCH parameter value.
 	 * If the PATCH parameter does not exist or if the current request is not a PATCH request,
 	 * the second parameter to this method will be returned.
-	 * If the PATCH request was tunneled through POST via _method parameter, the POST parameter
+	 * If the PATCH request was tunnelled through POST via _method parameter, the POST parameter
 	 * will be returned instead.
 	 * @param string $name the PATCH parameter name
 	 * @param mixed $defaultValue the default parameter value if the PATCH parameter does not exist.
@@ -338,7 +338,7 @@ class CHttpRequest extends CApplicationComponent
 	 * You may explicitly specify it by setting the {@link setHostInfo hostInfo} property.
 	 * @param string $schema schema to use (e.g. http, https). If empty, the schema used for the current request will be used.
 	 * @return string schema and hostname part (with port number if needed) of the request URL (e.g. http://www.yiiframework.com)
-	 * @see setHostInfo
+	 * @see self::setHostInfo
 	 */
 	public function getHostInfo($schema='')
 	{
@@ -394,7 +394,7 @@ class CHttpRequest extends CApplicationComponent
 	 * it does not have the script file name, and the ending slashes are stripped off.
 	 * @param boolean $absolute whether to return an absolute URL. Defaults to false, meaning returning a relative one.
 	 * @return string the relative URL for the application
-	 * @see setScriptUrl
+	 * @see self::setScriptUrl
 	 */
 	public function getBaseUrl($absolute=false)
 	{
@@ -776,7 +776,7 @@ class CHttpRequest extends CApplicationComponent
 	{
 		return isset($_SERVER['HTTP_ACCEPT'])?$_SERVER['HTTP_ACCEPT']:null;
 	}
-	
+
 	/**
 	 * Returns request content-type
 	 * The Content-Type header field indicates the MIME type of the data
@@ -806,7 +806,7 @@ class CHttpRequest extends CApplicationComponent
 	 * request is insecure.
 	 * You may explicitly specify it by setting the {@link setPort port} property.
 	 * @return integer port number for insecure requests.
-	 * @see setPort
+	 * @see self::setPort
 	 * @since 1.1.3
 	 */
 	public function getPort()
@@ -837,7 +837,7 @@ class CHttpRequest extends CApplicationComponent
 	 * request is secure.
 	 * You may explicitly specify it by setting the {@link setSecurePort securePort} property.
 	 * @return integer port number for secure requests.
-	 * @see setSecurePort
+	 * @see self::setSecurePort
 	 * @since 1.1.3
 	 */
 	public function getSecurePort()
@@ -1020,7 +1020,7 @@ class CHttpRequest extends CApplicationComponent
 	/**
 	 * Returns the user preferred accept MIME type.
 	 * The MIME type is returned as an array map (see {@link parseAcceptHeader()}).
-	 * @return array the user preferred accept MIME type or false if the user does not have any.
+	 * @return array|false the user preferred accept MIME type or false if the user does not have any.
 	 */
 	public function getPreferredAcceptType()
 	{
@@ -1054,7 +1054,7 @@ class CHttpRequest extends CApplicationComponent
 		if($this->_preferredLanguages===null)
 		{
 			$sortedLanguages=array();
-			if(isset($_SERVER['HTTP_ACCEPT_LANGUAGE']) && $n=preg_match_all('/([\w\-_]+)(?:\s*;\s*q\s*=\s*(\d*\.?\d*))?/',$_SERVER['HTTP_ACCEPT_LANGUAGE'],$matches))
+			if(isset($_SERVER['HTTP_ACCEPT_LANGUAGE']) && $n=preg_match_all('/([\w\-_]+)(?:\s*;\s*q\s*=\s*(\d*\.?\d*))?/',$_SERVER['HTTP_ACCEPT_LANGUAGE'],/* @var string[] $matches */ $matches))
 			{
 				$languages=array();
 
@@ -1292,7 +1292,7 @@ class CHttpRequest extends CApplicationComponent
 	 * The token will be read from cookie first. If not found, a new token
 	 * will be generated.
 	 * @return string the random token for CSRF validation.
-	 * @see enableCsrfValidation
+	 * @see self::enableCsrfValidation
 	 */
 	public function getCsrfToken()
 	{
@@ -1315,7 +1315,7 @@ class CHttpRequest extends CApplicationComponent
 	 * Initial values specified in {@link csrfCookie} will be applied
 	 * to the generated cookie.
 	 * @return CHttpCookie the generated cookie
-	 * @see enableCsrfValidation
+	 * @see self::enableCsrfValidation
 	 */
 	protected function createCsrfCookie()
 	{

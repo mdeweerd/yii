@@ -336,7 +336,7 @@ class YiiBase
 		{
 			if($source===null)
 				$source=($category==='yii'||$category==='zii')?'coreMessages':'messages';
-			if(($source=self::$_app->getComponent($source))!==null)
+			if(($source=self::$_app->getComponent($source))!==null) /* @var CMessageSource $source */
 				$message=$source->translate($category,$message,$language);
 		}
 		if($params===array())
@@ -618,12 +618,14 @@ class CComponent
 {
 	private $_e;
 	private $_m;
+	private $_behaviorsToAttach=null; // Behaviors not actually attached.
 	public function __get($name)
 	{
 		$getter='get'.$name;
 		if(method_exists($this,$getter))
 			return $this->$getter();
-		elseif(strncasecmp($name,'on',2)===0 && method_exists($this,$name))
+		$this->ensureBehaviors();
+		if(strncasecmp($name,'on',2)===0 && method_exists($this,$name))
 		{
 			// duplicating getEventHandlers() here for performance
 			$name=strtolower($name);
@@ -647,37 +649,45 @@ class CComponent
 	public function __set($name,$value)
 	{
 		$setter='set'.$name;
-		if(method_exists($this,$setter))
-			return $this->$setter($value);
-		elseif(strncasecmp($name,'on',2)===0 && method_exists($this,$name))
+		if(method_exists($this,$setter)) {
+			$this->$setter($value);
+			return;
+		}
+		$this->ensureBehaviors();
+		if(strncasecmp($name,'on',2)===0 && method_exists($this,$name))
 		{
 			// duplicating getEventHandlers() here for performance
 			$name=strtolower($name);
 			if(!isset($this->_e[$name]))
 				$this->_e[$name]=new CList;
-			return $this->_e[$name]->add($value);
+			$this->_e[$name]->add($value);
+                        return;
 		}
 		elseif(is_array($this->_m))
 		{
 			foreach($this->_m as $object)
 			{
-				if($object->getEnabled() && (property_exists($object,$name) || $object->canSetProperty($name)))
-					return $object->$name=$value;
+				if($object->getEnabled() && (property_exists($object,$name) || $object->canSetProperty($name))) {
+					$object->$name=$value;
+					return;
+				}
 			}
 		}
-		if(method_exists($this,'get'.$name))
+		if(method_exists($this,'get'.$name)) {
 			throw new CException(Yii::t('yii','Property "{class}.{property}" is read only.',
 				array('{class}'=>get_class($this), '{property}'=>$name)));
-		else
+		} else {
 			throw new CException(Yii::t('yii','Property "{class}.{property}" is not defined.',
 				array('{class}'=>get_class($this), '{property}'=>$name)));
+                }
 	}
 	public function __isset($name)
 	{
 		$getter='get'.$name;
 		if(method_exists($this,$getter))
 			return $this->$getter()!==null;
-		elseif(strncasecmp($name,'on',2)===0 && method_exists($this,$name))
+		$this->ensureBehaviors();
+		if(strncasecmp($name,'on',2)===0 && method_exists($this,$name))
 		{
 			$name=strtolower($name);
 			return isset($this->_e[$name]) && $this->_e[$name]->getCount();
@@ -699,7 +709,8 @@ class CComponent
 		$setter='set'.$name;
 		if(method_exists($this,$setter))
 			$this->$setter(null);
-		elseif(strncasecmp($name,'on',2)===0 && method_exists($this,$name))
+		$this->ensureBehaviors();
+		if(strncasecmp($name,'on',2)===0 && method_exists($this,$name))
 			unset($this->_e[strtolower($name)]);
 		elseif(is_array($this->_m))
 		{
@@ -712,9 +723,10 @@ class CComponent
 					if($object->getEnabled())
 					{
 						if(property_exists($object,$name))
-							return $object->$name=null;
+							$object->$name=null;
 						elseif($object->canSetProperty($name))
-							return $object->$setter(null);
+							$object->$setter(null);
+						return;
 					}
 				}
 			}
@@ -725,6 +737,7 @@ class CComponent
 	}
 	public function __call($name,$parameters)
 	{
+		if($this->_behaviorsToAttach!==null) $this->ensureBehaviors();
 		if($this->_m!==null)
 		{
 			foreach($this->_m as $object)
@@ -740,24 +753,32 @@ class CComponent
 	}
 	public function asa($behavior)
 	{
+		$this->ensureBehaviors();
 		return isset($this->_m[$behavior]) ? $this->_m[$behavior] : null;
 	}
 	public function attachBehaviors($behaviors)
 	{
-		foreach($behaviors as $name=>$behavior)
-			$this->attachBehavior($name,$behavior);
+		if($this->_behaviorsToAttach===null) {
+	        $this->_behaviorsToAttach=$behaviors;
+	    } else {
+	        $this->_behaviorsToAttach=array_merge($this->_behaviorsToAttach,$behaviors);
+	    }
 	}
 	public function detachBehaviors()
 	{
+		$this->ensureBehaviors();
 		if($this->_m!==null)
 		{
-			foreach($this->_m as $name=>$behavior)
+			foreach(array_keys($this->_m) as $name)
 				$this->detachBehavior($name);
 			$this->_m=null;
 		}
 	}
 	public function attachBehavior($name,$behavior)
 	{
+		return $this->_internalAttachBehavior($name,$behavior);
+	}
+	private function _internalAttachBehavior($name,$behavior) {
 		if(!($behavior instanceof IBehavior))
 			$behavior=Yii::createComponent($behavior);
 		$behavior->setEnabled(true);
@@ -766,6 +787,7 @@ class CComponent
 	}
 	public function detachBehavior($name)
 	{
+		$this->ensureBehaviors();
 		if(isset($this->_m[$name]))
 		{
 			$this->_m[$name]->detach($this);
@@ -776,6 +798,7 @@ class CComponent
 	}
 	public function enableBehaviors()
 	{
+		$this->ensureBehaviors();
 		if($this->_m!==null)
 		{
 			foreach($this->_m as $behavior)
@@ -784,6 +807,7 @@ class CComponent
 	}
 	public function disableBehaviors()
 	{
+		$this->ensureBehaviors();
 		if($this->_m!==null)
 		{
 			foreach($this->_m as $behavior)
@@ -792,13 +816,29 @@ class CComponent
 	}
 	public function enableBehavior($name)
 	{
+		$this->ensureBehaviors();
 		if(isset($this->_m[$name]))
 			$this->_m[$name]->setEnabled(true);
 	}
 	public function disableBehavior($name)
 	{
+		$this->ensureBehaviors();
 		if(isset($this->_m[$name]))
 			$this->_m[$name]->setEnabled(false);
+	}
+	private $_isAttachingBehaviors = false;
+	private function ensureBehaviors()
+	{
+		if ($this->_behaviorsToAttach !== null && !$this->_isAttachingBehaviors) {
+			$tmp=$this->_behaviorsToAttach;  // Local copy
+			$this->_behaviorsToAttach = null;  // Makes sure that test returns false faster + allows new attachments.
+			$this->_isAttachingBehaviors=true; // Ensure that order is respected.
+			foreach ($tmp as $name => $behavior) {
+				$this->_internalAttachBehavior($name, $behavior);
+			}
+			$this->_isAttachingBehaviors=false;
+			if($this->_behaviorsToAttach!==null) $this->ensureBehaviors(); // Run again if other behaviors to attach.
+		}
 	}
 	public function hasProperty($name)
 	{
@@ -818,18 +858,19 @@ class CComponent
 	}
 	public function hasEventHandler($name)
 	{
+		$this->ensureBehaviors();
 		$name=strtolower($name);
 		return isset($this->_e[$name]) && $this->_e[$name]->getCount()>0;
 	}
 	public function getEventHandlers($name)
 	{
-		if($this->hasEvent($name))
-		{
-			$name=strtolower($name);
-			if(!isset($this->_e[$name]))
-				$this->_e[$name]=new CList;
-			return $this->_e[$name];
-		}
+		$this->ensureBehaviors();
+	    $iname=strtolower($name);
+	    if(isset($this->_e[$iname])) {
+	        return $this->_e[$iname];
+	    } elseif ($this->hasEvent($iname)) {
+	        return $this->_e[$iname]=new CList;
+	    }
 		else
 			throw new CException(Yii::t('yii','Event "{class}.{event}" is not defined.',
 				array('{class}'=>get_class($this), '{event}'=>$name)));
@@ -847,6 +888,7 @@ class CComponent
 	}
 	public function raiseEvent($name,$event)
 	{
+		$this->ensureBehaviors();
 		$name=strtolower($name);
 		if(isset($this->_e[$name]))
 		{
@@ -2820,7 +2862,7 @@ class CHttpRequest extends CApplicationComponent
 		if($this->_preferredLanguages===null)
 		{
 			$sortedLanguages=array();
-			if(isset($_SERVER['HTTP_ACCEPT_LANGUAGE']) && $n=preg_match_all('/([\w\-_]+)(?:\s*;\s*q\s*=\s*(\d*\.?\d*))?/',$_SERVER['HTTP_ACCEPT_LANGUAGE'],$matches))
+			if(isset($_SERVER['HTTP_ACCEPT_LANGUAGE']) && $n=preg_match_all('/([\w\-_]+)(?:\s*;\s*q\s*=\s*(\d*\.?\d*))?/',$_SERVER['HTTP_ACCEPT_LANGUAGE'],/* @var string[] $matches */ $matches))
 			{
 				$languages=array();
 				for($i=0;$i<$n;++$i)
@@ -3286,7 +3328,7 @@ class CUrlManager extends CApplicationComponent
 			$key=$segs[$i];
 			if($key==='') continue;
 			$value=$segs[$i+1];
-			if(($pos=strpos($key,'['))!==false && ($m=preg_match_all('/\[(.*?)\]/',$key,$matches))>0)
+			if(($pos=strpos($key,'['))!==false && ($m=preg_match_all('/\[(.*?)\]/',$key,/* @var string[] $matches */ $matches))>0)
 			{
 				$name=substr($key,0,$pos);
 				for($j=$m-1;$j>=0;--$j)
@@ -3395,7 +3437,7 @@ class CUrlRule extends CBaseUrlRule
 		}
 		$this->route=trim($route,'/');
 		$tr2['/']=$tr['/']='\\/';
-		if(strpos($route,'<')!==false && preg_match_all('/<(\w+)>/',$route,$matches2))
+		if(strpos($route,'<')!==false && preg_match_all('/<(\w+)>/',$route,/* @var string[] $matches2 */ $matches2))
 		{
 			foreach($matches2[1] as $name)
 				$this->references[$name]="<$name>";
@@ -6122,7 +6164,7 @@ EOD;
 				$attribute=substr($attribute,$pos+1);
 				return $modelName.$sub.'['.$attribute.']';
 			}
-			if(preg_match('/\](\w+\[.*)$/',$attribute,$matches))
+			if(preg_match('/\](\w+\[.*)$/',$attribute, /* @var string[] $matches */ $matches))
 			{
 				$name=$modelName.'['.str_replace(']','][',trim(strtr($attribute,array(']['=>']','['=>']')),']')).']';
 				$attribute=$matches[1];
@@ -6148,7 +6190,9 @@ EOD;
 			{
 				if((is_array($value) || $value instanceof ArrayAccess) && isset($value[$id]))
 					$value=$value[$id];
-				else
+                elseif(is_object($value) && isset($value->$id))
+                    $value=$value->$id;
+			    else
 					return null;
 			}
 			return $value;
@@ -6378,7 +6422,7 @@ class CWidget extends CBaseController
 		if(($viewFile=$this->getViewFile($view))!==false)
 			return $this->renderFile($viewFile,$data,$return);
 		else
-			throw new CException(Yii::t('yii','{widget} cannot find the view "{view}".',
+			throw new \CException(\Yii::t('yii','{widget} cannot find the view "{view}".',
 				array('{widget}'=>get_class($this), '{view}'=>$view)));
 	}
 }
@@ -7858,7 +7902,7 @@ abstract class CActiveRecord extends CModel
 	public function getAttributes($names=true)
 	{
 		$attributes=$this->_attributes;
-		foreach($this->getMetaData()->columns as $name=>$column)
+		foreach(array_keys($this->getMetaData()->columns) as $name)
 		{
 			if(property_exists($this,$name))
 				$attributes[$name]=$this->$name;
@@ -8100,7 +8144,7 @@ abstract class CActiveRecord extends CModel
 		{
 			$this->_attributes=array();
 			$this->_related=array();
-			foreach($this->getMetaData()->columns as $name=>$column)
+			foreach(array_keys($this->getMetaData()->columns) as $name)
 			{
 				if(property_exists($this,$name))
 					$this->$name=$record->$name;
@@ -8622,7 +8666,7 @@ class CManyManyRelation extends CHasManyRelation
 	}
 	private function initJunctionData()
 	{
-		if(!preg_match('/^\s*(.*?)\((.*)\)\s*$/',$this->foreignKey,$matches))
+		if(!preg_match('/^\s*(.*?)\((.*)\)\s*$/',$this->foreignKey,/* @var string[] $matches */ $matches))
 			throw new CDbException(Yii::t('yii','The relation "{relation}" in active record class "{class}" is specified with an invalid foreign key. The format of the foreign key must be "joinTable(fk1,fk2,...)".',
 				array('{class}'=>$this->className,'{relation}'=>$this->name)));
 		$this->_junctionTableName=$matches[1];
@@ -9098,7 +9142,7 @@ abstract class CDbSchema extends CComponent
 	}
 	public function refresh()
 	{
-		if(($duration=$this->_connection->schemaCachingDuration)>0 && $this->_connection->schemaCacheID!==false && ($cache=Yii::app()->getComponent($this->_connection->schemaCacheID))!==null)
+		if(($this->_connection->schemaCachingDuration)>0 && $this->_connection->schemaCacheID!==false && ($cache=Yii::app()->getComponent($this->_connection->schemaCacheID))!==null)
 		{
 			foreach(array_keys($this->_tables) as $name)
 			{
@@ -9755,7 +9799,7 @@ class CDbCommand extends CComponent
 					$columns[$i]=(string)$column;
 				elseif(strpos($column,'(')===false)
 				{
-					if(preg_match('/^(.*?)(?i:\s+as\s+|\s+)(.*)$/',$column,$matches))
+					if(preg_match('/^(.*?)(?i:\s+as\s+|\s+)(.*)$/',$column,/* @var string[] $matches */ $matches))
 						$columns[$i]=$this->_connection->quoteColumnName($matches[1]).' AS '.$this->_connection->quoteColumnName($matches[2]);
 					else
 						$columns[$i]=$this->_connection->quoteColumnName($column);
@@ -10234,7 +10278,7 @@ class CDbColumnSchema extends CComponent
 	}
 	protected function extractLimit($dbType)
 	{
-		if(strpos($dbType,'(') && preg_match('/\((.*)\)/',$dbType,$matches))
+		if(strpos($dbType,'(') && preg_match('/\((.*)\)/',$dbType,/* @var string[] $matches */ $matches))
 		{
 			$values=explode(',',$matches[1]);
 			$this->size=$this->precision=(int)$values[0];
@@ -10370,6 +10414,7 @@ abstract class CValidator extends CComponent
 	}
 	public function clientValidateAttribute($object,$attribute)
 	{
+	    return null;
 	}
 	public function applyTo($scenario)
 	{
@@ -10401,7 +10446,7 @@ class CStringValidator extends CValidator
 		$value=$object->$attribute;
 		if($this->allowEmpty && $this->isEmpty($value))
 			return;
-		if(is_array($value))
+		if(is_array($value)||is_object($value))
 		{
 			// https://github.com/yiisoft/yii/issues/1955
 			$this->addError($object,$attribute,Yii::t('yii','{attribute} is invalid.'));

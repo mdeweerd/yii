@@ -313,8 +313,16 @@ EOD;
 			if(isset($button['click']))
 			{
 				$function=CJavaScript::encode($button['click']);
+				if(true) {
+					$class=preg_replace('/\s+/','.',$button['options']['class']);
+					$js[]="if(typeof(_gridf)==='undefined'){_gridf={};}"
+			             ."if(typeof(_gridf['on-{$this->grid->id}-{$class}'])!=='undefined') {jQuery(document).off('click','#{$this->grid->id} a.{$class}',_gridf['on-{$this->grid->id}-{$class}']);}"
+			             ."_gridf['on-{$this->grid->id}-{$class}']=$function;"
+			             ."jQuery(document).on('click','#{$this->grid->id} a.{$class}',_gridf['on-{$this->grid->id}-{$class}']);";
+			    } else {
 				$class=preg_replace('/\s+/','.',$button['options']['class']);
 				$js[]="jQuery(document).on('click','#{$this->grid->id} a.{$class}',$function);";
+				}
 			}
 		}
 

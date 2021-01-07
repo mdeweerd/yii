@@ -86,7 +86,7 @@ class CPradoViewRenderer extends CViewRenderer
 		);
 		$this->_sourceFile=$sourceFile;
 		$this->_input=file_get_contents($sourceFile);
-		$n=preg_match_all('/'.implode('|',$regexRules).'/msS',$this->_input,$matches,PREG_SET_ORDER|PREG_OFFSET_CAPTURE);
+		$n=preg_match_all('/'.implode('|',$regexRules).'/msS',$this->_input,/* @var string[] $matches */ $matches,PREG_SET_ORDER|PREG_OFFSET_CAPTURE);
 		$textStart=0;
 		$this->_output="<?php /* source file: $sourceFile */ ?>\n";
 		for($i=0;$i<$n;++$i)

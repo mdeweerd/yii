@@ -20,7 +20,7 @@
  * or associative arrays (e.g. query results of DAO).
  * Make sure to set the {@link keyField} property to the name of the field that uniquely
  * identifies a data record or false if you do not have such a field.
- * 
+ *
  * CArrayDataProvider may be used in the following way:
  * <pre>
  * $rawData=Yii::app()->db->createCommand('SELECT * FROM tbl_user')->queryAll();
@@ -190,7 +190,7 @@ class CArrayDataProvider extends CDataProvider
 		$directions=array();
 		foreach($segs as $seg)
 		{
-			if(preg_match('/(.*?)(\s+(desc|asc))?$/i',trim($seg),$matches))
+			if(preg_match('/(.*?)(\s+(desc|asc))?$/i',trim($seg),/* @var string[] $matches */ $matches))
 				$directions[$matches[1]]=isset($matches[3]) && !strcasecmp($matches[3],'desc');
 			else
 				$directions[trim($seg)]=false;

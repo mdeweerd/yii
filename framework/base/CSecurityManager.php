@@ -393,6 +393,7 @@ class CSecurityManager extends CApplicationComponent
 		$bytes='';
 		if(function_exists('openssl_random_pseudo_bytes'))
 		{
+		    $strong=null;
 			$bytes=openssl_random_pseudo_bytes($length,$strong);
 			if($this->strlen($bytes)>=$length && ($strong || !$cryptographicallyStrong))
 				return $this->substr($bytes,0,$length);
@@ -454,6 +455,7 @@ class CSecurityManager extends CApplicationComponent
 		// On UNIX and UNIX-like operating systems the numerical values in `ps`, `uptime` and `iostat`
 		// ought to be fairly unpredictable. Gather the non-zero digits from those.
 		foreach(array('ps','uptime','iostat') as $command) {
+		    $commandResult=null;$retVal=null;
 			@exec($command,$commandResult,$retVal);
 			if(is_array($commandResult) && !empty($commandResult) && $retVal==0)
 				$bytes.=preg_replace('/[^1-9]/','',implode('',$commandResult));
@@ -518,7 +520,7 @@ class CSecurityManager extends CApplicationComponent
 	{
 		return $this->_mbstring ? mb_substr($string,$start,$length,'8bit') : substr($string,$start,$length);
 	}
-    
+
 	/**
 	 * Checks if a key is valid for {@link cryptAlgorithm}.
 	 * @param string $key the key to check
@@ -552,7 +554,7 @@ class CSecurityManager extends CApplicationComponent
 		else
 			throw new CException(Yii::t('yii','Encryption key should be a string.'));
 	}
-    
+
 	/**
 	 * Decrypts legacy ciphertext which was produced by the old, broken implementation of encrypt().
 	 * @deprecated use only to convert data encrypted prior to 1.1.16

@@ -80,7 +80,7 @@ class CStringValidator extends CValidator
 		if($this->allowEmpty && $this->isEmpty($value))
 			return;
 
-		if(is_array($value))
+		if(is_array($value)||is_object($value))
 		{
 			// https://github.com/yiisoft/yii/issues/1955
 			$this->addError($object,$attribute,Yii::t('yii','{attribute} is invalid.'));

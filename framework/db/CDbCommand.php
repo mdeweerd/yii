@@ -616,7 +616,7 @@ class CDbCommand extends CComponent
 					$columns[$i]=(string)$column;
 				elseif(strpos($column,'(')===false)
 				{
-					if(preg_match('/^(.*?)(?i:\s+as\s+|\s+)(.*)$/',$column,$matches))
+					if(preg_match('/^(.*?)(?i:\s+as\s+|\s+)(.*)$/',$column,/* @var string[] $matches */ $matches))
 						$columns[$i]=$this->_connection->quoteColumnName($matches[1]).' AS '.$this->_connection->quoteColumnName($matches[2]);
 					else
 						$columns[$i]=$this->_connection->quoteColumnName($column);
@@ -1343,7 +1343,7 @@ class CDbCommand extends CComponent
 	 *
 	 * @param string $table the name of the table to be created. The name will be properly quoted by the method.
 	 * @param array $columns the columns (name=>definition) in the new table.
-	 * @param string $options additional SQL fragment that will be appended to the generated SQL.
+	 * @param ?string $options additional SQL fragment that will be appended to the generated SQL.
 	 * @return integer 0 is always returned. See {@link http://php.net/manual/en/pdostatement.rowcount.php} for more information.
 	 * @since 1.1.6
 	 */

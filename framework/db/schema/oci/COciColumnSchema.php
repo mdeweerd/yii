@@ -26,7 +26,7 @@ class COciColumnSchema extends CDbColumnSchema
 
 		if (strpos($dbType,'NUMBER')!==false || strpos($dbType,'INTEGER')!==false)
 		{
-			if(strpos($dbType,'(') && preg_match('/\((.*)\)/',$dbType,$matches))
+			if(strpos($dbType,'(') && preg_match('/\((.*)\)/',$dbType,/* @var string[] $matches */ $matches))
 			{
 				$values=explode(',',$matches[1]);
 				if(isset($values[1]) and (((int)$values[1]) > 0))

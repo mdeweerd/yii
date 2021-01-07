@@ -596,7 +596,7 @@ class YiiBase
 	 * reserved for Yii framework core code use. See {@link CPhpMessageSource} for
 	 * more interpretation about message category.
 	 * @param string $message the original message
-	 * @param array $params parameters to be applied to the message using <code>strtr</code>.
+	 * @param array|int|float $params parameters to be applied to the message using <code>strtr</code>.
 	 * The first parameter can be a number without key.
 	 * And in this case, the method will call {@link CChoiceFormat::format} to choose
 	 * an appropriate message translation.
@@ -616,7 +616,7 @@ class YiiBase
 		{
 			if($source===null)
 				$source=($category==='yii'||$category==='zii')?'coreMessages':'messages';
-			if(($source=self::$_app->getComponent($source))!==null)
+			if(($source=self::$_app->getComponent($source))!==null) /* @var CMessageSource $source */
 				$message=$source->translate($category,$message,$language);
 		}
 		if($params===array())

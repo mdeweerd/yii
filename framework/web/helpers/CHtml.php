@@ -44,17 +44,17 @@ class CHtml
 	public static $errorContainerTag='div';
 	/**
 	 * @var string the CSS class for required labels. Defaults to 'required'.
-	 * @see label
+	 * @see CHtml::label()
 	 */
 	public static $requiredCss='required';
 	/**
 	 * @var string the HTML code to be prepended to the required label.
-	 * @see label
+	 * @see CHtml::label()
 	 */
 	public static $beforeRequiredLabel='';
 	/**
 	 * @var string the HTML code to be appended to the required label.
-	 * @see label
+	 * @see CHtml::label()
 	 */
 	public static $afterRequiredLabel=' <span class="required">*</span>';
 	/**
@@ -77,7 +77,7 @@ class CHtml
 	 *
 	 * For more information about attaching jQuery event handler see {@link http://api.jquery.com/on/}
 	 * @since 1.1.9
-	 * @see clientChange
+	 * @see CHtml::clientChange()
 	 */
 	public static $liveEvents=true;
 	/**
@@ -335,7 +335,7 @@ class CHtml
 	 * @param string $method form method (e.g. post, get)
 	 * @param array $htmlOptions additional HTML attributes (see {@link tag}).
 	 * @return string the generated form tag.
-	 * @see endForm
+	 * @see CHtml::endForm()
 	 */
 	public static function beginForm($action='',$method='post',$htmlOptions=array())
 	{
@@ -374,7 +374,7 @@ class CHtml
 	/**
 	 * Generates a closing form tag.
 	 * @return string the generated tag
-	 * @see beginForm
+	 * @see CHtml::beginForm()
 	 */
 	public static function endForm()
 	{
@@ -416,8 +416,8 @@ class CHtml
 	 * @param array $htmlOptions additional HTML attributes. Besides normal HTML attributes, a few special
 	 * attributes are also recognized (see {@link clientChange} and {@link tag} for more details.)
 	 * @return string the generated hyperlink
-	 * @see normalizeUrl
-	 * @see clientChange
+	 * @see CHtml::normalizeUrl()
+	 * @see CHtml::clientChange()
 	 */
 	public static function link($text,$url='#',$htmlOptions=array())
 	{
@@ -434,7 +434,7 @@ class CHtml
 	 * @param array $htmlOptions additional HTML attributes. Besides normal HTML attributes, a few special
 	 * attributes are also recognized (see {@link clientChange} and {@link tag} for more details.)
 	 * @return string the generated mailto link
-	 * @see clientChange
+	 * @see CHtml::clientChange()
 	 */
 	public static function mailto($text,$email='',$htmlOptions=array())
 	{
@@ -446,7 +446,7 @@ class CHtml
 	/**
 	 * Generates an image tag.
 	 * @param string $src the image URL
-	 * @param string $alt the alternative text display
+	 * @param ?string $alt the alternative text display
 	 * @param array $htmlOptions additional HTML attributes (see {@link tag}).
 	 * @return string the generated image tag
 	 */
@@ -463,7 +463,7 @@ class CHtml
 	 * @param array $htmlOptions additional HTML attributes. Besides normal HTML attributes, a few special
 	 * attributes are also recognized (see {@link clientChange} and {@link tag} for more details.)
 	 * @return string the generated button tag
-	 * @see clientChange
+	 * @see CHtml::clientChange()
 	 */
 	public static function button($label='button',$htmlOptions=array())
 	{
@@ -489,7 +489,7 @@ class CHtml
 	 * @param array $htmlOptions additional HTML attributes. Besides normal HTML attributes, a few special
 	 * attributes are also recognized (see {@link clientChange} and {@link tag} for more details.)
 	 * @return string the generated button tag
-	 * @see clientChange
+	 * @see CHtml::clientChange()
 	 */
 	public static function htmlButton($label='button',$htmlOptions=array())
 	{
@@ -507,7 +507,7 @@ class CHtml
 	 * @param array $htmlOptions additional HTML attributes. Besides normal HTML attributes, a few special
 	 * attributes are also recognized (see {@link clientChange} and {@link tag} for more details.)
 	 * @return string the generated button tag
-	 * @see clientChange
+	 * @see CHtml::clientChange()
 	 */
 	public static function submitButton($label='submit',$htmlOptions=array())
 	{
@@ -521,7 +521,7 @@ class CHtml
 	 * @param array $htmlOptions additional HTML attributes. Besides normal HTML attributes, a few special
 	 * attributes are also recognized (see {@link clientChange} and {@link tag} for more details.)
 	 * @return string the generated button tag
-	 * @see clientChange
+	 * @see CHtml::clientChange()
 	 */
 	public static function resetButton($label='reset',$htmlOptions=array())
 	{
@@ -535,7 +535,7 @@ class CHtml
 	 * @param array $htmlOptions additional HTML attributes. Besides normal HTML attributes, a few special
 	 * attributes are also recognized (see {@link clientChange} and {@link tag} for more details.)
 	 * @return string the generated button tag
-	 * @see clientChange
+	 * @see CHtml::clientChange()
 	 */
 	public static function imageButton($src,$htmlOptions=array())
 	{
@@ -550,7 +550,7 @@ class CHtml
 	 * @param array $htmlOptions additional HTML attributes. Besides normal HTML attributes, a few special
 	 * attributes are also recognized (see {@link clientChange} and {@link tag} for more details.)
 	 * @return string the generated button tag
-	 * @see clientChange
+	 * @see CHtml::clientChange()
 	 */
 	public static function linkButton($label='submit',$htmlOptions=array())
 	{
@@ -602,8 +602,8 @@ class CHtml
 	 * @param array $htmlOptions additional HTML attributes. Besides normal HTML attributes, a few special
 	 * attributes are also recognized (see {@link clientChange} and {@link tag} for more details.)
 	 * @return string the generated input field
-	 * @see clientChange
-	 * @see inputField
+	 * @see CHtml::clientChange()
+	 * @see CHtml::inputField()
 	 * @since 1.1.16
 	 */
 	public static function colorField($name,$value='',$htmlOptions=array())
@@ -614,13 +614,13 @@ class CHtml
 
 	/**
 	 * Generates a text field input.
-	 * @param string $name the input name
-	 * @param string $value the input value
+	 * @param ?string $name the input name
+	 * @param ?string $value the input value
 	 * @param array $htmlOptions additional HTML attributes. Besides normal HTML attributes, a few special
 	 * attributes are also recognized (see {@link clientChange} and {@link tag} for more details.)
 	 * @return string the generated input field
-	 * @see clientChange
-	 * @see inputField
+	 * @see CHtml::clientChange()
+	 * @see CHtml::inputField()
 	 */
 	public static function textField($name,$value='',$htmlOptions=array())
 	{
@@ -635,8 +635,8 @@ class CHtml
 	 * @param array $htmlOptions additional HTML attributes. Besides normal HTML attributes, a few special
 	 * attributes are also recognized (see {@link clientChange} and {@link tag} for more details.)
 	 * @return string the generated input field
-	 * @see clientChange
-	 * @see inputField
+	 * @see CHtml::clientChange()
+	 * @see CHtml::inputField()
 	 * @since 1.1.16
 	 */
 	public static function searchField($name,$value='',$htmlOptions=array())
@@ -651,8 +651,8 @@ class CHtml
 	 * @param array $htmlOptions additional HTML attributes. Besides normal HTML attributes, a few special
 	 * attributes are also recognized (see {@link clientChange} and {@link tag} for more details.)
 	 * @return string the generated input field
-	 * @see clientChange
-	 * @see inputField
+	 * @see CHtml::clientChange()
+	 * @see CHtml::inputField()
 	 * @since 1.1.14
 	 */
 	public static function numberField($name,$value='',$htmlOptions=array())
@@ -668,8 +668,8 @@ class CHtml
 	 * @param array $htmlOptions additional HTML attributes. Besides normal HTML attributes, a few special
 	 * attributes are also recognized (see {@link clientChange} and {@link tag} for more details.)
 	 * @return string the generated input field
-	 * @see clientChange
-	 * @see inputField
+	 * @see CHtml::clientChange()
+	 * @see CHtml::inputField()
 	 * @since 1.1.14
 	 */
 	public static function rangeField($name,$value='',$htmlOptions=array())
@@ -685,8 +685,8 @@ class CHtml
 	 * @param array $htmlOptions additional HTML attributes. Besides normal HTML attributes, a few special
 	 * attributes are also recognized (see {@link clientChange} and {@link tag} for more details.)
 	 * @return string the generated input field
-	 * @see clientChange
-	 * @see inputField
+	 * @see CHtml::clientChange()
+	 * @see CHtml::inputField()
 	 * @since 1.1.14
 	 */
 	public static function dateField($name,$value='',$htmlOptions=array())
@@ -702,8 +702,8 @@ class CHtml
 	 * @param array $htmlOptions additional HTML attributes. Besides normal HTML attributes, a few special
 	 * attributes are also recognized (see {@link clientChange} and {@link tag} for more details.)
 	 * @return string the generated input field
-	 * @see clientChange
-	 * @see inputField
+	 * @see CHtml::clientChange()
+	 * @see CHtml::inputField()
 	 * @since 1.1.14
 	 */
 	public static function timeField($name,$value='',$htmlOptions=array())
@@ -719,8 +719,8 @@ class CHtml
 	 * @param array $htmlOptions additional HTML attributes. Besides normal HTML attributes, a few special
 	 * attributes are also recognized (see {@link clientChange} and {@link tag} for more details.)
 	 * @return string the generated input field
-	 * @see clientChange
-	 * @see inputField
+	 * @see CHtml::clientChange()
+	 * @see CHtml::inputField()
 	 * @since 1.1.16
 	 */
 	public static function dateTimeField($name,$value='',$htmlOptions=array())
@@ -736,8 +736,8 @@ class CHtml
 	 * @param array $htmlOptions additional HTML attributes. Besides normal HTML attributes, a few special
 	 * attributes are also recognized (see {@link clientChange} and {@link tag} for more details.)
 	 * @return string the generated input field
-	 * @see clientChange
-	 * @see inputField
+	 * @see CHtml::clientChange()
+	 * @see CHtml::inputField()
 	 * @since 1.1.16
 	 */
 	public static function dateTimeLocalField($name,$value='',$htmlOptions=array())
@@ -753,8 +753,8 @@ class CHtml
 	 * @param array $htmlOptions additional HTML attributes. Besides normal HTML attributes, a few special
 	 * attributes are also recognized (see {@link clientChange} and {@link tag} for more details.)
 	 * @return string the generated input field
-	 * @see clientChange
-	 * @see inputField
+	 * @see CHtml::clientChange()
+	 * @see CHtml::inputField()
 	 * @since 1.1.16
 	 */
 	public static function weekField($name,$value='',$htmlOptions=array())
@@ -770,8 +770,8 @@ class CHtml
 	 * @param array $htmlOptions additional HTML attributes. Besides normal HTML attributes, a few special
 	 * attributes are also recognized (see {@link clientChange} and {@link tag} for more details.)
 	 * @return string the generated input field
-	 * @see clientChange
-	 * @see inputField
+	 * @see CHtml::clientChange()
+	 * @see CHtml::inputField()
 	 * @since 1.1.14
 	 */
 	public static function emailField($name,$value='',$htmlOptions=array())
@@ -787,8 +787,8 @@ class CHtml
 	 * @param array $htmlOptions additional HTML attributes. Besides normal HTML attributes, a few special
 	 * attributes are also recognized (see {@link clientChange} and {@link tag} for more details.)
 	 * @return string the generated input field
-	 * @see clientChange
-	 * @see inputField
+	 * @see CHtml::clientChange()
+	 * @see CHtml::inputField()
 	 * @since 1.1.14
 	 */
 	public static function telField($name,$value='',$htmlOptions=array())
@@ -804,8 +804,8 @@ class CHtml
 	 * @param array $htmlOptions additional HTML attributes. Besides normal HTML attributes, a few special
 	 * attributes are also recognized (see {@link clientChange} and {@link tag} for more details.)
 	 * @return string the generated input field
-	 * @see clientChange
-	 * @see inputField
+	 * @see CHtml::clientChange()
+	 * @see CHtml::inputField()
 	 * @since 1.1.14
 	 */
 	public static function urlField($name,$value='',$htmlOptions=array())
@@ -820,7 +820,7 @@ class CHtml
 	 * @param string $value the input value
 	 * @param array $htmlOptions additional HTML attributes (see {@link tag}).
 	 * @return string the generated input field
-	 * @see inputField
+	 * @see CHtml::inputField()
 	 */
 	public static function hiddenField($name,$value='',$htmlOptions=array())
 	{
@@ -834,8 +834,8 @@ class CHtml
 	 * @param array $htmlOptions additional HTML attributes. Besides normal HTML attributes, a few special
 	 * attributes are also recognized (see {@link clientChange} and {@link tag} for more details.)
 	 * @return string the generated input field
-	 * @see clientChange
-	 * @see inputField
+	 * @see CHtml::clientChange()
+	 * @see CHtml::inputField()
 	 */
 	public static function passwordField($name,$value='',$htmlOptions=array())
 	{
@@ -852,7 +852,7 @@ class CHtml
 	 * @param string $value the input value
 	 * @param array $htmlOptions additional HTML attributes (see {@link tag}).
 	 * @return string the generated input field
-	 * @see inputField
+	 * @see CHtml::inputField()
 	 */
 	public static function fileField($name,$value='',$htmlOptions=array())
 	{
@@ -866,8 +866,8 @@ class CHtml
 	 * @param array $htmlOptions additional HTML attributes. Besides normal HTML attributes, a few special
 	 * attributes are also recognized (see {@link clientChange} and {@link tag} for more details.)
 	 * @return string the generated text area
-	 * @see clientChange
-	 * @see inputField
+	 * @see CHtml::clientChange()
+	 * @see CHtml::inputField()
 	 */
 	public static function textArea($name,$value='',$htmlOptions=array())
 	{
@@ -891,8 +891,8 @@ class CHtml
 	 * when the radio button is not checked, we can still obtain the posted uncheck value.
 	 * If 'uncheckValue' is not set or set to NULL, the hidden field will not be rendered.
 	 * @return string the generated radio button
-	 * @see clientChange
-	 * @see inputField
+	 * @see CHtml::clientChange()
+	 * @see CHtml::inputField()
 	 */
 	public static function radioButton($name,$checked=false,$htmlOptions=array())
 	{
@@ -931,7 +931,7 @@ class CHtml
 
 	/**
 	 * Generates a check box.
-	 * @param string $name the input name
+	 * @param string|false $name the input name
 	 * @param boolean $checked whether the check box is checked
 	 * @param array $htmlOptions additional HTML attributes. Besides normal HTML attributes, a few special
 	 * attributes are also recognized (see {@link clientChange} and {@link tag} for more details.)
@@ -940,8 +940,8 @@ class CHtml
 	 * when the checkbox is not checked, we can still obtain the posted uncheck value.
 	 * If 'uncheckValue' is not set or set to NULL, the hidden field will not be rendered.
 	 * @return string the generated check box
-	 * @see clientChange
-	 * @see inputField
+	 * @see CHtml::clientChange()
+	 * @see CHtml::inputField()
 	 */
 	public static function checkBox($name,$checked=false,$htmlOptions=array())
 	{
@@ -1011,9 +1011,9 @@ class CHtml
 	 * rendered so that if no option is selected in multiple mode, we can still obtain the posted
 	 * unselect value. If 'unselectValue' is not set or set to NULL, the hidden field will not be rendered.
 	 * @return string the generated drop down list
-	 * @see clientChange
-	 * @see inputField
-	 * @see listData
+	 * @see CHtml::clientChange()
+	 * @see CHtml::inputField()
+	 * @see CHtml::listData()
 	 */
 	public static function dropDownList($name,$select,$data,$htmlOptions=array())
 	{
@@ -1075,9 +1075,9 @@ class CHtml
 	 * </li>
 	 * </ul>
 	 * @return string the generated list box
-	 * @see clientChange
-	 * @see inputField
-	 * @see listData
+	 * @see CHtml::clientChange()
+	 * @see CHtml::inputField()
+	 * @see CHtml::listData()
 	 */
 	public static function listBox($name,$select,$data,$htmlOptions=array())
 	{
@@ -1295,8 +1295,8 @@ EOD;
 	 * @param array $htmlOptions additional HTML attributes. Besides normal HTML attributes, a few special
 	 * attributes are also recognized (see {@link clientChange} and {@link tag} for more details.)
 	 * @return string the generated link
-	 * @see normalizeUrl
-	 * @see ajax
+	 * @see CHtml::normalizeUrl
+	 * @see CHtml::ajax()
 	 */
 	public static function ajaxLink($text,$url,$ajaxOptions=array(),$htmlOptions=array())
 	{
@@ -1530,8 +1530,8 @@ EOD;
 	 * @param array $htmlOptions additional HTML attributes. Besides normal HTML attributes, a few special
 	 * attributes are also recognized (see {@link clientChange} and {@link tag} for more details.)
 	 * @return string the generated input field
-	 * @see clientChange
-	 * @see activeInputField
+	 * @see CHtml::clientChange()
+	 * @see CHtml::activeInputField()
 	 */
 	public static function activeTextField($model,$attribute,$htmlOptions=array())
 	{
@@ -1549,8 +1549,8 @@ EOD;
 	 * @param array $htmlOptions additional HTML attributes. Besides normal HTML attributes, a few special
 	 * attributes are also recognized (see {@link clientChange} and {@link tag} for more details.)
 	 * @return string the generated input field
-	 * @see clientChange
-	 * @see activeInputField
+	 * @see CHtml::clientChange()
+	 * @see CHtml::activeInputField()
 	 * @since 1.1.14
 	 */
 	public static function activeSearchField($model,$attribute,$htmlOptions=array())
@@ -1569,8 +1569,8 @@ EOD;
 	 * @param array $htmlOptions additional HTML attributes. Besides normal HTML attributes, a few special
 	 * attributes are also recognized (see {@link clientChange} and {@link tag} for more details.)
 	 * @return string the generated input field
-	 * @see clientChange
-	 * @see activeInputField
+	 * @see CHtml::clientChange()
+	 * @see CHtml::activeInputField()
 	 * @since 1.1.11
 	 */
 	public static function activeUrlField($model,$attribute,$htmlOptions=array())
@@ -1589,8 +1589,8 @@ EOD;
 	 * @param array $htmlOptions additional HTML attributes. Besides normal HTML attributes, a few special
 	 * attributes are also recognized (see {@link clientChange} and {@link tag} for more details.)
 	 * @return string the generated input field
-	 * @see clientChange
-	 * @see activeInputField
+	 * @see CHtml::clientChange()
+	 * @see CHtml::activeInputField()
 	 * @since 1.1.11
 	 */
 	public static function activeEmailField($model,$attribute,$htmlOptions=array())
@@ -1609,8 +1609,8 @@ EOD;
 	 * @param array $htmlOptions additional HTML attributes. Besides normal HTML attributes, a few special
 	 * attributes are also recognized (see {@link clientChange} and {@link tag} for more details.)
 	 * @return string the generated input field
-	 * @see clientChange
-	 * @see activeInputField
+	 * @see CHtml::clientChange()
+	 * @see CHtml::activeInputField()
 	 * @since 1.1.11
 	 */
 	public static function activeNumberField($model,$attribute,$htmlOptions=array())
@@ -1629,8 +1629,8 @@ EOD;
 	 * @param array $htmlOptions additional HTML attributes. Besides normal HTML attributes, a few special
 	 * attributes are also recognized (see {@link clientChange} and {@link tag} for more details.)
 	 * @return string the generated input field
-	 * @see clientChange
-	 * @see activeInputField
+	 * @see CHtml::clientChange()
+	 * @see CHtml::activeInputField()
 	 * @since 1.1.11
 	 */
 	public static function activeRangeField($model,$attribute,$htmlOptions=array())
@@ -1649,8 +1649,8 @@ EOD;
 	 * @param array $htmlOptions additional HTML attributes. Besides normal HTML attributes, a few special
 	 * attributes are also recognized (see {@link clientChange} and {@link tag} for more details.)
 	 * @return string the generated input field
-	 * @see clientChange
-	 * @see activeInputField
+	 * @see CHtml::clientChange()
+	 * @see CHtml::activeInputField()
 	 * @since 1.1.11
 	 */
 	public static function activeDateField($model,$attribute,$htmlOptions=array())
@@ -1669,8 +1669,8 @@ EOD;
 	 * @param array $htmlOptions additional HTML attributes. Besides normal HTML attributes, a few special
 	 * attributes are also recognized (see {@link clientChange} and {@link tag} for more details.)
 	 * @return string the generated input field
-	 * @see clientChange
-	 * @see activeInputField
+	 * @see CHtml::clientChange()
+	 * @see CHtml::activeInputField()
 	 * @since 1.1.14
 	 */
 	public static function activeTimeField($model,$attribute,$htmlOptions=array())
@@ -1689,8 +1689,8 @@ EOD;
 	 * @param array $htmlOptions additional HTML attributes. Besides normal HTML attributes, a few special
 	 * attributes are also recognized (see {@link clientChange} and {@link tag} for more details.)
 	 * @return string the generated input field
-	 * @see clientChange
-	 * @see activeInputField
+	 * @see CHtml::clientChange()
+	 * @see CHtml::activeInputField()
 	 * @since 1.1.16
 	 */
 	public static function activeDateTimeField($model,$attribute,$htmlOptions=array())
@@ -1709,8 +1709,8 @@ EOD;
 	 * @param array $htmlOptions additional HTML attributes. Besides normal HTML attributes, a few special
 	 * attributes are also recognized (see {@link clientChange} and {@link tag} for more details.)
 	 * @return string the generated input field
-	 * @see clientChange
-	 * @see activeInputField
+	 * @see CHtml::clientChange()
+	 * @see CHtml::activeInputField()
 	 * @since 1.1.16
 	 */
 	public static function activeDateTimeLocalField($model,$attribute,$htmlOptions=array())
@@ -1729,8 +1729,8 @@ EOD;
 	 * @param array $htmlOptions additional HTML attributes. Besides normal HTML attributes, a few special
 	 * attributes are also recognized (see {@link clientChange} and {@link tag} for more details.)
 	 * @return string the generated input field
-	 * @see clientChange
-	 * @see activeInputField
+	 * @see CHtml::clientChange()
+	 * @see CHtml::activeInputField()
 	 * @since 1.1.16
 	 */
 	public static function activeWeekField($model,$attribute,$htmlOptions=array())
@@ -1749,8 +1749,8 @@ EOD;
 	 * @param array $htmlOptions additional HTML attributes. Besides normal HTML attributes, a few special
 	 * attributes are also recognized (see {@link clientChange} and {@link tag} for more details.)
 	 * @return string the generated input field
-	 * @see clientChange
-	 * @see activeInputField
+	 * @see CHtml::clientChange()
+	 * @see CHtml::activeInputField()
 	 * @since 1.1.16
 	 */
 	public static function activeColorField($model,$attribute,$htmlOptions=array())
@@ -1769,8 +1769,8 @@ EOD;
 	 * @param array $htmlOptions additional HTML attributes. Besides normal HTML attributes, a few special
 	 * attributes are also recognized (see {@link clientChange} and {@link tag} for more details.)
 	 * @return string the generated input field
-	 * @see clientChange
-	 * @see activeInputField
+	 * @see CHtml::clientChange()
+	 * @see CHtml::activeInputField()
 	 * @since 1.1.14
 	 */
 	public static function activeTelField($model,$attribute,$htmlOptions=array())
@@ -1787,7 +1787,7 @@ EOD;
 	 * @param string $attribute the attribute
 	 * @param array $htmlOptions additional HTML attributes.
 	 * @return string the generated input field
-	 * @see activeInputField
+	 * @see CHtml::activeInputField()
 	 */
 	public static function activeHiddenField($model,$attribute,$htmlOptions=array())
 	{
@@ -1804,8 +1804,8 @@ EOD;
 	 * @param array $htmlOptions additional HTML attributes. Besides normal HTML attributes, a few special
 	 * attributes are also recognized (see {@link clientChange} and {@link tag} for more details.)
 	 * @return string the generated input field
-	 * @see clientChange
-	 * @see activeInputField
+	 * @see CHtml::clientChange()
+	 * @see CHtml::activeInputField()
 	 */
 	public static function activePasswordField($model,$attribute,$htmlOptions=array())
 	{
@@ -1823,7 +1823,7 @@ EOD;
 	 * @param array $htmlOptions additional HTML attributes. Besides normal HTML attributes, a few special
 	 * attributes are also recognized (see {@link clientChange} and {@link tag} for more details.)
 	 * @return string the generated text area
-	 * @see clientChange
+	 * @see CHtml::clientChange()
 	 */
 	public static function activeTextArea($model,$attribute,$htmlOptions=array())
 	{
@@ -1850,7 +1850,7 @@ EOD;
 	 * @param string $attribute the attribute
 	 * @param array $htmlOptions additional HTML attributes (see {@link tag}).
 	 * @return string the generated input field
-	 * @see activeInputField
+	 * @see CHtml::activeInputField()
 	 */
 	public static function activeFileField($model,$attribute,$htmlOptions=array())
 	{
@@ -1878,8 +1878,8 @@ EOD;
 	 * we can still obtain the posted uncheck value.
 	 * If 'uncheckValue' is set as NULL, the hidden field will not be rendered.
 	 * @return string the generated radio button
-	 * @see clientChange
-	 * @see activeInputField
+	 * @see CHtml::clientChange()
+	 * @see CHtml::activeInputField()
 	 */
 	public static function activeRadioButton($model,$attribute,$htmlOptions=array())
 	{
@@ -1922,8 +1922,8 @@ EOD;
 	 * we can still obtain the posted uncheck value.
 	 * If 'uncheckValue' is set as NULL, the hidden field will not be rendered.
 	 * @return string the generated check box
-	 * @see clientChange
-	 * @see activeInputField
+	 * @see CHtml::clientChange()
+	 * @see CHtml::activeInputField()
 	 */
 	public static function activeCheckBox($model,$attribute,$htmlOptions=array())
 	{
@@ -1956,7 +1956,7 @@ EOD;
 	 * be appended with {@link errorCss}.
 	 * @param CModel $model the data model
 	 * @param string $attribute the attribute
-	 * @param array $data data for generating the list options (value=>display)
+	 * @param array|\ArrayAccess $data data for generating the list options (value=>display)
 	 * You may use {@link listData} to generate this data.
 	 * Please refer to {@link listOptions} on how this data is used to generate the list options.
 	 * Note, the values and labels will be automatically HTML-encoded by this method.
@@ -1985,8 +1985,8 @@ EOD;
 	 * rendered so that if no option is selected in multiple mode, we can still obtain the posted
 	 * unselect value. If 'unselectValue' is not set or set to NULL, the hidden field will not be rendered.
 	 * @return string the generated drop down list
-	 * @see clientChange
-	 * @see listData
+	 * @see CHtml::clientChange()
+	 * @see CHtml::listData()
 	 */
 	public static function activeDropDownList($model,$attribute,$data,$htmlOptions=array())
 	{
@@ -2048,8 +2048,8 @@ EOD;
 	 * </li>
 	 * </ul>
 	 * @return string the generated list box
-	 * @see clientChange
-	 * @see listData
+	 * @see CHtml::clientChange()
+	 * @see CHtml::listData()
 	 */
 	public static function activeListBox($model,$attribute,$data,$htmlOptions=array())
 	{
@@ -2097,7 +2097,7 @@ EOD;
 	 * Internally, a hidden field is rendered so when the checkbox is not checked, we can still
 	 * obtain the value. If 'uncheckValue' is set to NULL, there will be no hidden field rendered.
 	 * @return string the generated check box list
-	 * @see checkBoxList
+	 * @see CHtml::checkBoxList()
 	 */
 	public static function activeCheckBoxList($model,$attribute,$data,$htmlOptions=array())
 	{
@@ -2159,7 +2159,7 @@ EOD;
 	 * rendered so that when the radio button is not checked, we can still obtain the posted uncheck value.
 	 * If 'uncheckValue' is set as NULL, the hidden field will not be rendered.
 	 * @return string the generated radio button list
-	 * @see radioButtonList
+	 * @see CHtml::radioButtonList()
 	 */
 	public static function activeRadioButtonList($model,$attribute,$data,$htmlOptions=array())
 	{
@@ -2203,7 +2203,7 @@ EOD;
 	 * This option has been available since version 1.1.23.
 	 * @return string the error summary. Empty if no errors are found.
 	 * @see CModel::getErrors
-	 * @see errorSummaryCss
+	 * @see CHtml::errorSummaryCss()
 	 */
 	public static function errorSummary($model,$header=null,$footer=null,$htmlOptions=array())
 	{
@@ -2252,8 +2252,8 @@ EOD;
 	 * @param string $attribute the attribute name
 	 * @param array $htmlOptions additional HTML attributes to be rendered in the container tag.
 	 * @return string the error display. Empty if no errors are found.
-	 * @see CModel::getErrors
-	 * @see errorMessageCss
+	 * @see CModel::getErrors()
+	 * @see CHtml::errorMessageCss()
 	 * @see $errorContainerTag
 	 */
 	public static function error($model,$attribute,$htmlOptions=array())
@@ -2725,7 +2725,7 @@ EOD;
 				$attribute=substr($attribute,$pos+1);
 				return $modelName.$sub.'['.$attribute.']';
 			}
-			if(preg_match('/\](\w+\[.*)$/',$attribute,$matches))
+			if(preg_match('/\](\w+\[.*)$/',$attribute, /* @var string[] $matches */ $matches))
 			{
 				$name=$modelName.'['.str_replace(']','][',trim(strtr($attribute,array(']['=>']','['=>']')),']')).']';
 				$attribute=$matches[1];
@@ -2761,7 +2761,9 @@ EOD;
 			{
 				if((is_array($value) || $value instanceof ArrayAccess) && isset($value[$id]))
 					$value=$value[$id];
-				else
+                elseif(is_object($value) && isset($value->$id))
+                    $value=$value->$id;
+			    else
 					return null;
 			}
 			return $value;

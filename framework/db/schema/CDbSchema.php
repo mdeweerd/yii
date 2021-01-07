@@ -158,7 +158,7 @@ abstract class CDbSchema extends CComponent
 	 */
 	public function refresh()
 	{
-		if(($duration=$this->_connection->schemaCachingDuration)>0 && $this->_connection->schemaCacheID!==false && ($cache=Yii::app()->getComponent($this->_connection->schemaCacheID))!==null)
+		if(($this->_connection->schemaCachingDuration)>0 && $this->_connection->schemaCacheID!==false && ($cache=Yii::app()->getComponent($this->_connection->schemaCacheID))!==null)
 		{
 			foreach(array_keys($this->_tables) as $name)
 			{
@@ -179,7 +179,7 @@ abstract class CDbSchema extends CComponent
 	 * If the table name contains schema prefix, the prefix will also be properly quoted.
 	 * @param string $name table name
 	 * @return string the properly quoted table name
-	 * @see quoteSimpleTableName
+	 * @see self::quoteSimpleTableName
 	 */
 	public function quoteTableName($name)
 	{
@@ -209,7 +209,7 @@ abstract class CDbSchema extends CComponent
 	 * If the column name contains prefix, the prefix will also be properly quoted.
 	 * @param string $name column name
 	 * @return string the properly quoted column name
-	 * @see quoteSimpleColumnName
+	 * @see self::quoteSimpleColumnName
 	 */
 	public function quoteColumnName($name)
 	{
@@ -364,7 +364,7 @@ abstract class CDbSchema extends CComponent
 	 *
 	 * @param string $table the name of the table to be created. The name will be properly quoted by the method.
 	 * @param array $columns the columns (name=>definition) in the new table.
-	 * @param string $options additional SQL fragment that will be appended to the generated SQL.
+	 * @param ?string $options additional SQL fragment that will be appended to the generated SQL.
 	 * @return string the SQL statement for creating a new DB table.
 	 * @since 1.1.6
 	 */

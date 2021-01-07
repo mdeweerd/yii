@@ -81,7 +81,7 @@ abstract class CModel extends CComponent implements IteratorAggregate, ArrayAcce
 	 * merge the parent rules with child rules using functions like array_merge().
 	 *
 	 * @return array validation rules to be applied when {@link validate()} is called.
-	 * @see scenario
+	 * @see self::scenario
 	 */
 	public function rules()
 	{
@@ -122,8 +122,8 @@ abstract class CModel extends CComponent implements IteratorAggregate, ArrayAcce
 	 * Note, in order to inherit labels defined in the parent class, a child class needs to
 	 * merge the parent labels with child labels using functions like array_merge().
 	 *
-	 * @return array attribute labels (name=>label)
-	 * @see generateAttributeLabel
+	 * @return array<string,string> attribute labels (name=>label)
+	 * @see self::generateAttributeLabel
 	 */
 	public function attributeLabels()
 	{
@@ -140,14 +140,14 @@ abstract class CModel extends CComponent implements IteratorAggregate, ArrayAcce
 	 *
 	 * Errors found during the validation can be retrieved via {@link getErrors}.
 	 *
-	 * @param array $attributes list of attributes that should be validated. Defaults to null,
+	 * @param ?array $attributes list of attributes that should be validated. Defaults to null,
 	 * meaning any attribute listed in the applicable validation rules should be
 	 * validated. If this parameter is given as a list of attributes, only
 	 * the listed attributes will be validated.
 	 * @param boolean $clearErrors whether to call {@link clearErrors} before performing validation
 	 * @return boolean whether the validation is successful without any error.
-	 * @see beforeValidate
-	 * @see afterValidate
+	 * @see self::beforeValidate
+	 * @see self::afterValidate
 	 */
 	public function validate($attributes=null, $clearErrors=true)
 	{
@@ -325,8 +325,8 @@ abstract class CModel extends CComponent implements IteratorAggregate, ArrayAcce
 	 * Returns the text label for the specified attribute.
 	 * @param string $attribute the attribute name
 	 * @return string the attribute label
-	 * @see generateAttributeLabel
-	 * @see attributeLabels
+	 * @see self::generateAttributeLabel
+	 * @see self::attributeLabels
 	 */
 	public function getAttributeLabel($attribute)
 	{
@@ -365,7 +365,7 @@ abstract class CModel extends CComponent implements IteratorAggregate, ArrayAcce
 
 	/**
 	 * Returns the first error of the specified attribute.
-	 * @param string $attribute attribute name.
+	 * @param ?string $attribute attribute name.
 	 * @return string the error message. Null is returned if no error.
 	 */
 	public function getError($attribute)
@@ -375,7 +375,7 @@ abstract class CModel extends CComponent implements IteratorAggregate, ArrayAcce
 
 	/**
 	 * Adds a new error to the specified attribute.
-	 * @param string $attribute attribute name
+	 * @param ?string $attribute attribute name
 	 * @param string $error new error message
 	 */
 	public function addError($attribute,$error)
@@ -458,8 +458,8 @@ abstract class CModel extends CComponent implements IteratorAggregate, ArrayAcce
 	 * @param array $values attribute values (name=>value) to be set.
 	 * @param boolean $safeOnly whether the assignments should only be done to the safe attributes.
 	 * A safe attribute is one that is associated with a validation rule in the current {@link scenario}.
-	 * @see getSafeAttributeNames
-	 * @see attributeNames
+	 * @see self::getSafeAttributeNames
+	 * @see self::attributeNames
 	 */
 	public function setAttributes($values,$safeOnly=true)
 	{
@@ -528,7 +528,7 @@ abstract class CModel extends CComponent implements IteratorAggregate, ArrayAcce
 	/**
 	 * Sets the scenario for the model.
 	 * @param string $value the scenario that this model is in.
-	 * @see getScenario
+	 * @see self::getScenario
 	 */
 	public function setScenario($value)
 	{

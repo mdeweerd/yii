@@ -52,7 +52,7 @@ class CUploadedFile extends CComponent
 	 * @param string $attribute the attribute name. For tabular file uploading, this can be in the format of "[$i]attributeName", where $i stands for an integer index.
 	 * @return CUploadedFile the instance of the uploaded file.
 	 * Null is returned if no file is uploaded for the specified model attribute.
-	 * @see getInstanceByName
+	 * @see self::getInstanceByName
 	 */
 	public static function getInstance($model, $attribute)
 	{
@@ -145,7 +145,7 @@ class CUploadedFile extends CComponent
 	{
 		if(is_array($names))
 		{
-			foreach($names as $item=>$name)
+			foreach(array_keys($names) as $item)
 				self::collectFilesRecursive($key.'['.$item.']', $names[$item], $tmp_names[$item], $types[$item], $sizes[$item], $errors[$item]);
 		}
 		else
@@ -183,13 +183,13 @@ class CUploadedFile extends CComponent
 
 	/**
 	 * Saves the uploaded file.
-	 * Note: this method uses php's move_uploaded_file() method. As such, if the target file ($file) 
+	 * Note: this method uses php's move_uploaded_file() method. As such, if the target file ($file)
 	 * already exists it is overwritten.
 	 * @param string $file the file path used to save the uploaded file
 	 * @param boolean $deleteTempFile whether to delete the temporary file after saving.
 	 * If true, you will not be able to save the uploaded file again in the current request.
 	 * @return boolean true whether the file is saved successfully
-	 * 
+	 *
 	 * In some exceptional cases such as not enough permissions to write to the path specified
 	 * PHP warning is triggered.
 	 */

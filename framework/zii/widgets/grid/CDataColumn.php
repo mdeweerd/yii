@@ -29,8 +29,8 @@ class CDataColumn extends CGridColumn
 	/**
 	 * @var string the attribute name of the data model. Used for column sorting, filtering and to render the corresponding
 	 * attribute value in each data cell. If {@link value} is specified it will be used to rendered the data cell instead of the attribute value.
-	 * @see value
-	 * @see sortable
+	 * @see self::$value
+	 * @see self::$sortable
 	 */
 	public $name;
 	/**
@@ -63,7 +63,7 @@ class CDataColumn extends CGridColumn
 	 * @var boolean whether the column is sortable. If so, the header cell will contain a link that may trigger the sorting.
 	 * Defaults to true. Note that if {@link name} is not set, or if {@link name} is not allowed by {@link CSort},
 	 * this property will be treated as false.
-	 * @see name
+	 * @see self::$name
 	 */
 	public $sortable=true;
 	/**

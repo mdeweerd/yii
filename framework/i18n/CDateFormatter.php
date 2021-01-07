@@ -109,9 +109,9 @@ class CDateFormatter extends CComponent
 	 * Formats a date according to a predefined pattern.
 	 * The predefined pattern is determined based on the date pattern width and time pattern width.
 	 * @param mixed $timestamp UNIX timestamp or a string in strtotime format
-	 * @param string $dateWidth width of the date pattern. It can be 'full', 'long', 'medium' and 'short'.
+	 * @param null|string $dateWidth width of the date pattern. It can be 'full', 'long', 'medium' and 'short'.
 	 * If null, it means the date portion will NOT appear in the formatting result
-	 * @param string $timeWidth width of the time pattern. It can be 'full', 'long', 'medium' and 'short'.
+	 * @param null|string $timeWidth width of the time pattern. It can be 'full', 'long', 'medium' and 'short'.
 	 * If null, it means the time portion will NOT appear in the formatting result
 	 * @return string formatted date time.
 	 */

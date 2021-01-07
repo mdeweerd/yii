@@ -77,7 +77,7 @@ class CWidget extends CBaseController
 	 *
 	 * @return array
 	 *
-	 * @see actionPrefix
+	 * @see self::actionPrefix
 	 * @see CController::actions
 	 */
 	public static function actions()
@@ -232,18 +232,18 @@ class CWidget extends CBaseController
 	 *
 	 * @param string $view name of the view to be rendered. See {@link getViewFile} for details
 	 * about how the view script is resolved.
-	 * @param array $data data to be extracted into PHP variables and made available to the view script
+	 * @param ?array $data data to be extracted into PHP variables and made available to the view script
 	 * @param boolean $return whether the rendering result should be returned instead of being displayed to end users
 	 * @return string the rendering result. Null if the rendering result is not required.
 	 * @throws CException if the view does not exist
-	 * @see getViewFile
+	 * @see self::getViewFile
 	 */
 	public function render($view,$data=null,$return=false)
 	{
 		if(($viewFile=$this->getViewFile($view))!==false)
 			return $this->renderFile($viewFile,$data,$return);
 		else
-			throw new CException(Yii::t('yii','{widget} cannot find the view "{view}".',
+			throw new \CException(\Yii::t('yii','{widget} cannot find the view "{view}".',
 				array('{widget}'=>get_class($this), '{view}'=>$view)));
 	}
 }

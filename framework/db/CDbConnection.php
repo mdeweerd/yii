@@ -141,12 +141,12 @@ class CDbConnection extends CApplicationComponent
 	 * @var integer number of seconds that table metadata can remain valid in cache.
 	 * Use 0 or negative value to indicate not caching schema.
 	 * If greater than 0 and the primary cache is enabled, the table metadata will be cached.
-	 * @see schemaCachingExclude
+	 * @see self::schemaCachingExclude
 	 */
 	public $schemaCachingDuration=0;
 	/**
 	 * @var array list of tables whose metadata should NOT be cached. Defaults to empty array.
-	 * @see schemaCachingDuration
+	 * @see self::schemaCachingDuration
 	 */
 	public $schemaCachingExclude=array();
 	/**
@@ -165,15 +165,15 @@ class CDbConnection extends CApplicationComponent
 	 * The method {@link cache()} is provided as a convenient way of setting this property
 	 * and {@link queryCachingDependency} on the fly.
 	 *
-	 * @see cache
-	 * @see queryCachingDependency
-	 * @see queryCacheID
+	 * @see self::cache
+	 * @see self::$queryCachingDependency
+	 * @see self::$queryCacheID
 	 * @since 1.1.7
 	 */
 	public $queryCachingDuration=0;
 	/**
 	 * @var CCacheDependency|ICacheDependency the dependency that will be used when saving query results into cache.
-	 * @see queryCachingDuration
+	 * @see self::$queryCachingDuration
 	 * @since 1.1.7
 	 */
 	public $queryCachingDependency;
@@ -739,8 +739,8 @@ class CDbConnection extends CApplicationComponent
 	 * Changes the name of the DB driver. Overrides value extracted from the {@link connectionString},
 	 * which is behavior by default.
 	 * @param string $driverName to be set. Valid values are the keys from the {@link driverMap} property.
-	 * @see getDriverName
-	 * @see driverName
+	 * @see self::getDriverName
+	 * @see self::driverName
 	 * @since 1.1.16
 	 */
 	public function setDriverName($driverName)
@@ -832,7 +832,7 @@ class CDbConnection extends CApplicationComponent
 	/**
 	 * Returns the attributes that are previously explicitly set for the DB connection.
 	 * @return array attributes (name=>value) that are previously explicitly set for the DB connection.
-	 * @see setAttributes
+	 * @see self::setAttributes
 	 * @since 1.1.7
 	 */
 	public function getAttributes()
@@ -843,7 +843,7 @@ class CDbConnection extends CApplicationComponent
 	/**
 	 * Sets a set of attributes on the database connection.
 	 * @param array $values attributes (name=>value) to be set.
-	 * @see setAttribute
+	 * @see self::setAttribute
 	 * @since 1.1.7
 	 */
 	public function setAttributes($values)

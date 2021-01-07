@@ -166,7 +166,7 @@ if(jQuery.trim(value)!='') {
 	 */
 	private function encodeIDN($value)
 	{
-		if(preg_match_all('/^(.*):\/\/([^\/]+)(.*)$/',$value,$matches))
+		if(preg_match_all('/^(.*):\/\/([^\/]+)(.*)$/',$value,/* @var string[] $matches */ $matches))
 		{
 			if(function_exists('idn_to_ascii'))
 			{

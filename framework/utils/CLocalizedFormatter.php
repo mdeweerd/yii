@@ -74,7 +74,7 @@ class CLocalizedFormatter extends CFormatter
 	 * Formats the value as a boolean.
 	 * @param mixed $value the value to be formatted
 	 * @return string the formatted result
-	 * @see booleanFormat
+	 * @see CFormatter::$booleanFormat
 	 */
 	public function formatBoolean($value)
 	{
@@ -85,7 +85,7 @@ class CLocalizedFormatter extends CFormatter
 	 * Formats the value as a date using the {@link locale}s date formatter.
 	 * @param mixed $value the value to be formatted
 	 * @return string the formatted result
-	 * @see dateFormat
+	 * @see self::$dateFormat
 	 * @see CLocale::getDateFormatter()
 	 */
 	public function formatDate($value)
@@ -97,7 +97,7 @@ class CLocalizedFormatter extends CFormatter
 	 * Formats the value as a time using the {@link locale}s date formatter.
 	 * @param mixed $value the value to be formatted
 	 * @return string the formatted result
-	 * @see timeFormat
+	 * @see self::$timeFormat
 	 * @see CLocale::getDateFormatter()
 	 */
 	public function formatTime($value)
@@ -109,11 +109,11 @@ class CLocalizedFormatter extends CFormatter
 	 * Formats the value as a date and time using the {@link locale}s date formatter.
 	 * @param mixed $value the value to be formatted
 	 * @return string the formatted result
-	 * @see dateFormat
-	 * @see timeFormat
+	 * @see self::$dateFormat
+	 * @see self::$timeFormat
 	 * @see CLocale::getDateFormatter()
 	 */
-	public function formatDatetime($value)
+	public function formatDateTime($value)
 	{
 		return $this->getLocale()->dateFormatter->formatDateTime($this->normalizeDateValue($value), $this->dateFormat, $this->timeFormat);
 	}

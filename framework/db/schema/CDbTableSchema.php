@@ -52,7 +52,7 @@ class CDbTableSchema extends CComponent
 	 */
 	public $foreignKeys=array();
 	/**
-	 * @var array column metadata of this table. Each array element is a CDbColumnSchema object, indexed by column names.
+	 * @var CDbColumnSchema[] column metadata of this table. Each array element is a CDbColumnSchema object, indexed by column names.
 	 */
 	public $columns=array();
 

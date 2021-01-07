@@ -393,7 +393,7 @@ class CDbCriteria extends CComponent
 	 * Note that any surrounding white spaces will be removed from the value before comparison.
 	 * When the value is empty, no comparison expression will be added to the search condition.
 	 *
-	 * @param string $column the name of the column to be searched
+	 * @param string|string[] $column the name of the column to be searched
 	 * @param mixed $value the column value to be compared with. If the value is a string, the aforementioned
 	 * intelligent comparison will be conducted. If the value is an array, the comparison is done
 	 * by exact match of any of the value in the array. If the string or the array is empty,
@@ -422,7 +422,7 @@ class CDbCriteria extends CComponent
 		else
 			$value="$value";
 
-		if(preg_match('/^(?:\s*(<>|<=|>=|<|>|=))?(.*)$/',$value,$matches))
+		if(preg_match('/^(?:\s*(<>|<=|>=|<|>|=))?(.*)$/',$value,/* @var string[] $matches */ $matches))
 		{
 			$value=$matches[2];
 			$op=$matches[1];

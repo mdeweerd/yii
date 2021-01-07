@@ -621,7 +621,7 @@ abstract class CApplication extends CModule
 	 * @param string $key the name of the value to be returned
 	 * @param mixed $defaultValue the default value. If the named global value is not found, this will be returned instead.
 	 * @return mixed the named global value
-	 * @see setGlobalState
+	 * @see self::setGlobalState
 	 */
 	public function getGlobalState($key,$defaultValue=null)
 	{
@@ -641,7 +641,7 @@ abstract class CApplication extends CModule
 	 * @param string $key the name of the value to be saved
 	 * @param mixed $value the global value to be saved. It must be serializable.
 	 * @param mixed $defaultValue the default value. If the named global value is the same as this value, it will be cleared from the current storage.
-	 * @see getGlobalState
+	 * @see self::getGlobalState
 	 */
 	public function setGlobalState($key,$value,$defaultValue=null)
 	{
@@ -680,7 +680,7 @@ abstract class CApplication extends CModule
 
 	/**
 	 * Loads the global state data from persistent storage.
-	 * @see getStatePersister
+	 * @see self::getStatePersister
 	 * @throws CException if the state persister is not available
 	 */
 	public function loadGlobalState()
@@ -694,7 +694,7 @@ abstract class CApplication extends CModule
 
 	/**
 	 * Saves the global state data into persistent storage.
-	 * @see getStatePersister
+	 * @see self::getStatePersister
 	 * @throws CException if the state persister is not available
 	 */
 	public function saveGlobalState()
@@ -967,7 +967,7 @@ abstract class CApplication extends CModule
 
 	/**
 	 * Registers the core application components.
-	 * @see setComponents
+	 * @see self::setComponents
 	 */
 	protected function registerCoreComponents()
 	{

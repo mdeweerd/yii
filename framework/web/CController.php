@@ -203,7 +203,7 @@ class CController extends CBaseController
 	 * be resolved as the 'action1' action declared in the 'ProviderClass'.
 	 *
 	 * @return array list of external action classes
-	 * @see createAction
+	 * @see self::createAction
 	 */
 	public function actions()
 	{
@@ -250,9 +250,9 @@ class CController extends CBaseController
 	 * Filters specified via {@link filters()} will be applied.
 	 * @param string $actionID action ID
 	 * @throws CHttpException if the action does not exist or the action name is not proper.
-	 * @see filters
-	 * @see createAction
-	 * @see runAction
+	 * @see self::filters
+	 * @see self::createAction
+	 * @see self::runAction
 	 */
 	public function run($actionID)
 	{
@@ -276,9 +276,9 @@ class CController extends CBaseController
 	 * and the action will be executed then.
 	 * @param CAction $action the action to be executed.
 	 * @param array $filters list of filters to be applied to the action.
-	 * @see filters
-	 * @see createAction
-	 * @see runAction
+	 * @see self::filters
+	 * @see self::createAction
+	 * @see self::runAction
 	 */
 	public function runActionWithFilters($action,$filters)
 	{
@@ -386,7 +386,7 @@ class CController extends CBaseController
 	 * This is a callback function used internally.
 	 * @param array $matches matches
 	 * @return string the replacement
-	 * @see processOutput
+	 * @see self::processOutput
 	 */
 	protected function replaceDynamicOutput($matches)
 	{
@@ -405,7 +405,7 @@ class CController extends CBaseController
 	 * The latter is created by looking up the action map specified in {@link actions}.
 	 * @param string $actionID ID of the action. If empty, the {@link defaultAction default action} will be used.
 	 * @return CAction the action instance, null if the action does not exist.
-	 * @see actions
+	 * @see self::actions
 	 * @throws CException
 	 */
 	public function createAction($actionID)
@@ -581,7 +581,7 @@ class CController extends CBaseController
 	 *
 	 * @param string $viewName view name
 	 * @return string the view file path, false if the view file does not exist
-	 * @see resolveViewFile
+	 * @see self::resolveViewFile
 	 * @see CApplication::findLocalizedFile
 	 */
 	public function getViewFile($viewName)
@@ -775,8 +775,8 @@ class CController extends CBaseController
 	 * @param array $data data to be extracted into PHP variables and made available to the view script
 	 * @param boolean $return whether the rendering result should be returned instead of being displayed to end users.
 	 * @return string the rendering result. Null if the rendering result is not required.
-	 * @see renderPartial
-	 * @see getLayoutFile
+	 * @see self::renderPartial
+	 * @see self::getLayoutFile
 	 */
 	public function render($view,$data=null,$return=false)
 	{
@@ -828,7 +828,7 @@ class CController extends CBaseController
 	 * @param string $text the static text string
 	 * @param boolean $return whether the rendering result should be returned instead of being displayed to end users.
 	 * @return string the rendering result. Null if the rendering result is not required.
-	 * @see getLayoutFile
+	 * @see self::getLayoutFile
 	 */
 	public function renderText($text,$return=false)
 	{
@@ -856,14 +856,14 @@ class CController extends CBaseController
 	 *
 	 * @param string $view name of the view to be rendered. See {@link getViewFile} for details
 	 * about how the view script is resolved.
-	 * @param array $data data to be extracted into PHP variables and made available to the view script
+	 * @param ?array $data data to be extracted into PHP variables and made available to the view script
 	 * @param boolean $return whether the rendering result should be returned instead of being displayed to end users
 	 * @param boolean $processOutput whether the rendering result should be postprocessed using {@link processOutput}.
 	 * @return string the rendering result. Null if the rendering result is not required.
 	 * @throws CException if the view does not exist
-	 * @see getViewFile
-	 * @see processOutput
-	 * @see render
+	 * @see self::getViewFile
+	 * @see self::processOutput
+	 * @see self::render
 	 */
 	public function renderPartial($view,$data=null,$return=false,$processOutput=false)
 	{
@@ -936,7 +936,7 @@ class CController extends CBaseController
 	 * This method is internally used.
 	 * @param callback $callback a PHP callback which returns the needed dynamic content.
 	 * @param array $params parameters passed to the PHP callback
-	 * @see renderDynamic
+	 * @see self::renderDynamic
 	 */
 	public function renderDynamicInternal($callback,$params)
 	{
@@ -1156,7 +1156,7 @@ class CController extends CBaseController
 	 * @param string $name the state name
 	 * @param mixed $defaultValue the value to be returned if the named state is not found
 	 * @return mixed the page state value
-	 * @see setPageState
+	 * @see self::setPageState
 	 * @see CHtml::statefulForm
 	 */
 	public function getPageState($name,$defaultValue=null)
@@ -1175,7 +1175,7 @@ class CController extends CBaseController
 	 * @param mixed $value the page state value
 	 * @param mixed $defaultValue the default page state value. If this is the same as
 	 * the given value, the state will be removed from persistent storage.
-	 * @see getPageState
+	 * @see self::getPageState
 	 * @see CHtml::statefulForm
 	 */
 	public function setPageState($name,$value,$defaultValue=null)

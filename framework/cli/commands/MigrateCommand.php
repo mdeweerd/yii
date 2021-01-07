@@ -234,7 +234,7 @@ class MigrateCommand extends CConsoleCommand
 	private function migrateToVersion($version)
 	{
 		$originalVersion=$version;
-		if(preg_match('/^m?(\d{6}_\d{6})(_.*?)?$/',$version,$matches))
+		if(preg_match('/^m?(\d{6}_\d{6})(_.*?)?$/',$version,/* @var string[] $matches */ $matches))
 			$version='m'.$matches[1];
 		else
 		{

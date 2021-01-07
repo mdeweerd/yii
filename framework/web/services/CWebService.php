@@ -243,7 +243,7 @@ class CWebService extends CComponent
 				$request=$HTTP_RAW_POST_DATA;
 			else
 				$request=file_get_contents('php://input');
-			if(preg_match('/<.*?:Body[^>]*>\s*<.*?:(\w+)/mi',$request,$matches))
+			if(preg_match('/<.*?:Body[^>]*>\s*<.*?:(\w+)/mi',$request,/* @var string[] $matches */ $matches))
 				$this->_method=$matches[1];
 			else
 				$this->_method='';
@@ -352,7 +352,7 @@ class CDocumentSoapObjectWrapper
 		{
 			$result = call_user_func_array(array($this->object, $name), $arguments);
 		}
-		return $result === null ? $result : array($name . 'Result' => $result); 
+		return $result === null ? $result : array($name . 'Result' => $result);
 	}
 }
 

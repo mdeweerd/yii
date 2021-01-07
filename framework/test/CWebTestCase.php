@@ -7,9 +7,9 @@
  * @copyright 2008-2013 Yii Software LLC
  * @license http://www.yiiframework.com/license/
  */
-
+use PHPUnit\Extensions\Selenium2TestCase;
 Yii::import('system.test.CTestCase');
-require_once('PHPUnit/Extensions/SeleniumTestCase.php');
+//require_once('PHPUnit/Extensions/SeleniumTestCase.php');
 
 /**
  * CWebTestCase is the base class for Web-based functional test case classes.
@@ -23,7 +23,9 @@ require_once('PHPUnit/Extensions/SeleniumTestCase.php');
  * @package system.test
  * @since 1.1
  */
-abstract class CWebTestCase extends PHPUnit_Extensions_SeleniumTestCase
+//abstract class CWebTestCase extends PHPUnit_Extensions_SeleniumTestCase
+//abstract class CWebTestCase extends PHPUnit_Extensions_Selenium2TestCase
+abstract class CWebTestCase extends Selenium2TestCase
 {
 	/**
 	 * @var array a list of fixtures that should be loaded before each test method executes.
@@ -97,7 +99,7 @@ abstract class CWebTestCase extends PHPUnit_Extensions_SeleniumTestCase
 	 * If you override this method, make sure the parent implementation is invoked.
 	 * Otherwise, the database fixtures will not be managed properly.
 	 */
-	protected function setUp()
+	protected function setUp() : void
 	{
 		parent::setUp();
 		if(is_array($this->fixtures))

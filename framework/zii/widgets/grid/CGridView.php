@@ -425,7 +425,7 @@ class CGridView extends CBaseListView
 	 */
 	protected function createDataColumn($text)
 	{
-		if(!preg_match('/^([\w\.]+)(:(\w*))?(:(.*))?$/',$text,$matches))
+		if(!preg_match('/^([\w\.]+)(:(\w*))?(:(.*))?$/',$text,/* @var string[] $matches */ $matches))
 			throw new CException(Yii::t('zii','The column must be specified in the format of "Name:Type:Label", where "Type" and "Label" are optional.'));
 		$column=new CDataColumn($this);
 		$column->name=$matches[1];
@@ -642,11 +642,11 @@ class CGridView extends CBaseListView
 
 	/**
 	 * A seam for people extending CGridView to be able to hook onto the data cell rendering process.
-	 * 
+	 *
 	 * By overriding only this method we will not need to copypaste and modify the whole entirety of `renderTableRow`.
 	 * Or override `renderDataCell()` method of all possible CGridColumn descendants.
-	 * 
-	 * @param CGridColumn $column The Column instance to 
+	 *
+	 * @param CGridColumn $column The Column instance to
 	 * @param integer $row
 	 * @since 1.1.16
 	 */
@@ -654,7 +654,7 @@ class CGridView extends CBaseListView
 	{
 		$column->renderDataCell($row);
 	}
-	
+
 	/**
 	 * @return boolean whether the table should render a footer.
 	 * This is true if any of the {@link columns} has a true {@link CGridColumn::hasFooter} value.

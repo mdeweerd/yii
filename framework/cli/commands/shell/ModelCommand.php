@@ -205,7 +205,7 @@ EOD;
 		{
 			if($pattern===null)
 				$this->_tables[$name]=$this->generateClassName($this->removePrefix($name));
-			elseif(preg_match($pattern,$name,$matches))
+			elseif(preg_match($pattern,$name,/* @var string[] $matches */ $matches))
 			{
 				if(count($matches)>1 && !empty($matches[1]))
 					$className=$this->generateClassName($matches[1]);

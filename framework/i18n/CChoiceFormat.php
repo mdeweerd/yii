@@ -45,7 +45,7 @@ class CChoiceFormat
 	 */
 	public static function format($messages, $number)
 	{
-		$n=preg_match_all('/\s*([^#]*)\s*#([^\|]*)\|/',$messages.'|',$matches);
+		$n=preg_match_all('/\s*([^#]*)\s*#([^\|]*)\|/',$messages.'|',/* @var string[] $matches */ $matches);
 		if($n===0)
 			return $messages;
 		for($i=0;$i<$n;++$i)

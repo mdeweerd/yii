@@ -1413,7 +1413,7 @@ class CStatElement
 	 */
 	public function query()
 	{
-		if(preg_match('/^\s*(.*?)\((.*)\)\s*$/',$this->relation->foreignKey,$matches))
+		if(preg_match('/^\s*(.*?)\((.*)\)\s*$/',$this->relation->foreignKey,/* @var string[] $matches */ $matches))
 			$this->queryManyMany($matches[1],$matches[2]);
 		else
 			$this->queryOneMany();

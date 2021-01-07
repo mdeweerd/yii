@@ -39,7 +39,7 @@ abstract class CLogRoute extends CComponent
 	 */
 	public $levels='';
 	/**
-	 * @var mixed array of categories, or string list separated by comma or space. 
+	 * @var mixed array of categories, or string list separated by comma or space.
 	 * Defaults to empty array, meaning all categories.
 	 */
 	public $categories=array();
@@ -84,7 +84,7 @@ abstract class CLogRoute extends CComponent
 	 */
 	protected function formatLogMessage($message,$level,$category,$time)
 	{
-		return @date('Y/m/d H:i:s',$time)." [$level] [$category] $message\n";
+		return @date('Y/m/d H:i:s P',$time)." [$level] [$category] $message\n";
 	}
 
 	/**

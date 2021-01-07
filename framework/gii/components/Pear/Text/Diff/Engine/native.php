@@ -63,9 +63,11 @@ class Text_Diff_Engine_native {
         }
 
         // Ignore lines which do not exist in both files.
+        $xhash=[];
         for ($xi = $skip; $xi < $n_from - $endskip; $xi++) {
             $xhash[$from_lines[$xi]] = 1;
         }
+        $yhash=[];
         for ($yi = $skip; $yi < $n_to - $endskip; $yi++) {
             $line = $to_lines[$yi];
             if (($this->ychanged[$yi] = empty($xhash[$line]))) {
@@ -160,6 +162,7 @@ class Text_Diff_Engine_native {
                 = array($yoff, $ylim, $xoff, $xlim);
         }
 
+        $ymatches=[];
         if ($flip) {
             for ($i = $ylim - 1; $i >= $yoff; $i--) {
                 $ymatches[$this->xv[$i]][] = $i;
@@ -173,7 +176,7 @@ class Text_Diff_Engine_native {
         $this->lcs = 0;
         $this->seq[0]= $yoff - 1;
         $this->in_seq = array();
-        $ymids[0] = array();
+        $ymids= [ [] ];
 
         $numer = $xlim - $xoff + $nchunks - 1;
         $x = $xoff;
@@ -192,9 +195,7 @@ class Text_Diff_Engine_native {
                 }
                 $matches = $ymatches[$line];
                 reset($matches);
-                foreach($matches as $match) {
-                    reset($match);
-                    $y = next($match);
+                while (list(, $y) = each($matches)) {
                     if (empty($this->in_seq[$y])) {
                         $k = $this->_lcsPos($y);
                         assert($k > 0);
@@ -202,9 +203,7 @@ class Text_Diff_Engine_native {
                         break;
                     }
                 }
-                foreach($matches as $match) {
-                    reset($match);
-                    $y = next($match);
+                while (list(, $y) = each($matches)) {
                     if ($y > $this->seq[$k - 1]) {
                         assert($y <= $this->seq[$k]);
                         /* Optimization: this is a common case: next match is
@@ -221,7 +220,7 @@ class Text_Diff_Engine_native {
             }
         }
 
-        $seps[] = $flip ? array($yoff, $xoff) : array($xoff, $yoff);
+        $seps = $flip ? [array($yoff, $xoff)] : [array($xoff, $yoff)];
         $ymid = $ymids[$this->lcs];
         for ($n = 0; $n < $nchunks - 1; $n++) {
             $x1 = $xoff + (int)(($numer + ($xlim - $xoff) * $n) / $nchunks);

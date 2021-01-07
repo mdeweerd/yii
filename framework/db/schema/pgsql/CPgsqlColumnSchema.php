@@ -43,7 +43,7 @@ class CPgsqlColumnSchema extends CDbColumnSchema
 	{
 		if(strpos($dbType,'('))
 		{
-			if (preg_match('/^time.*\((.*)\)/',$dbType,$matches))
+			if (preg_match('/^time.*\((.*)\)/',$dbType,/* @var string[] $matches */ $matches))
 			{
 				$this->precision=(int)$matches[1];
 			}

@@ -307,7 +307,7 @@ class CActiveForm extends CWidget
 	protected $attributes=array();
 	/**
 	 * @var string the ID of the container element for error summary
-	 * @see errorSummary
+	 * @see CModel::errorSummary
 	 * @since 1.1.7
 	 */
 	protected $summaryID;

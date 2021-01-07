@@ -115,7 +115,7 @@ class CPasswordHelper
 		if(!is_string($password) || $password==='')
 			return false;
 
-		if (!$password || !preg_match('{^\$2[axy]\$(\d\d)\$[\./0-9A-Za-z]{22}}',$hash,$matches) ||
+		if (!$password || !preg_match('{^\$2[axy]\$(\d\d)\$[\./0-9A-Za-z]{22}}',$hash,/* @var string[] $matches */ $matches) ||
 			$matches[1]<4 || $matches[1]>31)
 			return false;
 

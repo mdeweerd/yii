@@ -173,9 +173,10 @@ class GiiModule extends CWebModule
 				'default/login',
 				'default/error',
 			);
-			if($this->password!==false && Yii::app()->user->isGuest && !in_array($route,$publicPages))
-				Yii::app()->user->loginRequired();
-			else
+			if($this->password!==false && Yii::app()->user->isGuest && !in_array($route,$publicPages)) {
+				Yii::trace("User must login - password required and is guest");
+			    Yii::app()->user->loginRequired();
+			} else
 				return true;
 		}
 		return false;
@@ -195,6 +196,7 @@ class GiiModule extends CWebModule
 			if($filter==='*' || $filter===$ip || (($pos=strpos($filter,'*'))!==false && !strncmp($ip,$filter,$pos)))
 				return true;
 		}
+		Yii::trace("IP not allowed","gii.allowip");
 		return false;
 	}
 

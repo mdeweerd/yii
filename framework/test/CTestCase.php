@@ -7,7 +7,7 @@
  * @copyright 2008-2013 Yii Software LLC
  * @license http://www.yiiframework.com/license/
  */
-
+if(false)
 if(!class_exists('PHPUnit_Runner_Version')) {
 	require_once('PHPUnit/Runner/Version.php');
 	require_once('PHPUnit/Util/Filesystem.php'); // workaround for PHPUnit <= 3.6.11
@@ -29,6 +29,7 @@ if(!class_exists('PHPUnit_Runner_Version')) {
  * @package system.test
  * @since 1.1
  */
-abstract class CTestCase extends PHPUnit_Framework_TestCase
+//abstract class CTestCase extends PHPUnit_Framework_TestCase
+abstract class CTestCase extends PHPUnit\Framework\TestCase
 {
 }

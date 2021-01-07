@@ -144,7 +144,7 @@ class CWebApplication extends CApplication
 	/**
 	 * Registers the core application components.
 	 * This method overrides the parent implementation by registering additional core components.
-	 * @see setComponents
+	 * @see self::setComponents
 	 */
 	protected function registerCoreComponents()
 	{

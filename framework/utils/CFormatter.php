@@ -191,7 +191,7 @@ class CFormatter extends CApplicationComponent
 	 * Formats the value as a date.
 	 * @param mixed $value the value to be formatted
 	 * @return string the formatted result
-	 * @see dateFormat
+	 * @see self::dateFormat
 	 */
 	public function formatDate($value)
 	{
@@ -202,7 +202,7 @@ class CFormatter extends CApplicationComponent
 	 * Formats the value as a time.
 	 * @param mixed $value the value to be formatted
 	 * @return string the formatted result
-	 * @see timeFormat
+	 * @see self::timeFormat
 	 */
 	public function formatTime($value)
 	{
@@ -213,7 +213,7 @@ class CFormatter extends CApplicationComponent
 	 * Formats the value as a date and time.
 	 * @param mixed $value the value to be formatted
 	 * @return string the formatted result
-	 * @see datetimeFormat
+	 * @see self::datetimeFormat
 	 */
 	public function formatDatetime($value)
 	{
@@ -222,7 +222,7 @@ class CFormatter extends CApplicationComponent
 
 	/**
 	 * Normalizes an expression as a timestamp.
-	 * @param mixed $time the time expression to be normalized
+	 * @param ?mixed $time the time expression to be normalized
 	 * @return int the normalized result as a UNIX timestamp
 	 */
 	protected function normalizeDateValue($time)
@@ -244,7 +244,7 @@ class CFormatter extends CApplicationComponent
 	 * Formats the value as a boolean.
 	 * @param mixed $value the value to be formatted
 	 * @return string the formatted result
-	 * @see booleanFormat
+	 * @see self::booleanFormat
 	 */
 	public function formatBoolean($value)
 	{
@@ -288,7 +288,7 @@ class CFormatter extends CApplicationComponent
 	 * Formats the value as a number using PHP number_format() function.
 	 * @param mixed $value the value to be formatted
 	 * @return string the formatted result
-	 * @see numberFormat
+	 * @see self::numberFormat
 	 */
 	public function formatNumber($value)
 	{
@@ -312,7 +312,7 @@ class CFormatter extends CApplicationComponent
 	 * @param boolean $verbose if full names should be used (e.g. bytes, kilobytes, ...).
 	 * Defaults to false meaning that short names will be used (e.g. B, KB, ...).
 	 * @return string the formatted result
-	 * @see sizeFormat
+	 * @see self::sizeFormat
 	 * @since 1.1.11
 	 */
 	public function formatSize($value,$verbose=false)
