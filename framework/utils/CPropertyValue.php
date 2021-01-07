@@ -119,11 +119,11 @@ class CPropertyValue
 				}
 				catch (ParseError $e)
 				{
-					return [];
+					return array();
 				}
 			}
 			else
-				return $len>0?array($value):[];
+				return $len>0?array($value):array();
 		}
 		else
 			return (array)$value;
@@ -154,7 +154,7 @@ class CPropertyValue
 	 */
 	public static function ensureEnum($value,$enumType)
 	{
-		static $types=[];
+		static $types=array();
 		if(!isset($types[$enumType]))
 			$types[$enumType]=new ReflectionClass($enumType);
 		if($types[$enumType]->hasConstant($value))
