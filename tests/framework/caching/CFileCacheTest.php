@@ -89,7 +89,7 @@ class CFileCacheTest extends CTestCase
 		$this->assertEquals($time+2,filemtime($files[0]));
 
 		$cache->set('testKey2','testValue2',2);
-		sleep(1);
+		usleep(999999);
 		$this->assertEquals('testValue2',$cache->get('testKey2'));
 
 		$cache->set('testKey3','testValue3',2);
@@ -117,7 +117,7 @@ class CFileCacheTest extends CTestCase
 		$this->assertEquals($time,filemtime($files[0]));
 
 		$cache->set('testKey5','testValue5',2);
-		sleep(1);
+		usleep(999999);
 		$this->assertEquals('testValue5',$cache->get('testKey5'));
 
 		$cache->set('testKey6','testValue6',2);
