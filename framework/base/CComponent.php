@@ -226,8 +226,10 @@ class CComponent
 	public function __unset($name)
 	{
 		$setter='set'.$name;
-		if(method_exists($this,$setter))
+		if(method_exists($this,$setter)) {
 			$this->$setter(null);
+			return;	
+                }
 		$this->ensureBehaviors();
 		if(strncasecmp($name,'on',2)===0 && method_exists($this,$name))
 			unset($this->_e[strtolower($name)]);
