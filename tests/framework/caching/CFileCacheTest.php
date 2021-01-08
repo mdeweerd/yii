@@ -80,7 +80,8 @@ class CFileCacheTest extends CTestCase
 
 		// Make sure that we are just after the start of a second so that the tests
 		// succeed - otherwise times may be off by one second.
-		usleep(999999-(1000000*explode(" ", microtime(false))[0]));
+		$utime=explode(" ", microtime(false));
+		usleep(999999-(1000000*$utime[0]));
 
 		$cache->set('testKey1','testValue1',2);
 		$files=glob($cache->cachePath.'/*.bin');
@@ -106,7 +107,8 @@ class CFileCacheTest extends CTestCase
 
 		// Make sure that we are just after the start of a second so that the tests
 		// succeed - otherwise times may be off by one second.
-		usleep(999999-(1000000*explode(" ", microtime(false))[0]));
+		$utime=explode(" ", microtime(false));
+		usleep(999999-(1000000*$utime[0]));
 
 		$cache->set('testKey4','testValue4',2);
 		$files=glob($cache->cachePath.'/*.bin');
