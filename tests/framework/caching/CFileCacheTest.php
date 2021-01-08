@@ -80,16 +80,17 @@ class CFileCacheTest extends CTestCase
 
 		// Make sure that we are just after the start of a second so that the tests
 		// succeed - otherwise times may be off by one second.
-		$utime=explode(" ", microtime(false));
-		usleep(999999-(1000000*$utime[0]));
+		$utime=explode(" ", microtime(false)); usleep(999999-(1000000*$utime[0]));
 
 		$cache->set('testKey1','testValue1',2);
 		$time=time();
 		$files=glob($cache->cachePath.'/*.bin');
 		$this->assertEquals($time+2,filemtime($files[0]));
 
+		$utime=explode(" ", microtime(false)); usleep(999999-(1000000*$utime[0]));
 		$cache->set('testKey2','testValue2',2);
-		usleep(999999);
+
+		$utime=explode(" ", microtime(false)); usleep(999999-(1000000*$utime[0]));
 		$this->assertEquals('testValue2',$cache->get('testKey2'));
 
 		$cache->set('testKey3','testValue3',2);
@@ -116,8 +117,9 @@ class CFileCacheTest extends CTestCase
 		$files=glob($cache->cachePath.'/*.bin');
 		$this->assertEquals($time,filemtime($files[0]));
 
+		$utime=explode(" ", microtime(false)); usleep(999999-(1000000*$utime[0]));
 		$cache->set('testKey5','testValue5',2);
-		usleep(999999);
+		$utime=explode(" ", microtime(false)); usleep(999999-(1000000*$utime[0]));
 		$this->assertEquals('testValue5',$cache->get('testKey5'));
 
 		$cache->set('testKey6','testValue6',2);
