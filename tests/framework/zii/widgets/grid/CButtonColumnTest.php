@@ -6,7 +6,9 @@ class CButtonColumnTest extends CTestCase
 {
 	public function testCallbackEncoding()
 	{
-		$expected = "jQuery(document).on('click','#grid1 a.view',function() { /* callback */ });";
+		$oldexpected = "jQuery(document).on('click','#grid1 a.view',function() { /* callback */ });";
+		// With improved eventhandler management
+		$expected = "jQuery(document).on('click','#grid1 a.view',_gridf['on-grid1-view']);";
 
 		$out=$this->getWidgetScript('js:function() { /* callback */ }');
 		$this->assertTrue(mb_strpos($out,$expected, null, Yii::app()->charset)!==false, "Unexpected JavaScript (js:): ".$out);
