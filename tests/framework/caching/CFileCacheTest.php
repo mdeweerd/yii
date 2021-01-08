@@ -72,7 +72,7 @@ class CFileCacheTest extends CTestCase
 		$app=new TestApplication(array(
 			'id'=>'testApp',
 			'components'=>array(
-				'cache'=>array('class'=>'CFileCache','cachePath'=>$this->cachePath),
+				'cache'=>array('class'=>'CFileCache','cachePath'=>$this->cachePath,'gCProbability'=>0),
 			),
 		));
 		$app->reset();
@@ -101,7 +101,7 @@ class CFileCacheTest extends CTestCase
 		$app=new TestApplication(array(
 			'id'=>'testApp',
 			'components'=>array(
-				'cache'=>array('class'=>'CFileCache','cachePath'=>$this->cachePath,'embedExpiry'=>true),
+				'cache'=>array('class'=>'CFileCache','cachePath'=>$this->cachePath,'embedExpiry'=>true,'gCProbability'=>0),
 			),
 		));
 		$app->reset();
@@ -109,8 +109,7 @@ class CFileCacheTest extends CTestCase
 
 		// Make sure that we are just after the start of a second so that the tests
 		// succeed - otherwise times may be off by one second.
-		$utime=explode(" ", microtime(false));
-		usleep(999999-(1000000*$utime[0]));
+		$utime=explode(" ", microtime(false)); usleep(999999-(1000000*$utime[0]));
 
 		$time=time();
 		$cache->set('testKey4','testValue4',2);
