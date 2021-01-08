@@ -84,8 +84,9 @@ class CFileCacheTest extends CTestCase
 		usleep(999999-(1000000*$utime[0]));
 
 		$cache->set('testKey1','testValue1',2);
+		$time=time();
 		$files=glob($cache->cachePath.'/*.bin');
-		$this->assertEquals(time()+2,filemtime($files[0]));
+		$this->assertEquals($time+2,filemtime($files[0]));
 
 		$cache->set('testKey2','testValue2',2);
 		sleep(1);
@@ -111,8 +112,9 @@ class CFileCacheTest extends CTestCase
 		usleep(999999-(1000000*$utime[0]));
 
 		$cache->set('testKey4','testValue4',2);
+		$time=time();
 		$files=glob($cache->cachePath.'/*.bin');
-		$this->assertEquals(time(),filemtime($files[0]));
+		$this->assertEquals($time,filemtime($files[0]));
 
 		$cache->set('testKey5','testValue5',2);
 		sleep(1);
