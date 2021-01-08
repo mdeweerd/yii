@@ -82,8 +82,8 @@ class CFileCacheTest extends CTestCase
 		$cache->set('testKey1','testValue1',2);
 		$files=glob($cache->cachePath.'/*.bin');
                 // There can be an variation of one second
-		$this->assertLessOrEqual($time+2,filemtime($files[0]));
-		$this->assertGreaterOrEqual($time+1,filemtime($files[0]));
+		$this->assertLessThanOrEqual($time+2,filemtime($files[0]));
+		$this->assertGreaterThanOrEqual($time+1,filemtime($files[0]));
 
 		$utime=explode(" ", microtime(false)); usleep(999999-(1000000*$utime[0]));
 		$cache->set('testKey2','testValue2',2);
@@ -113,8 +113,8 @@ class CFileCacheTest extends CTestCase
 		$cache->set('testKey4','testValue4',2);
 		$files=glob($cache->cachePath.'/*.bin');
                 // There can be an variation of one second
-		$this->assertLessOrEqual($time,filemtime($files[0]));
-		$this->assertGreaterOrEqual($time-1,filemtime($files[0]));
+		$this->assertLessThanOrEqual($time,filemtime($files[0]));
+		$this->assertGreaterThanOrEqual($time-1,filemtime($files[0]));
 
 		$utime=explode(" ", microtime(false)); usleep(999999-(1000000*$utime[0]));
 		$cache->set('testKey5','testValue5',2);
