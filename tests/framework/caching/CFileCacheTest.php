@@ -104,6 +104,10 @@ class CFileCacheTest extends CTestCase
 		$app->reset();
 		$cache=$app->cache;
 
+		// Make sure that we are just after the start of a second so that the tests
+		// succeed - otherwise times may be off by one second.
+		$reftime=time(); while(time()==$reftime) {}
+
 		$cache->set('testKey4','testValue4',2);
 		$files=glob($cache->cachePath.'/*.bin');
 		$this->assertEquals(time(),filemtime($files[0]));
