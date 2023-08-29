@@ -29,5 +29,5 @@ jobs:
         if: ${{ always() }}
         with:
           name: phan-report
-          path: /mnt/src/phan.log
+          path: ${{ github.workspace }}/framework/phan.log
           retention-days: 5
