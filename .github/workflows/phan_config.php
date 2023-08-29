@@ -178,6 +178,7 @@ return [
         'PhanTypeExpectedObjectPropAccessButGotNull',
         'PhanUndeclaredClassAttribute',
         'PhanNonClassMethodCall',
+        'DeprecateAliasPlugin',
     ],
 
 ];
