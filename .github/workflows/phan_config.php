@@ -67,7 +67,7 @@ return [
     'plugins' => [
         // checks if a function, closure or method unconditionally returns.
         // can also be written as 'vendor/phan/phan/.phan/plugins/AlwaysReturnPlugin.php'
-        'DeprecateAliasPlugin',
+        //'DeprecateAliasPlugin',
         //'EmptyMethodAndFunctionPlugin',
         'InvalidVariableIssetPlugin',
         //'MoreSpecificElementTypePlugin',
@@ -178,7 +178,6 @@ return [
         'PhanTypeExpectedObjectPropAccessButGotNull',
         'PhanUndeclaredClassAttribute',
         'PhanNonClassMethodCall',
-        'DeprecateAliasPlugin',
     ],
 
 ];
