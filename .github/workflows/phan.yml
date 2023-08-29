@@ -1,0 +1,20 @@
+on:
+  - pull_request
+  - push
+
+name: phan
+
+jobs:
+    phan:
+        name: Run phan
+        runs-on: ubuntu-latest
+        steps:
+          - name: Check out the repo
+            uses: actions/checkout@v3
+          - name: Run phan with Docker
+            uses: addnab/docker-run-action@v3
+            with:
+                image: phanphp/phan:latest
+                options: -v ${{ github.workspace }}:/mnt/repo -v ${{ github.workspace }}/framework:/mnt/src
+                run: |
+                    -k /mnt/repo/.github/workflows/phan_config.php -B /mnt/repo/.github/workflows/phan_baseline.txt
