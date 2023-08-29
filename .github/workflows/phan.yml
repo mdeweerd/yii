@@ -1,20 +1,33 @@
-on:
-  - pull_request
-  - push
-
+---
+on: [pull_request, push]
 name: phan
-
 jobs:
-    phan:
-        name: Run phan
-        runs-on: ubuntu-latest
-        steps:
-          - name: Check out the repo
-            uses: actions/checkout@v3
-          - name: Run phan with Docker
-            uses: addnab/docker-run-action@v3
-            with:
-                image: phanphp/phan:latest
-                options: -v ${{ github.workspace }}:/mnt/repo -v ${{ github.workspace }}/framework:/mnt/src
-                run: |
-                    -k /mnt/repo/.github/workflows/phan_config.php -B /mnt/repo/.github/workflows/phan_baseline.txt
+  phan:
+    name: Run phan
+    runs-on: ubuntu-latest
+    container:
+      image: phanphp/phan:latest
+    steps:
+      - name: Link paths
+        shell: sh
+        run: |
+          ln -s $GITHUB_WORKSPACE /mnt/repo
+          ln -s $GITHUB_WORKSPACE/framework /mnt/src
+          apk add git
+
+      - name: Checkout
+        uses: actions/checkout@v3
+
+      - name: Run Phan
+        run: |
+          cd /mnt/src
+          set -o pipefail
+          /opt/phan/phan -k /mnt/repo/.github/workflows/phan_config.php -B /mnt/repo/.github/workflows/phan_baseline.txt --analyze-twice --minimum-target-php-version 5.6 | tee phan.log
+
+      - name: Provide phan log as artifact
+        uses: actions/upload-artifact@v3
+        if: ${{ always() }}
+        with:
+          name: phan-report
+          path: /mnt/src/phan.log
+          retention-days: 5
