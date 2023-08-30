@@ -9,19 +9,12 @@
  */
 return [
     // # Issue statistics:
-    // PhanUndeclaredClassConstant : 35+ occurrences
-    // PhanTypeMismatchReturnSuperType : 25+ occurrences
-    // PhanPluginNoAssert : 20+ occurrences
     // PhanTypeMismatchArgumentInternal : 20+ occurrences
     // PhanTypeMissingReturn : 20+ occurrences
-    // PhanDeprecatedFunctionInternal : 15+ occurrences
     // PhanPluginUndeclaredVariableIsset : 15+ occurrences
     // PhanUndeclaredVariable : 15+ occurrences
-    // PhanPluginDuplicateConditionalTernaryDuplication : 10+ occurrences
-    // PhanUndeclaredConstant : 10+ occurrences
     // PhanUndeclaredVariableDim : 10+ occurrences
     // PhanInvalidCommentForDeclarationType : 9 occurrences
-    // PhanTypeMismatchArgumentNullableInternal : 9 occurrences
     // PhanTypeObjectUnsetDeclaredProperty : 9 occurrences
     // PhanPluginUnsafeEval : 8 occurrences
     // PhanTypeMismatchArgumentInternalProbablyReal : 8 occurrences
@@ -33,27 +26,27 @@ return [
     // PhanUnextractableAnnotationElementName : 6 occurrences
     // PhanTypeInvalidRightOperandOfNumericOp : 5 occurrences
     // PhanTypeMismatchDimFetch : 5 occurrences
-    // PhanUndeclaredClass : 5 occurrences
-    // PhanUndeclaredExtendedClass : 5 occurrences
+    // PhanUndeclaredConstant : 5 occurrences
     // PhanDeprecatedFunction : 4 occurrences
+    // PhanParamSignatureMismatchInternal : 4 occurrences
     // PhanTypeInvalidLeftOperandOfAdd : 4 occurrences
     // PhanTypeInvalidUnaryOperandIncOrDec : 4 occurrences
     // PhanTypeMismatchDimAssignment : 4 occurrences
-    // PhanUndeclaredClassInstanceof : 4 occurrences
-    // PhanParamTooMany : 3 occurrences
+    // PhanTypeMismatchArgumentNullableInternal : 3 occurrences
     // PhanTypeMismatchForeach : 3 occurrences
     // PhanTypeMismatchProperty : 3 occurrences
     // PhanTypeSuspiciousStringExpression : 3 occurrences
-    // PhanUndeclaredTypeProperty : 3 occurrences
+    // PhanUndeclaredClass : 3 occurrences
+    // PhanUndeclaredExtendedClass : 3 occurrences
+    // PhanDeprecatedFunctionInternal : 2 occurrences
     // PhanDeprecatedProperty : 2 occurrences
-    // PhanParamSignatureMismatchInternal : 2 occurrences
+    // PhanParamTooMany : 2 occurrences
     // PhanPluginDuplicateAdjacentStatement : 2 occurrences
     // PhanPluginLoopVariableReuse : 2 occurrences
     // PhanPluginPrintfVariableFormatString : 2 occurrences
     // PhanPluginUseReturnValueInternalKnown : 2 occurrences
-    // PhanTypeInvalidCallable : 2 occurrences
     // PhanTypeMagicVoidWithReturn : 2 occurrences
-    // PhanTypeMismatchArgumentInternalReal : 2 occurrences
+    // PhanUndeclaredConstantOfClass : 2 occurrences
     // PhanUndeclaredFunctionInCallable : 2 occurrences
     // PhanUndeclaredStaticMethod : 2 occurrences
     // PhanUndeclaredVariableAssignOp : 2 occurrences
@@ -64,113 +57,67 @@ return [
     // PhanStaticCallToNonStatic : 1 occurrence
     // PhanTypeArraySuspicious : 1 occurrence
     // PhanTypeExpectedObjectOrClassName : 1 occurrence
+    // PhanTypeInvalidCallable : 1 occurrence
     // PhanTypeInvalidCallableMethodName : 1 occurrence
     // PhanTypeInvalidLeftOperandOfBitwiseOp : 1 occurrence
     // PhanTypeInvalidRightOperandOfAdd : 1 occurrence
     // PhanTypeInvalidRightOperandOfBitwiseOp : 1 occurrence
+    // PhanTypeMismatchArgumentInternalReal : 1 occurrence
     // PhanTypeMismatchDefault : 1 occurrence
     // PhanTypeSuspiciousEcho : 1 occurrence
-    // PhanUndeclaredClassCatch : 1 occurrence
-    // PhanUndeclaredClassInCallable : 1 occurrence
-    // PhanUndeclaredTypeParameter : 1 occurrence
+    // PhanUndeclaredTypeProperty : 1 occurrence
 
     // Currently, file_suppressions and directory_suppressions are the only supported suppressions
     'file_suppressions' => [
         'YiiBase.php' => ['PhanTypeMismatchArgumentInternal'],
-        'base/CApplication.php' => ['PhanTypeMismatchReturnSuperType'],
-        'base/CComponent.php' => ['PhanPluginUnsafeEval', 'PhanTypeMagicVoidWithReturn'],
+        'base/CComponent.php' => ['PhanPluginUnsafeEval'],
         'base/CErrorEvent.php' => ['PhanTypeMismatchProperty'],
         'base/CErrorHandler.php' => ['PhanPluginPrintfVariableFormatString', 'PhanTypeMismatchArgumentInternal', 'PhanTypeMismatchArgumentSuperType'],
-        'base/CSecurityManager.php' => ['PhanTypeMissingReturn'],
-        'caching/CCache.php' => ['PhanTypeMissingReturn'],
-        'caching/CDbCache.php' => ['PhanUndeclaredClassConstant'],
-        'caching/CDummyCache.php' => ['PhanTypeMissingReturn'],
+        'base/CSecurityManager.php' => ['PhanPluginUseReturnValueInternalKnown'],
         'caching/CEAcceleratorCache.php' => ['PhanUndeclaredFunction'],
-        'caching/CMemCache.php' => ['PhanUndeclaredTypeProperty'],
-        'caching/CRedisCache.php' => ['PhanParamTooMany', 'PhanPluginDuplicateConditionalTernaryDuplication', 'PhanPossiblyInfiniteRecursionSameParams', 'PhanTypeInvalidLeftOperandOfAdd', 'PhanTypeMismatchPropertyProbablyReal'],
+        'caching/CRedisCache.php' => ['PhanParamTooMany', 'PhanPossiblyInfiniteRecursionSameParams', 'PhanTypeInvalidLeftOperandOfAdd', 'PhanTypeMismatchPropertyProbablyReal'],
         'caching/CXCache.php' => ['PhanUndeclaredConstant'],
-        'caching/dependencies/CDbCacheDependency.php' => ['PhanTypeMismatchReturnSuperType'],
-        'cli/commands/MessageCommand.php' => ['PhanPluginUndeclaredVariableIsset', 'PhanPluginUnsafeEval', 'PhanTypeMismatchDimAssignment', 'PhanTypeMismatchDimFetch', 'PhanTypeMissingReturn', 'PhanTypeSuspiciousStringExpression', 'PhanTypeMismatchArgumentInternal' ],
+        'cli/commands/MessageCommand.php' => ['PhanPluginUndeclaredVariableIsset', 'PhanPluginUnsafeEval', 'PhanTypeMismatchDimAssignment', 'PhanTypeMismatchDimFetch'],
         'cli/commands/MigrateCommand.php' => ['PhanTypeExpectedObjectOrClassName'],
-        'cli/commands/ShellCommand.php' => ['PhanPluginUnsafeEval', 'PhanTypeMissingReturn', 'PhanTypeSuspiciousEcho'],
-        'cli/commands/WebAppCommand.php' => ['PhanTypeMissingReturn'],
-        'cli/commands/shell/ModelCommand.php' => ['PhanTypeMissingReturn'],
-        'collections/CAttributeCollection.php' => ['PhanTypeMissingReturn'],
-        //'collections/CMap.php' => ['PhanDeprecatedFunctionInternal'],
-        'console/CConsoleCommand.php' => ['PhanPluginUndeclaredVariableIsset'],
-        'db/CDbCommand.php' => ['PhanTypeArraySuspicious', 'PhanTypeInvalidCallable', 'PhanUndeclaredClassConstant', 'PhanUndeclaredClassInstanceof', 'PhanUndeclaredTypeProperty', 'PhanTypeMismatchArgumentInternalReal'],
-        'db/CDbConnection.php' => ['PhanParamTooMany', 'PhanUndeclaredClassCatch', 'PhanUndeclaredClassConstant', 'PhanUndeclaredClassInstanceof', 'PhanUndeclaredTypeParameter', 'PhanUndeclaredTypeProperty'],
-        'db/CDbDataReader.php' => ['PhanUndeclaredClassConstant', 'PhanUndeclaredClassInCallable'],
-        'db/CDbMigration.php' => ['PhanTypeMismatchReturnSuperType', 'PhanTypeMissingReturn'],
+        'cli/commands/ShellCommand.php' => ['PhanPluginUnsafeEval'],
+        'console/CConsoleCommand.php' => ['PhanDeprecatedFunctionInternal', 'PhanPluginUndeclaredVariableIsset'],
+        'db/CDbCommand.php' => ['PhanTypeArraySuspicious'],
         'db/ar/CActiveFinder.php' => ['PhanPluginLoopVariableReuse', 'PhanTypeMismatchDimAssignment', 'PhanTypeMismatchPropertyProbablyReal', 'PhanTypeObjectUnsetDeclaredProperty'],
-        'db/ar/CActiveRecord.php' => ['PhanTypeComparisonFromArray', 'PhanTypeInvalidCallable', 'PhanTypeInvalidCallableMethodName', 'PhanTypeMismatchArgumentSuperType', 'PhanTypeMissingReturn'],
+        'db/ar/CActiveRecord.php' => ['PhanTypeComparisonFromArray', 'PhanTypeInvalidCallable', 'PhanTypeInvalidCallableMethodName', 'PhanTypeMismatchArgumentInternalReal', 'PhanTypeMismatchArgumentSuperType'],
         'db/schema/CDbCriteria.php' => ['PhanUndeclaredVariableDim'],
-        'db/schema/cubrid/CCubridSchema.php' => ['PhanUndeclaredClassConstant'],
-        'db/schema/mssql/CMssqlCommandBuilder.php' => ['PhanParamSignatureMismatch', 'PhanTypeMismatchArgumentSuperType'],
-        'db/schema/mssql/CMssqlPdoAdapter.php' => ['PhanUndeclaredExtendedClass', 'PhanUnextractableAnnotationElementName'],
+        'db/schema/mssql/CMssqlCommandBuilder.php' => ['PhanParamSignatureMismatch'],
+        'db/schema/mssql/CMssqlPdoAdapter.php' => ['PhanParamSignatureMismatchInternal'],
         'db/schema/mssql/CMssqlSchema.php' => ['PhanTypeMismatchPropertyProbablyReal'],
-        'db/schema/mssql/CMssqlSqlsrvPdoAdapter.php' => ['PhanUndeclaredClass', 'PhanUndeclaredExtendedClass'],
-        'db/schema/mysql/CMysqlSchema.php' => ['PhanUndeclaredClassConstant'],
-        'db/schema/oci/COciCommandBuilder.php' => ['PhanUndeclaredClassConstant'],
         'db/schema/sqlite/CSqliteSchema.php' => ['PhanTypeMismatchPropertyProbablyReal'],
-        'gii/components/Pear/Text/Diff.php' => ['PhanPluginNoAssert'],
-        'gii/components/Pear/Text/Diff/Engine/native.php' => ['PhanPluginLoopVariableReuse', 'PhanPluginNoAssert', 'PhanTypeMismatchArgumentNullableInternal', 'PhanUndeclaredVariableDim'],
-        'gii/components/Pear/Text/Diff/Engine/shell.php' => ['PhanPluginNoAssert', 'PhanStaticCallToNonStatic', 'PhanTypeInvalidLeftOperandOfNumericOp', 'PhanTypeMismatchDefault'],
+        'gii/components/Pear/Text/Diff/Engine/native.php' => ['PhanTypeMismatchArgumentNullableInternal'],
+        'gii/components/Pear/Text/Diff/Engine/shell.php' => ['PhanTypeMismatchDefault'],
         'gii/components/Pear/Text/Diff/Engine/string.php' => ['PhanPluginDuplicateAdjacentStatement'],
-        'gii/components/Pear/Text/Diff/Mapped.php' => ['PhanPluginNoAssert', 'PhanUndeclaredStaticMethod'],
-        'gii/components/Pear/Text/Diff/Renderer.php' => ['PhanTypeInvalidLeftOperandOfAdd', 'PhanTypeInvalidRightOperandOfNumericOp', 'PhanTypeInvalidUnaryOperandIncOrDec', 'PhanUndeclaredVariable'],
-        'gii/components/Pear/Text/Diff/ThreeWay.php' => ['PhanDeprecatedFunctionInternal', 'PhanPluginDuplicateConditionalTernaryDuplication', 'PhanPluginNoAssert'],
-        'gii/components/Pear/Text/Diff3.php' => ['PhanDeprecatedFunctionInternal', 'PhanPluginDuplicateConditionalTernaryDuplication', 'PhanPluginNoAssert'],
-        'gii/generators/model/ModelCode.php' => ['PhanUnextractableAnnotationElementName'],
-        'gii/generators/model/ModelGenerator.php' => ['PhanTypeMissingReturn'],
+        'gii/components/Pear/Text/Diff/Renderer.php' => ['PhanUndeclaredVariable'],
         'i18n/CChoiceFormat.php' => ['PhanPluginUnsafeEval'],
-        'i18n/CDateFormatter.php' => ['PhanPluginDuplicateConditionalTernaryDuplication', 'PhanTypeComparisonFromArray', 'PhanTypeInvalidLeftOperandOfAdd', 'PhanTypeInvalidLeftOperandOfBitwiseOp', 'PhanTypeInvalidRightOperandOfAdd', 'PhanTypeInvalidRightOperandOfBitwiseOp', 'PhanTypeMismatchDimFetch'],
-        'i18n/CDbMessageSource.php' => ['PhanTypeMismatchReturnSuperType'],
+        'i18n/CDateFormatter.php' => ['PhanTypeComparisonFromArray', 'PhanTypeInvalidLeftOperandOfAdd', 'PhanTypeInvalidLeftOperandOfBitwiseOp', 'PhanTypeInvalidRightOperandOfAdd', 'PhanTypeInvalidRightOperandOfBitwiseOp', 'PhanTypeMismatchArgumentInternal', 'PhanTypeMismatchDimFetch'],
         'logging/CLogger.php' => ['PhanTypeInvalidLeftOperandOfNumericOp'],
         'logging/CProfileLogRoute.php' => ['PhanTypeInvalidRightOperandOfNumericOp'],
-        'messages/ca/yii.php' => ['PhanPluginDuplicateArrayKey'],
-        'test/CDbFixtureManager.php' => ['PhanTypeMismatchReturnSuperType', 'PhanUndeclaredVariableDim'],
-        'test/CDbTestCase.php' => ['PhanTypeComparisonFromArray', 'PhanTypeMismatchReturnSuperType', 'PhanUndeclaredStaticMethod'],
+        'test/CDbTestCase.php' => ['PhanTypeComparisonFromArray', 'PhanUndeclaredStaticMethod'],
         'test/CTestCase.php' => ['PhanUndeclaredExtendedClass', 'PhanUndeclaredFunctionInCallable'],
-        'test/CWebTestCase.php' => ['PhanTypeComparisonFromArray', 'PhanTypeMismatchReturnSuperType', 'PhanUndeclaredClass', 'PhanUndeclaredExtendedClass'],
+        'test/CWebTestCase.php' => ['PhanUndeclaredClass', 'PhanUndeclaredExtendedClass'],
         'utils/CDateTimeParser.php' => ['PhanPluginUndeclaredVariableIsset'],
-        'utils/CFileHelper.php' => ['PhanUndeclaredConstant'],
-        //'utils/CFormatter.php' => ['PhanTypeMismatchArgumentInternal'],
         'utils/CMarkdownParser.php' => ['PhanUndeclaredClass', 'PhanUndeclaredConstant', 'PhanUndeclaredExtendedClass'],
         'utils/CPropertyValue.php' => ['PhanPluginUnsafeEval'],
-        //'validators/CEmailValidator.php' => ['PhanDeprecatedFunctionInternal', 'PhanTypeMismatchArgumentNullableInternal'],
-        //'validators/CFileValidator.php' => ['PhanUndeclaredConstant'],
-        'validators/CStringValidator.php' => ['PhanPluginDuplicateConditionalTernaryDuplication'],
-        //'validators/CUrlValidator.php' => ['PhanTypeMismatchArgumentNullableInternal'],
-        'validators/CValidator.php' => ['PhanTypeMissingReturn'],
         'views/pl/log.php' => ['PhanPluginDuplicateAdjacentStatement'],
         'web/CCacheHttpSession.php' => ['PhanTypeMismatchProperty'],
         'web/CClientScript.php' => ['PhanTypeMismatchForeach'],
-        'web/CDbHttpSession.php' => ['PhanUndeclaredClassConstant'],
-        'web/CHttpRequest.php' => ['PhanTypeInvalidRightOperandOfNumericOp'],
-        'web/CHttpSession.php' => ['PhanPluginUseReturnValueInternalKnown','PhanPluginUndeclaredVariableIsset', 'PhanTypeInvalidLeftOperandOfNumericOp', 'PhanTypeInvalidRightOperandOfNumericOp', 'PhanTypeMismatchPropertyProbablyReal', 'PhanUndeclaredVariable', 'PhanUndeclaredVariableAssignOp'],
-        'web/CHttpSessionIterator.php' => ['PhanUnextractableAnnotationElementName'],
-        'web/CUrlManager.php' => ['PhanParamSuspiciousOrder', 'PhanTypeMismatchProperty', 'PhanUndeclaredVariableDim'],
-        'web/CWebApplication.php' => ['PhanInvalidCommentForDeclarationType', 'PhanPluginUndeclaredVariableIsset', 'PhanTypeComparisonFromArray', 'PhanTypeMismatchArgumentSuperType', 'PhanTypeMismatchReturnSuperType', 'PhanUndeclaredVariableAssignOp'],
-        //'web/actions/CAction.php' => ['PhanDeprecatedFunctionInternal'],
-        'web/actions/CViewAction.php' => ['PhanTypeMissingReturn'],
+        'web/CHttpSession.php' => ['PhanPluginUndeclaredVariableIsset', 'PhanTypeMismatchPropertyProbablyReal', 'PhanUndeclaredVariable'],
+        'web/CUrlManager.php' => ['PhanParamSuspiciousOrder', 'PhanTypeMismatchArgumentInternal', 'PhanTypeMismatchProperty'],
+        'web/CWebApplication.php' => ['PhanInvalidCommentForDeclarationType', 'PhanPluginUndeclaredVariableIsset', 'PhanTypeComparisonFromArray', 'PhanTypeMismatchArgumentSuperType', 'PhanUndeclaredVariableAssignOp'],
+        'web/actions/CAction.php' => ['PhanDeprecatedFunctionInternal'],
         'web/auth/CAuthManager.php' => ['PhanPluginUnsafeEval'],
-        'web/auth/CWebUser.php' => ['PhanTypeMissingReturn'],
-        'web/form/CForm.php' => ['PhanTypeMismatchReturnSuperType'],
-        'web/form/CFormElement.php' => ['PhanTypeMissingReturn'],
-        'web/form/CFormElementCollection.php' => ['PhanTypeMissingReturn'],
         'web/form/CFormInputElement.php' => ['PhanParamTooMany'],
         'web/helpers/CHtml.php' => ['PhanTypeMismatchPropertyProbablyReal'],
         'web/helpers/CJSON.php' => ['PhanTypeMismatchForeach'],
-        //'web/helpers/CJavaScript.php' => ['PhanDeprecatedFunctionInternal', 'PhanTypeMismatchArgumentInternal'],
         'web/services/CWebService.php' => ['PhanPluginUndeclaredVariableIsset'],
-        'web/services/CWsdlGenerator.php' => ['PhanInvalidCommentForDeclarationType'],
-        'web/widgets/COutputCache.php' => ['PhanTypeMissingReturn'],
-        'web/widgets/CTextHighlighter.php' => ['PhanUndeclaredVariableDim'],
-        'web/widgets/captcha/CCaptchaAction.php' => ['PhanTypeMismatchArgumentInternal'],
+        'web/widgets/CTextHighlighter.php' => ['PhanUndeclaredConstant'],
         'web/widgets/pagers/CListPager.php' => ['PhanPluginPrintfVariableFormatString'],
         'zii/behaviors/CTimestampBehavior.php' => ['PhanPluginUnsafeEval'],
-        //'zii/widgets/CListView.php' => ['PhanDeprecatedFunctionInternal'],
         'zii/widgets/grid/CGridColumn.php' => ['PhanDeprecatedFunction'],
         'zii/widgets/grid/CGridView.php' => ['PhanDeprecatedProperty'],
     ],

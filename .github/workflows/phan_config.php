@@ -178,6 +178,36 @@ return [
         'PhanTypeExpectedObjectPropAccessButGotNull',
         'PhanUndeclaredClassAttribute',
         'PhanNonClassMethodCall',
+        'PhanPluginNoAssert',
+        'PhanTypeMismatchReturnSuperType',
+        'PhanTypeMismatchArgumentSuperType',
+        'PhanPluginDuplicateConditionalTernaryDuplication',
+    ],
+    // You can put relative paths to internal stubs in this config option.
+    // Phan will continue using its detailed type annotations,
+    // but load the constants, classes, functions, and classes (and their Reflection types)
+    // from these stub files (doubling as valid php files).
+    // Use a different extension from php (and preferably a separate folder)
+    // to avoid accidentally parsing these as PHP (includes projects depending on this).
+    // The 'mkstubs' script can be used to generate your own stubs (compatible with php 7.0+ right now)
+    // Note: The array key must be the same as the extension name reported by `php -m`,
+    // so that phan can skip loading the stubs if the extension is actually available.
+    'autoload_internal_extension_signatures' => [
+         // Xdebug stubs are bundled with Phan 0.10.1+/0.8.9+ for usage,
+         // because Phan disables xdebug by default.
+         //'xdebug'     => 'vendor/phan/phan/.phan/internal_stubs/xdebug.phan_php',
+        //'memcached'  => '.phan/your_internal_stubs_folder_name/memcached.phan_php',
+        'PDO'  => '../repo/.github/workflows/phan_stubs/PDO.phan_php',
+        'curl'  => '../repo/.github/workflows/phan_stubs/curl.phan_php',
+        'fileinfo'  => '../repo/.github/workflows/phan_stubs/fileinfo.phan_php',
+        'intl'  => '../repo/.github/workflows/phan_stubs/intl.phan_php',
+        'mcrypt'  => '../repo/.github/workflows/phan_stubs/mcrypt.phan_php',
+        'pdo_cubrid'  => '../repo/.github/workflows/phan_stubs/pdo_cubrid.phan_php',
+        'pdo_mysql'  => '../repo/.github/workflows/phan_stubs/pdo_mysql.phan_php',
+        'pdo_pgsql'  => '../repo/.github/workflows/phan_stubs/pdo_pgsql.phan_php',
+        'pdo_sqlite'  => '../repo/.github/workflows/phan_stubs/pdo_sqlite.phan_php',
+        'session'  => '../repo/.github/workflows/phan_stubs/session.phan_php',
+        'soap'  => '../repo/.github/workflows/phan_stubs/soap.phan_php',
     ],
 
 ];
