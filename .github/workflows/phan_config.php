@@ -202,6 +202,7 @@ return [
         'fileinfo'  => '../repo/.github/workflows/phan_stubs/fileinfo.phan_php',
         'intl'  => '../repo/.github/workflows/phan_stubs/intl.phan_php',
         'mcrypt'  => '../repo/.github/workflows/phan_stubs/mcrypt.phan_php',
+        'memcache'  => '../repo/.github/workflows/phan_stubs/memcache.phan_php',
         'pdo_cubrid'  => '../repo/.github/workflows/phan_stubs/pdo_cubrid.phan_php',
         'pdo_mysql'  => '../repo/.github/workflows/phan_stubs/pdo_mysql.phan_php',
         'pdo_pgsql'  => '../repo/.github/workflows/phan_stubs/pdo_pgsql.phan_php',
