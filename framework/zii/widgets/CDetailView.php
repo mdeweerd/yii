@@ -232,7 +232,7 @@ class CDetailView extends CWidget
 	 * This method is used by run() to render item row
 	 *
 	 * @param array $options config options for this item/attribute from {@link attributes}
-	 * @param string $templateData data that will be inserted into {@link itemTemplate}
+	 * @param string|array<string,string> $templateData data that will be inserted into {@link itemTemplate}
 	 * @since 1.1.11
 	 */
 	protected function renderItem($options,$templateData)
