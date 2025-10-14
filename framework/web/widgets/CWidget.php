@@ -87,7 +87,7 @@ class CWidget extends CBaseController
 
 	/**
 	 * Constructor.
-	 * @param CBaseController $owner owner/creator of this widget. It could be either a widget or a controller.
+	 * @param ?CBaseController $owner owner/creator of this widget. It could be either a widget or a controller.
 	 */
 	public function __construct($owner=null)
 	{
@@ -232,7 +232,7 @@ class CWidget extends CBaseController
 	 *
 	 * @param string $view name of the view to be rendered. See {@link getViewFile} for details
 	 * about how the view script is resolved.
-	 * @param array $data data to be extracted into PHP variables and made available to the view script
+	 * @param ?array $data data to be extracted into PHP variables and made available to the view script
 	 * @param boolean $return whether the rendering result should be returned instead of being displayed to end users
 	 * @return string the rendering result. Null if the rendering result is not required.
 	 * @throws CException if the view does not exist
