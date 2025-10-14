@@ -105,7 +105,7 @@ class CController extends CBaseController
 
 	/**
 	 * @param string $id id of this controller
-	 * @param CWebModule $module the module that this controller belongs to.
+	 * @param ?CWebModule $module the module that this controller belongs to.
 	 */
 	public function __construct($id,$module=null)
 	{
@@ -772,7 +772,7 @@ class CController extends CBaseController
 	 *
 	 * @param string $view name of the view to be rendered. See {@link getViewFile} for details
 	 * about how the view script is resolved.
-	 * @param array $data data to be extracted into PHP variables and made available to the view script
+	 * @param ?array $data data to be extracted into PHP variables and made available to the view script
 	 * @param boolean $return whether the rendering result should be returned instead of being displayed to end users.
 	 * @return string the rendering result. Null if the rendering result is not required.
 	 * @see renderPartial
@@ -856,7 +856,7 @@ class CController extends CBaseController
 	 *
 	 * @param string $view name of the view to be rendered. See {@link getViewFile} for details
 	 * about how the view script is resolved.
-	 * @param array $data data to be extracted into PHP variables and made available to the view script
+	 * @param ?array $data data to be extracted into PHP variables and made available to the view script
 	 * @param boolean $return whether the rendering result should be returned instead of being displayed to end users
 	 * @param boolean $processOutput whether the rendering result should be postprocessed using {@link processOutput}.
 	 * @return string the rendering result. Null if the rendering result is not required.
@@ -1154,7 +1154,7 @@ class CController extends CBaseController
 	 * In order to use persistent page states, the form(s) must be stateful
 	 * which are generated using {@link CHtml::statefulForm}.
 	 * @param string $name the state name
-	 * @param mixed $defaultValue the value to be returned if the named state is not found
+	 * @param ?mixed $defaultValue the value to be returned if the named state is not found
 	 * @return mixed the page state value
 	 * @see setPageState
 	 * @see CHtml::statefulForm
@@ -1173,7 +1173,7 @@ class CController extends CBaseController
 	 * which are generated using {@link CHtml::statefulForm}.
 	 * @param string $name the state name
 	 * @param mixed $value the page state value
-	 * @param mixed $defaultValue the default page state value. If this is the same as
+	 * @param ?mixed $defaultValue the default page state value. If this is the same as
 	 * the given value, the state will be removed from persistent storage.
 	 * @see getPageState
 	 * @see CHtml::statefulForm
