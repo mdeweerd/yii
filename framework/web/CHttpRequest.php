@@ -797,7 +797,7 @@ class CHttpRequest extends CApplicationComponent
 	{
 		return isset($_SERVER['HTTP_ACCEPT'])?$_SERVER['HTTP_ACCEPT']:null;
 	}
-	
+
 	/**
 	 * Returns request content-type
 	 * The Content-Type header field indicates the MIME type of the data
@@ -1042,7 +1042,7 @@ class CHttpRequest extends CApplicationComponent
 	/**
 	 * Returns the user preferred accept MIME type.
 	 * The MIME type is returned as an array map (see {@link parseAcceptHeader()}).
-	 * @return array the user preferred accept MIME type or false if the user does not have any.
+	 * @return false|array the user preferred accept MIME type or false if the user does not have any.
 	 */
 	public function getPreferredAcceptType()
 	{
