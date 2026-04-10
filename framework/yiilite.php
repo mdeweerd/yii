@@ -41,7 +41,7 @@ class YiiBase
 	private static $_logger;
 	public static function getVersion()
 	{
-		return '1.1.32-dev';
+		return '1.1.33-dev';
 	}
 	public static function createWebApplication($config=null)
 	{
@@ -539,6 +539,7 @@ class YiiBase
 		'CHttpCookie' => '/web/CHttpCookie.php',
 		'CHttpRequest' => '/web/CHttpRequest.php',
 		'CHttpSession' => '/web/CHttpSession.php',
+		'CHttpSessionHandler' => '/web/CHttpSessionHandler.php',
 		'CHttpSessionIterator' => '/web/CHttpSessionIterator.php',
 		'COutputEvent' => '/web/COutputEvent.php',
 		'CPagination' => '/web/CPagination.php',
@@ -2774,11 +2775,11 @@ class CHttpRequest extends CApplicationComponent
 						if($matches[4][$i]==='q')
 						{
 							// sanity check on q value
-							$q=(double)$matches[5][$i];
+							$q=(float)$matches[5][$i];
 							if($q>1)
-								$q=(double)1;
+								$q=(float)1;
 							elseif($q<0)
-								$q=(double)0;
+								$q=(float)0;
 							$accept['params'][$matches[4][$i]]=$q;
 						}
 						else
@@ -2789,7 +2790,7 @@ class CHttpRequest extends CApplicationComponent
 				}
 				// q defaults to 1 if not explicitly given
 				if(!isset($accept['params']['q']))
-					$accept['params']['q']=(double)1;
+					$accept['params']['q']=(float)1;
 				$accepts[] = $accept;
 			}
 		}
@@ -4657,7 +4658,27 @@ class CHttpSession extends CApplicationComponent implements IteratorAggregate,Ar
 	public function open()
 	{
 		if($this->getUseCustomStorage())
-			@session_set_save_handler(array($this,'openSession'),array($this,'closeSession'),array($this,'readSession'),array($this,'writeSession'),array($this,'destroySession'),array($this,'gcSession'));
+		{
+			// PHP 8.4+ deprecates callback-style session_set_save_handler().
+			// Use object-style handler on PHP 7.0+ to avoid deprecation.
+			// CHttpSessionHandler is in a separate file to avoid parse errors on PHP 5.3
+			// where SessionHandlerInterface doesn't exist.
+			if(version_compare(PHP_VERSION, '7.0', '>='))
+			{
+				@session_set_save_handler(new CHttpSessionHandler($this), true);
+			}
+			else
+			{
+				@session_set_save_handler(
+					array($this, 'openSession'),
+					array($this, 'closeSession'),
+					array($this, 'readSession'),
+					array($this, 'writeSession'),
+					array($this, 'destroySession'),
+					array($this, 'gcSession')
+				);
+			}
+		}
 		@session_start();
 		if(YII_DEBUG && session_id()=='')
 		{
@@ -10306,8 +10327,8 @@ class CDbColumnSchema extends CComponent
 		switch($this->type)
 		{
 			case 'string': return (string)$value;
-			case 'integer': return (integer)$value;
-			case 'boolean': return (boolean)$value;
+			case 'integer': return (int)$value;
+			case 'boolean': return (bool)$value;
 			case 'double':
 			default: return $value;
 		}

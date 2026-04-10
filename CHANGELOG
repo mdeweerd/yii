@@ -1,10 +1,19 @@
                    Yii Framework Change Log
                    ========================
 
-Version 1.1.32 under development
+Version 1.1.33 under development
+--------------------------------
+
+- Bug #4598: PHP 8.5 compatibility: Fix deprecated non-canonical casts to canonical forms (ac-dc)
+- Bug #4607: Fix loading CHttpSessionHandler when using yiilite on Yii 1.1.32 and PHP 7+ (tance77, marcovtwout)
+
+Version 1.1.32 December 23, 2025
 --------------------------------
 
 - Enh #4587: Add socket connection support to `CRedisCache` (mateusmetzker)
+- Bug #4578: PHP 8.4 compatibility: Fix deprecation in session_set_save_handler() (efhsg)
+- Bug #4573: PHP 8 compatibility: Fix deprecation warning in CArrayDataProvider (efhsg)
+- Bug #4591: Fix deprecation in `CCaptchaAction` for PHP 8.1+ (rob006)
 
 Version 1.1.31 April 10, 2025
 --------------------------------
