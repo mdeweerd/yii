@@ -628,8 +628,8 @@ class CHtml
 
 	/**
 	 * Generates a text field input.
-	 * @param string $name the input name
-	 * @param string $value the input value
+	 * @param ?string $name the input name
+	 * @param ?string $value the input value
 	 * @param array $htmlOptions additional HTML attributes. Besides normal HTML attributes, a few special
 	 * attributes are also recognized (see {@link clientChange} and {@link tag} for more details.)
 	 * @return string the generated input field
@@ -1453,8 +1453,8 @@ EOD;
 	 * Generates an input HTML tag.
 	 * This method generates an input HTML tag based on the given input name and value.
 	 * @param string $type the input type (e.g. 'text', 'radio')
-	 * @param string $name the input name
-	 * @param string $value the input value
+	 * @param ?string $name the input name
+	 * @param ?string $value the input value
 	 * @param array $htmlOptions additional HTML attributes for the HTML tag (see {@link tag}).
 	 * @return string the generated input tag
 	 */

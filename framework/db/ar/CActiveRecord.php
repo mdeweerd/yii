@@ -65,7 +65,7 @@ abstract class CActiveRecord extends CModel
 
 	/**
 	 * Constructor.
-	 * @param string $scenario scenario name. See {@link CModel::scenario} for more details about this parameter.
+	 * @param ?string $scenario scenario name. See {@link CModel::scenario} for more details about this parameter.
 	 * Note: in order to setup initial model parameters use {@link init()} or {@link afterConstruct()}.
 	 * Do NOT override the constructor unless it is absolutely necessary!
 	 */
@@ -101,7 +101,7 @@ abstract class CActiveRecord extends CModel
 	 * It changes the query caching parameter of the {@link dbConnection} instance.
 	 * @param integer $duration the number of seconds that query results may remain valid in cache.
 	 * If this is 0, the caching will be disabled.
-	 * @param CCacheDependency|ICacheDependency $dependency the dependency that will be used when saving
+	 * @param null|CCacheDependency|ICacheDependency $dependency the dependency that will be used when saving
 	 * the query results into cache.
 	 * @param integer $queryCount number of SQL queries that need to be cached after calling this method. Defaults to 1,
 	 * meaning that the next SQL query will be cached.
@@ -801,7 +801,7 @@ abstract class CActiveRecord extends CModel
 	 *
 	 * @param boolean $runValidation whether to perform validation before saving the record.
 	 * If the validation fails, the record will not be saved to database.
-	 * @param array $attributes list of attributes that need to be saved. Defaults to null,
+	 * @param ?array $attributes list of attributes that need to be saved. Defaults to null,
 	 * meaning all attributes that are loaded from DB will be saved.
 	 * @return boolean whether the saving succeeds
 	 */
@@ -1065,7 +1065,7 @@ abstract class CActiveRecord extends CModel
 	 * Note, validation is not performed in this method. You may call {@link validate} to perform the validation.
 	 * After the record is inserted to DB successfully, its {@link isNewRecord} property will be set false,
 	 * and its {@link scenario} property will be set to be 'update'.
-	 * @param array $attributes list of attributes that need to be saved. Defaults to null,
+	 * @param ?array $attributes list of attributes that need to be saved. Defaults to null,
 	 * meaning all attributes that are loaded from DB will be saved.
 	 * @return boolean whether the attributes are valid and the record is inserted successfully.
 	 * @throws CDbException if the record is not new
@@ -1113,7 +1113,7 @@ abstract class CActiveRecord extends CModel
 	 * Updates the row represented by this active record.
 	 * All loaded attributes will be saved to the database.
 	 * Note, validation is not performed in this method. You may call {@link validate} to perform the validation.
-	 * @param array $attributes list of attributes that need to be saved. Defaults to null,
+	 * @param ?array $attributes list of attributes that need to be saved. Defaults to null,
 	 * meaning all attributes that are loaded from DB will be saved.
 	 * @return boolean whether the update is successful
 	 * @throws CDbException if the record is new
@@ -1848,7 +1848,7 @@ abstract class CActiveRecord extends CModel
 	/**
 	 * Creates an active record with the given attributes.
 	 * This method is internally used by the find methods.
-	 * @param array $attributes attribute values (column name=>column value)
+	 * @param false|array $attributes attribute values (column name=>column value)
 	 * @param boolean $callAfterFind whether to call {@link afterFind} after the record is populated.
 	 * @return static|null the newly created active record. The class of the object is the same as the model class.
 	 * Null is returned if the input data is false.
@@ -1883,7 +1883,7 @@ abstract class CActiveRecord extends CModel
 	 * This method is internally used by the find methods.
 	 * @param array $data list of attribute values for the active records.
 	 * @param boolean $callAfterFind whether to call {@link afterFind} after each record is populated.
-	 * @param string $index the name of the attribute whose value will be used as indexes of the query result array.
+	 * @param ?string $index the name of the attribute whose value will be used as indexes of the query result array.
 	 * If null, it means the array will be indexed by zero-based integers.
 	 * @return static[] list of active records.
 	 */

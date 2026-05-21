@@ -1042,7 +1042,7 @@ class CHttpRequest extends CApplicationComponent
 	/**
 	 * Returns the user preferred accept MIME type.
 	 * The MIME type is returned as an array map (see {@link parseAcceptHeader()}).
-	 * @return array the user preferred accept MIME type or false if the user does not have any.
+	 * @return false|array the user preferred accept MIME type or false if the user does not have any.
 	 */
 	public function getPreferredAcceptType()
 	{

@@ -31,14 +31,14 @@ class CUserIdentity extends CBaseUserIdentity
 	 */
 	public $username;
 	/**
-	 * @var string password
+	 * @var ?string password
 	 */
 	public $password;
 
 	/**
 	 * Constructor.
 	 * @param string $username username
-	 * @param string $password password
+	 * @param ?string $password password
 	 */
 	public function __construct($username,$password)
 	{

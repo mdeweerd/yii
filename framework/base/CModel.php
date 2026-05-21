@@ -140,7 +140,7 @@ abstract class CModel extends CComponent implements IteratorAggregate, ArrayAcce
 	 *
 	 * Errors found during the validation can be retrieved via {@link getErrors}.
 	 *
-	 * @param array $attributes list of attributes that should be validated. Defaults to null,
+	 * @param ?array $attributes list of attributes that should be validated. Defaults to null,
 	 * meaning any attribute listed in the applicable validation rules should be
 	 * validated. If this parameter is given as a list of attributes, only
 	 * the listed attributes will be validated.
