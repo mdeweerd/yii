@@ -195,8 +195,8 @@ abstract class CApplication extends CModule
 	 * @param boolean $exit whether to exit the current request. This parameter has been available since version 1.1.5.
 	 * It defaults to true, meaning the PHP's exit() function will be called at the end of this method.
 	 * @return never|void
-         * @phan-return ($exit ? never : void)
-         * @phpstan-return ($exit ? never : void)
+     * @phan-return ($exit ? never : void)
+     * @phpstan-return ($exit ? never : void)
 	 */
 	public function end($status=0,$exit=true)
 	{
